@@ -1,0 +1,230 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:6209560633218505297",
+      "lastPropertyId": "3:2879334124787659066",
+      "name": "Configuracoes",
+      "properties": [
+        {
+          "id": "1:3709430213884885507",
+          "name": "id"
+        },
+        {
+          "id": "2:665482689314219480",
+          "name": "chave"
+        },
+        {
+          "id": "3:2879334124787659066",
+          "name": "valor"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:8241924451975827045",
+      "lastPropertyId": "1:7342336624675631166",
+      "name": "Log",
+      "properties": [
+        {
+          "id": "1:7342336624675631166",
+          "name": "id"
+        }
+      ],
+      "relations": [
+        {
+          "id": "1:8175014936974819356",
+          "name": "movimentacoes"
+        }
+      ]
+    },
+    {
+      "id": "3:1423891048093065094",
+      "lastPropertyId": "4:6185057758003244193",
+      "name": "Usuario",
+      "properties": [
+        {
+          "id": "1:7228424407275711211",
+          "name": "id"
+        },
+        {
+          "id": "2:8954253819899538902",
+          "name": "nome"
+        },
+        {
+          "id": "3:5179538941078371093",
+          "name": "login"
+        },
+        {
+          "id": "4:6185057758003244193",
+          "name": "senha"
+        }
+      ],
+      "relations": [
+        {
+          "id": "2:8460390402184961163",
+          "name": "configuracoes"
+        },
+        {
+          "id": "3:2639851678715477216",
+          "name": "carteiras"
+        },
+        {
+          "id": "4:870302604029644991",
+          "name": "categorias"
+        },
+        {
+          "id": "5:2365995798570467227",
+          "name": "movimentacoes"
+        },
+        {
+          "id": "6:2633245772411308104",
+          "name": "tags"
+        },
+        {
+          "id": "7:7564279964429768603",
+          "name": "log"
+        }
+      ]
+    },
+    {
+      "id": "4:1193024586447085482",
+      "lastPropertyId": "3:2956852497987215701",
+      "name": "Categoria",
+      "properties": [
+        {
+          "id": "1:2781472037069008097",
+          "name": "id"
+        },
+        {
+          "id": "2:2839420435622674511",
+          "name": "nome"
+        },
+        {
+          "id": "3:2956852497987215701",
+          "indexId": "1:6647622758349761421",
+          "name": "naturezaId"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:1081021369101016145",
+      "lastPropertyId": "2:1669849147710416005",
+      "name": "NaturezaDaAcao",
+      "properties": [
+        {
+          "id": "1:193684275037747297",
+          "name": "id"
+        },
+        {
+          "id": "2:1669849147710416005",
+          "name": "nome"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:1555975819777669918",
+      "lastPropertyId": "8:8984187303635638090",
+      "name": "Movimentacao",
+      "properties": [
+        {
+          "id": "1:2331465441573826620",
+          "name": "id"
+        },
+        {
+          "id": "2:1827817941638962471",
+          "name": "valor"
+        },
+        {
+          "id": "3:2162577918057366845",
+          "name": "concuildo"
+        },
+        {
+          "id": "4:5693302122516156059",
+          "name": "data"
+        },
+        {
+          "id": "5:5886456973867985966",
+          "name": "descricao"
+        },
+        {
+          "id": "6:6706326849638605306",
+          "indexId": "2:4339555003481522387",
+          "name": "categoriaId"
+        },
+        {
+          "id": "7:8935748045087089462",
+          "indexId": "3:3435414389984900339",
+          "name": "carteiraId"
+        },
+        {
+          "id": "8:8984187303635638090",
+          "indexId": "4:8014329310540938816",
+          "name": "naturezaId"
+        }
+      ],
+      "relations": [
+        {
+          "id": "8:589486557599052962",
+          "name": "tag"
+        }
+      ]
+    },
+    {
+      "id": "7:8771272456608255915",
+      "lastPropertyId": "2:8273521703260297694",
+      "name": "Tag",
+      "properties": [
+        {
+          "id": "1:4211272635910970259",
+          "name": "id"
+        },
+        {
+          "id": "2:8273521703260297694",
+          "name": "nome"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "8:4839987219207263908",
+      "lastPropertyId": "4:2546635355146836109",
+      "name": "Carteira",
+      "properties": [
+        {
+          "id": "1:4347591761785384043",
+          "name": "id"
+        },
+        {
+          "id": "2:413879651856820287",
+          "name": "nome"
+        },
+        {
+          "id": "3:621646366469902341",
+          "name": "saldo"
+        },
+        {
+          "id": "4:2546635355146836109",
+          "indexId": "5:8693719183935183467",
+          "name": "naturezaId"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "8:4839987219207263908",
+  "lastIndexId": "5:8693719183935183467",
+  "lastRelationId": "8:589486557599052962",
+  "lastSequenceId": "0:0",
+  "modelVersion": 4,
+  "modelVersionParserMinimum": 4,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
