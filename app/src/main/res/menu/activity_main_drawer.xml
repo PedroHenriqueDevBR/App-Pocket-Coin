@@ -5,33 +5,42 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Carteira" />
-        <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Categoria" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Tag" />
-        <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Sair" />
+            android:title="Inicio" />
+        <item
+            android:id="@+id/nav_registro"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Registro" />
+        <item
+            android:id="@+id/nav_configuracao"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Configurações" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Gerêcia">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_carteira"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Carteiras" />
             <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:id="@+id/nav_categoria"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Categorias" />
+            <item
+                android:id="@+id/nav_tag"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Tags" />
+        </menu>
+    </item>
+
+    <item android:title="Aplicação">
+        <menu>
+            <item
+                android:id="@+id/nav_sair"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Sair" />
         </menu>
     </item>
 

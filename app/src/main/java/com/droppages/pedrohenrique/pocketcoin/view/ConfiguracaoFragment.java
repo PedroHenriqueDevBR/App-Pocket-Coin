@@ -1,4 +1,4 @@
-package com.droppages.pedrohenrique.pocketcoin;
+package com.droppages.pedrohenrique.pocketcoin.view;
 
 
 import android.os.Bundle;
@@ -7,19 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
-public class LogFragment extends Fragment {
+import com.droppages.pedrohenrique.pocketcoin.R;
 
 
-    public LogFragment() {}
+public class ConfiguracaoFragment extends Fragment {
+
+
+    public ConfiguracaoFragment() {}
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_log, container, false);;
+        View view = inflater.inflate(R.layout.fragment_configuracao, container, false);
         return view;
     }
 

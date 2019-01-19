@@ -4,24 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
-import com.droppages.pedrohenrique.pocketcoin.ConfiguracaoFragment;
-import com.droppages.pedrohenrique.pocketcoin.HomeFragment;
-import com.droppages.pedrohenrique.pocketcoin.LogFragment;
 import com.droppages.pedrohenrique.pocketcoin.R;
-import com.droppages.pedrohenrique.pocketcoin.view.CarteiraActivity;
-import com.droppages.pedrohenrique.pocketcoin.view.CategoriaActivity;
-import com.droppages.pedrohenrique.pocketcoin.view.TagActivity;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar                 toolbar;
@@ -57,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Inicia fragmento inicial
+        // Inicia fragmento
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
     }
 
@@ -76,17 +68,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_home) {
+            // Home - página inicial
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_registro) {
+            // Registro - listar log de registro
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new LogFragment()).commit();
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_configuracao) {
+            // Configuração - define comportamento do app
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new ConfiguracaoFragment()).commit();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_carteira) {
+            // Atalho - tela de gerencia de carteiras
             sair();
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_categoria) {
+            // Atalho - tela de gerencia de categorias
             return true;
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_tag) {
+            // Atalho - tela de gerencia de tags
+            return true;
+        } else if (id == R.id.nav_sair) {
+            // Sair - Finaliza o app (Sessão continua segura)
             return true;
         }
 
