@@ -4,14 +4,16 @@ import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
 @Entity
-public class Configuracoes {
+public class Configuracao {
 
     @Id
     public long id;
     private String chave;
     private String valor;
 
-    public Configuracoes(String chave, String valor) {
+    public Configuracao(){}
+
+    public Configuracao(String chave, String valor) {
         this.chave = chave;
         this.valor = valor;
     }

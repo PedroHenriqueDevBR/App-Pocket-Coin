@@ -1,7 +1,9 @@
-package com.droppages.pedrohenrique.pocketcoin;
+package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.droppages.pedrohenrique.pocketcoin.R;
 
 public class MainActivity extends AppCompatActivity {
 

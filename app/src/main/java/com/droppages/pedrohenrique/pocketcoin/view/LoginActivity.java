@@ -1,4 +1,4 @@
-package com.droppages.pedrohenrique.pocketcoin;
+package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +11,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
+import com.droppages.pedrohenrique.pocketcoin.model.Configuracao;
+import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
+
+import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
-public class Login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     // variáveis globais
     private static final int    REQUEST_CODE = 4678;
     private static final String SESSAO_USUARIO = "SessaoUsuario";
@@ -26,6 +31,8 @@ public class Login extends AppCompatActivity {
     Button                      btnEntrar, btnCadastrar;
     BoxStore                    boxStore;
     Box<Usuario>                usuarioBox;
+    Box<Configuracao>           configuracaoBox;
+    Box<NaturezaDaAcao>         naturezaBox;
 
 
     @Override
@@ -34,8 +41,10 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // ObjectBox
-        boxStore    = ((App)getApplication()).getBoxStore();
-        usuarioBox  = boxStore.boxFor(Usuario.class);
+        boxStore        = ((App)getApplication()).getBoxStore();
+        usuarioBox      = boxStore.boxFor(Usuario.class);
+        configuracaoBox = boxStore.boxFor(Configuracao.class);
+        naturezaBox = boxStore.boxFor(NaturezaDaAcao.class);
 
         // bind
         txtLogin        = findViewById(R.id.edit_login);
@@ -45,6 +54,9 @@ public class Login extends AppCompatActivity {
 
         // Sessao
         sessao = getSharedPreferences(SESSAO_USUARIO, Context.MODE_PRIVATE);
+
+        // Instalação inicial
+        primeiraInstalacaoDoApp();
     }
 
 
@@ -52,14 +64,34 @@ public class Login extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK){
-            String login = data.getStringExtra(CadastrarUsuario.LOGIN);
+            String login = data.getStringExtra(CadastrarUsuarioActivity.LOGIN);
             setarLogin(login);
+        }
+    }
+
+    /* Atalhos de desenvolvimento */
+    public void cadastrarCarteira(View view){
+        startActivity(new Intent(this, CarteiraActivity.class));
+    }
+
+    public void cadastrarCategoria(View view){
+        startActivity(new Intent(this, CategoriaActivity.class));
+    }
+    /* Fim dos atalhos de desenvolvimento */
+
+
+    private void primeiraInstalacaoDoApp() {
+        List<Configuracao> configuracoes = configuracaoBox.getAll();
+        if (configuracoes.size() == 0) {
+            configuracaoBox.put(new Configuracao("Instalado", "1"));
+            naturezaBox.put(new NaturezaDaAcao("Crédito"));
+            naturezaBox.put(new NaturezaDaAcao("Débito"));
         }
     }
 
 
     public void cadastrarUsuario(View v){
-        startActivityForResult(new Intent(this, CadastrarUsuario.class), REQUEST_CODE);
+        startActivityForResult(new Intent(this, CadastrarUsuarioActivity.class), REQUEST_CODE);
     }
 
 

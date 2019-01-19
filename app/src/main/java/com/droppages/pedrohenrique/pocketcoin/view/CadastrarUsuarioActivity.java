@@ -1,4 +1,4 @@
-package com.droppages.pedrohenrique.pocketcoin;
+package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,13 +7,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
-public class CadastrarUsuario extends AppCompatActivity {
+public class CadastrarUsuarioActivity extends AppCompatActivity {
     public static final String  LOGIN = "login";
     EditText                    txtNome, txtLogin, txtSenha, txtRepeteSenha;
     BoxStore                    boxStore;

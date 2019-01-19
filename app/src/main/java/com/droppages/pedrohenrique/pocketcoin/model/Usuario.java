@@ -11,10 +11,10 @@ public class Usuario {
     private String                  nome;
     private String                  login;
     private String                  senha;
-    public  ToMany<Configuracoes>   configuracoes;
+    public  ToMany<Movimentacao>    movimentacoes;
+    public  ToMany<Configuracao>   configuracoes;
     public  ToMany<Carteira>        carteiras;
     public  ToMany<Categoria>       categorias;
-    public  ToMany<Movimentacao>    movimentacoes;
     public  ToMany<Tag>             tags;
     public  ToMany<Log>             log;
 

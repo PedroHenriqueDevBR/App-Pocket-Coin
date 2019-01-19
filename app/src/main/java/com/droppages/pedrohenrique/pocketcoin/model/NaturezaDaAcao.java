@@ -11,6 +11,10 @@ public class NaturezaDaAcao {
 
     public NaturezaDaAcao(){}
 
+    public NaturezaDaAcao(String nome){
+        this.nome = nome;
+    }
+
     public String getNome() {
         return nome;
     }

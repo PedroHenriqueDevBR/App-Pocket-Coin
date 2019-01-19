@@ -13,6 +13,10 @@ public class Categoria {
 
     public Categoria(){}
 
+    public Categoria(String nome) {
+        this.nome = nome;
+    }
+
     public Categoria(String tipo, String nome) {
         this.nome = nome;
     }
