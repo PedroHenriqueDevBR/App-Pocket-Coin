@@ -13,7 +13,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
+import com.droppages.pedrohenrique.pocketcoin.ConfiguracaoFragment;
+import com.droppages.pedrohenrique.pocketcoin.HomeFragment;
+import com.droppages.pedrohenrique.pocketcoin.LogFragment;
 import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.view.CarteiraActivity;
 import com.droppages.pedrohenrique.pocketcoin.view.CategoriaActivity;
@@ -25,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout            drawer;
     private ActionBarDrawerToggle   toggle;
     private NavigationView          navigationView;
+    private FrameLayout             frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,20 +37,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         // Bind
-        toolbar = findViewById(R.id.toolbar);
-        drawer  = findViewById(R.id.drawer_layout);
-        fab     = findViewById(R.id.fab);
+        toolbar     = findViewById(R.id.toolbar);
+        drawer      = findViewById(R.id.drawer_layout);
+        fab         = findViewById(R.id.fab);
+        frameLayout = findViewById(R.id.frame_layout);
 
+        // FloatActionButton
         setSupportActionBar(toolbar);
         fab.setOnClickListener(
                 c -> Snackbar.make(this.navigationView, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         );
+
+        // AppBar
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Menu navegação
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        // Inicia fragmento inicial
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
     }
 
     @Override
@@ -61,21 +74,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            cadastrarCarteira();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new HomeFragment()).commit();
         } else if (id == R.id.nav_gallery) {
-            cadastrarCategoria();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new LogFragment()).commit();
         } else if (id == R.id.nav_slideshow) {
-            cadastrarTag();
+            getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new ConfiguracaoFragment()).commit();
         } else if (id == R.id.nav_manage) {
-            cadastrarTag();
+            sair();
         } else if (id == R.id.nav_share) {
-            cadastrarTag();
+            return true;
         } else if (id == R.id.nav_send) {
-            cadastrarTag();
+            return true;
         }
 
         drawer = findViewById(R.id.drawer_layout);
@@ -88,12 +100,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity(new Intent(this, CarteiraActivity.class));
     }
 
-
     public void cadastrarCategoria(){ startActivity(new Intent(this, CategoriaActivity.class)); }
 
-
     public void cadastrarTag(){ startActivity(new Intent(this, TagActivity.class)); }
-
 
     public void sair(){ this.finish(); }
 }
