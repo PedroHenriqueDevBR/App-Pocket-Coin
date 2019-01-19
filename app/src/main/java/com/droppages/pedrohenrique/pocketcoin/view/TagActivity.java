@@ -1,4 +1,4 @@
-package com.droppages.pedrohenrique.pocketcoin;
+package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;

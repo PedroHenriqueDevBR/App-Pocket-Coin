@@ -24,8 +24,8 @@ public class CategoriaActivity extends AppCompatActivity {
     private BoxStore                boxStore;
     private Box<Categoria>          categoriaBox;
     private Box<NaturezaDaAcao>     naturezaBox;
-    EditText                        txtNome;
-    Spinner                         spnNatureza;
+    private EditText                txtNome;
+    private Spinner                 spnNatureza;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

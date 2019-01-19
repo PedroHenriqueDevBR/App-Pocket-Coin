@@ -11,12 +11,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.droppages.pedrohenrique.pocketcoin.MainActivity;
 import com.droppages.pedrohenrique.pocketcoin.R;
-import com.droppages.pedrohenrique.pocketcoin.TagActivity;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.model.Configuracao;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
-import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
 import java.util.List;
@@ -71,20 +70,6 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    /* Atalhos de desenvolvimento */
-    public void cadastrarCarteira(View view){
-        startActivity(new Intent(this, CarteiraActivity.class));
-    }
-
-    public void cadastrarCategoria(View view){
-        startActivity(new Intent(this, CategoriaActivity.class));
-    }
-
-    public void cadastrarTag(View view){
-        startActivity(new Intent(this, TagActivity.class));
-    }
-    /* Fim dos atalhos de desenvolvimento */
-
 
     private void primeiraInstalacaoDoApp() {
         List<Configuracao> configuracoes = configuracaoBox.getAll();
@@ -110,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
             if (idDoUsuario != -1){
                 mostrarMensagem("ID: " + idDoUsuario);
                 limparCampos();
+                startActivity(new Intent(this, MainActivity.class));
             } else {
                 mostrarMensagem("Dados inválidos, tente novamente ou cadastre-se!");
                 txtSenha.setText("");
