@@ -1,4 +1,4 @@
-package com.droppages.pedrohenrique.pocketcoin;
+package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.view.CarteiraActivity;
 import com.droppages.pedrohenrique.pocketcoin.view.CategoriaActivity;
 import com.droppages.pedrohenrique.pocketcoin.view.TagActivity;

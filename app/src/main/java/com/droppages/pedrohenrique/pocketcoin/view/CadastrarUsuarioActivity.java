@@ -8,17 +8,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
+import com.droppages.pedrohenrique.pocketcoin.controllers.UsuarioController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
-import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoDeUsuarioException;
 
-import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
 public class CadastrarUsuarioActivity extends AppCompatActivity {
+    // Constantes
     public static final String  LOGIN = "login";
-    EditText                    txtNome, txtLogin, txtSenha, txtRepeteSenha;
-    BoxStore                    boxStore;
-    Box<Usuario>                usuarioBox;
+    // Variáveis
+    private EditText            txtNome, txtLogin, txtSenha, txtRepeteSenha;
+    private BoxStore            boxStore;
+    private UsuarioController   controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,15 +29,16 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
 
         // ObjectBox
         boxStore    = ((App)getApplication()).getBoxStore();
-        usuarioBox  = boxStore.boxFor(Usuario.class);
 
         // bind
         txtNome         = findViewById(R.id.edit_nome);
         txtLogin        = findViewById(R.id.edit_login);
         txtSenha        = findViewById(R.id.edit_senha);
         txtRepeteSenha  = findViewById(R.id.edit_repetir_senha);
-    }
 
+        // Inicializa Controller
+        controller = new UsuarioController(boxStore);
+    }
 
     public void cadastrarNovoUsuario(View view){
         String nome         = txtNome.getText().toString().trim();
@@ -43,38 +46,17 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
         String senha        = txtSenha.getText().toString().trim();
         String repeteSenha  = txtRepeteSenha.getText().toString().trim();
 
-        if (dadosValidos(nome, login, senha, repeteSenha)) {
-            Usuario usuario = new Usuario(nome, login, senha);
-            usuarioBox.put(usuario);
+        try {
+            controller.cadastrarNovoUsuario(nome, login, senha, repeteSenha);
             mostrarMensagem("Usuário cadastrado com sucesso!");
             finalizarCadastroERetornarLogin(login);
+        } catch (DadoInvalidoDeUsuarioException e){
+            mostrarMensagem(e.getMensagem());
+        } catch (Exception e) {
+            System.out.println(" Erro no cadastro: " + e.getMessage());
         }
+
     }
-
-
-    private boolean dadosValidos(String nome, String login, String senha, String repeteSenha){
-        if (nome.length() == 0){
-            mostrarMensagem("Preencha o campo nome.");
-            return false;
-        } else if (login.length() == 0){
-            mostrarMensagem("Preencha o campo login.");
-            return false;
-        } else if (senha.length() == 0){
-            mostrarMensagem("Preencha o campo senha.");
-            return false;
-        } else if (repeteSenha.length() == 0){
-            mostrarMensagem("Preencha o campo repetir senha.");
-            return false;
-        } else {
-            if (!senha.equals(repeteSenha)){
-                mostrarMensagem("Senhas diferentes, tente novamente");
-                limparCampoDeSenha();
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     private void finalizarCadastroERetornarLogin(String login) {
         Intent intent = new Intent();
@@ -82,13 +64,6 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
         setResult(RESULT_OK, intent);
         this.finish();
     }
-
-
-    private void limparCampoDeSenha(){
-        txtSenha.setText("");
-        txtRepeteSenha.setText("");
-    }
-
 
     private void mostrarMensagem(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
