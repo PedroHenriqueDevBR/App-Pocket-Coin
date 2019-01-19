@@ -12,9 +12,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
+import com.droppages.pedrohenrique.pocketcoin.TagActivity;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.model.Configuracao;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
+import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
 import java.util.List;
@@ -76,6 +78,10 @@ public class LoginActivity extends AppCompatActivity {
 
     public void cadastrarCategoria(View view){
         startActivity(new Intent(this, CategoriaActivity.class));
+    }
+
+    public void cadastrarTag(View view){
+        startActivity(new Intent(this, TagActivity.class));
     }
     /* Fim dos atalhos de desenvolvimento */
 
