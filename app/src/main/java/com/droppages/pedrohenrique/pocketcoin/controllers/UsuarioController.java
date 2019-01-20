@@ -1,6 +1,7 @@
 package com.droppages.pedrohenrique.pocketcoin.controllers;
 
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeUsuarioException;
@@ -8,6 +9,8 @@ import com.droppages.pedrohenrique.pocketcoin.model.Configuracao;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
@@ -42,15 +45,31 @@ public class UsuarioController {
         }
     }
 
-    public long login(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {
+    public boolean login(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {
         if (dadosValidosParaLogin(login, senha)){
-            long idUsuarioLocalizado = usuarioExistente(login, senha);
-            if (idUsuarioLocalizado != -1) {
-                sessao.adicionarDadosASessao(Sessao.USUARIO_ID, ""+idUsuarioLocalizado);
-                return idUsuarioLocalizado;
+            try {
+                Usuario usuarioLocalizado = usuarioExistente(login, senha);
+                sessao.adicionarDadosASessao(Sessao.USUARIO_ID, ""+usuarioLocalizado.id);
+                sessao.adicionarDadosASessao(Sessao.USUARIO_NOME, ""+usuarioLocalizado.getNome());
+                sessao.adicionarDadosASessao(Sessao.USUARIO_LOGIN, ""+usuarioLocalizado.getLogin());
+                sessao.adicionarDadosASessao(Sessao.USUARIO_SENHA, ""+usuarioLocalizado.getSenha());
+                return true;
+            } catch (NullPointerException e) {
+                throw new DadoInvalidoNoCadastroDeUsuarioException("Usuário não localizado");
+            } catch (Exception e) {
+                Log.e("loginUsuario", e.getMessage());
             }
         }
-        throw new DadoInvalidoNoCadastroDeUsuarioException("Usuário não cadastrado");
+        return false;
+    }
+
+    public List<String> pegarDadosDoUsuarioLogado(){
+        List<String> retorno = new ArrayList<>();
+        retorno.add(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
+        retorno.add(sessao.recuperarDadosDaSessao(Sessao.USUARIO_NOME));
+        retorno.add(sessao.recuperarDadosDaSessao(Sessao.USUARIO_LOGIN));
+        retorno.add(sessao.recuperarDadosDaSessao(Sessao.USUARIO_SENHA));
+        return retorno;
     }
 
     private boolean dadosValidosParaCadastro(String nome, String login, String senha, String repeteSenha) throws DadoInvalidoNoCadastroDeUsuarioException {
@@ -79,13 +98,13 @@ public class UsuarioController {
         return true;
     }
 
-    private long usuarioExistente(String login, String senha){
+    private Usuario usuarioExistente(String login, String senha){
         for (Usuario usuario: usuarioBox.getAll()){
             if (usuario.getLogin().equals(login) && usuario.getSenha().equals(senha)){
-                return usuario.id;
+                return usuario;
             }
         }
-        return -1;
+        throw new NullPointerException();
     }
 
     public void primeiraInstalacaoDoApp() {

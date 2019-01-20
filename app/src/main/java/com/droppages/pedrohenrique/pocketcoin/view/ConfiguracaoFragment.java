@@ -10,13 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
+import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 
 
 public class ConfiguracaoFragment extends Fragment {
-    Button btnGerenciarTag, btnGerenciarCategoria, btnGerenciarCarteira;
+    private Button btnGerenciarTag, btnGerenciarCategoria, btnGerenciarCarteira, btnEncerrarSessao;
+    private Sessao sessao;
 
     public ConfiguracaoFragment() {}
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -24,13 +25,16 @@ public class ConfiguracaoFragment extends Fragment {
 
         // Bind
         btnGerenciarTag         = view.findViewById(R.id.btn_gerenciar_tag);
+        btnEncerrarSessao       = view.findViewById(R.id.btn_encerrar_sessao);
         btnGerenciarCarteira    = view.findViewById(R.id.btn_gerenciar_carteira);
         btnGerenciarCategoria   = view.findViewById(R.id.btn_gerenciar_categoria);
+        sessao                  = new Sessao(getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, getActivity().MODE_PRIVATE));
 
         // Métodos
         btnGerenciarTag.setOnClickListener(arg -> abrirActivityTag());
         btnGerenciarCarteira.setOnClickListener(arg -> abrirActivityCarteiras());
         btnGerenciarCategoria.setOnClickListener(arg -> abrirActivityCategoria());
+        btnEncerrarSessao.setOnClickListener(arg -> limparUsuarioDaSessao());
 
         return view;
     }
@@ -45,5 +49,13 @@ public class ConfiguracaoFragment extends Fragment {
 
     private void abrirActivityTag(){
         startActivity(new Intent(getActivity(), TagActivity.class));
+    }
+
+    private void limparUsuarioDaSessao(){
+        sessao.deletarDadosDaSessao(Sessao.USUARIO_ID);
+        sessao.deletarDadosDaSessao(Sessao.USUARIO_NOME);
+        sessao.deletarDadosDaSessao(Sessao.USUARIO_LOGIN);
+        sessao.deletarDadosDaSessao(Sessao.USUARIO_SENHA);
+        getActivity().finish();
     }
 }

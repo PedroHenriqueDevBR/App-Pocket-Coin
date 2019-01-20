@@ -15,6 +15,8 @@ import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeUsuarioException;
 
+import java.util.List;
+
 import io.objectbox.BoxStore;
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
 
         // Instalação inicial
         controller.primeiraInstalacaoDoApp();
+
+        irParaMainActivityCasoUsuarioLogado();
     }
 
     @Override
@@ -65,6 +69,14 @@ public class LoginActivity extends AppCompatActivity {
             mostrarMensagem(e.getMensagem());
         } catch (Exception e) {
             Log.e("Erronologin", e.getMessage());
+        }
+    }
+
+    private void irParaMainActivityCasoUsuarioLogado() {
+        List<String> dadosDoUsuarioLogado = controller.pegarDadosDoUsuarioLogado();
+        if (!dadosDoUsuarioLogado.get(0).equals(Sessao.DEFAULT)){
+            mostrarMensagem("Seja bem vindo de volta " + dadosDoUsuarioLogado.get(1));
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 
