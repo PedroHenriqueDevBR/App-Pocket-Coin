@@ -6,6 +6,10 @@ import android.content.SharedPreferences;
 public class Sessao {
     public static final String SESSAO_USUARIO = "sessao_usuario";
     public static final String USUARIO_ID = "usuario_id";
+    public static final String USUARIO_NOME = "usuario_nome";
+    public static final String USUARIO_LOGIN = "usuario_login";
+    public static final String USUARIO_SENHA = "usuario_senha";
+    public static final String DEFAULT = "nada_encontrado";
     private             SharedPreferences sessao;
 
     // Construtor
@@ -24,8 +28,14 @@ public class Sessao {
 
 
     public String recuperarDadosDaSessao(String chave){
-        String valor = sessao.getString(chave, "Nada encontrado");
+        String valor = sessao.getString(chave, DEFAULT);
         return valor;
+    }
+
+    public void deletarDadosDaSessao(String chave){
+        SharedPreferences.Editor editor = sessao.edit();
+        editor.remove(chave);
+        editor.apply();
     }
 
 }
