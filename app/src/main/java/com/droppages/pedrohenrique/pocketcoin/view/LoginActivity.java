@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -23,7 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     private EditText                    txtLogin, txtSenha;
     private BoxStore                    boxStore;
     private UsuarioController           controller;
-    private Sessao                      sessao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         boxStore        = ((App)getApplication()).getBoxStore();
         txtLogin        = findViewById(R.id.edit_login);
         txtSenha        = findViewById(R.id.edit_senha);
-        controller      = new UsuarioController(boxStore);
-        sessao          = new Sessao(getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        controller      = new UsuarioController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
 
         // Instalação inicial
         controller.primeiraInstalacaoDoApp();
@@ -50,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void cadastrarUsuario(View v){
+    public void AbrirActivityCadastrarUsuario(View v){
         startActivityForResult(new Intent(this, CadastrarUsuarioActivity.class), REQUEST_CODE);
     }
 
@@ -59,17 +58,14 @@ public class LoginActivity extends AppCompatActivity {
         String senha = txtSenha.getText().toString().trim();
 
         try {
-            long id = controller.login(login, senha);
-            sessao.adicionarDadosASessao(sessao.USUARIO_ID, ""+id);
+            controller.login(login, senha);
             limparCampos();
             startActivity(new Intent(this, MainActivity.class));
-
         } catch (DadoInvalidoNoCadastroDeUsuarioException e){
             mostrarMensagem(e.getMensagem());
         } catch (Exception e) {
-            System.out.println("Erro no login: " +  e.getMessage());
+            Log.e("Erronologin", e.getMessage());
         }
-
     }
 
     private void mostrarMensagem(String msg){

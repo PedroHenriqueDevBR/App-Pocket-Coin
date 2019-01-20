@@ -1,6 +1,6 @@
 package com.droppages.pedrohenrique.pocketcoin.controllers;
 
-import android.app.Activity;
+import android.content.SharedPreferences;
 
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeUsuarioException;
@@ -13,20 +13,26 @@ import java.util.List;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
-public class UsuarioController extends Activity {
-
+public class UsuarioController {
     private Sessao              sessao;
-    private BoxStore            boxStore;
     private Box<Usuario>        usuarioBox;
     private Box<Configuracao>   configuracaoBox;
     private Box<NaturezaDaAcao> naturezaBox;
 
 
+    // Instancia com sessao
+    public UsuarioController(BoxStore boxStore, SharedPreferences preferences) {
+        this.configuracaoBox    = boxStore.boxFor(Configuracao.class);
+        this.naturezaBox        = boxStore.boxFor(NaturezaDaAcao.class);
+        this.usuarioBox         = boxStore.boxFor(Usuario.class);
+        this.sessao             = new Sessao(preferences);
+    }
+
+    // Instancia sem sessao
     public UsuarioController(BoxStore boxStore) {
-        this.boxStore   = boxStore;
-        configuracaoBox = boxStore.boxFor(Configuracao.class);
-        naturezaBox     = boxStore.boxFor(NaturezaDaAcao.class);
-        usuarioBox      = boxStore.boxFor(Usuario.class);
+        this.configuracaoBox    = boxStore.boxFor(Configuracao.class);
+        this.naturezaBox        = boxStore.boxFor(NaturezaDaAcao.class);
+        this.usuarioBox         = boxStore.boxFor(Usuario.class);
     }
 
     public void cadastrarNovoUsuario(String nome, String login, String senha, String repeteSenha) throws DadoInvalidoNoCadastroDeUsuarioException {
@@ -34,6 +40,17 @@ public class UsuarioController extends Activity {
             Usuario usuario = new Usuario(nome, login, senha);
             usuarioBox.put(usuario);
         }
+    }
+
+    public long login(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {
+        if (dadosValidosParaLogin(login, senha)){
+            long idUsuarioLocalizado = usuarioExistente(login, senha);
+            if (idUsuarioLocalizado != -1) {
+                sessao.adicionarDadosASessao(Sessao.USUARIO_ID, ""+idUsuarioLocalizado);
+                return idUsuarioLocalizado;
+            }
+        }
+        throw new DadoInvalidoNoCadastroDeUsuarioException("Usuário não cadastrado");
     }
 
     private boolean dadosValidosParaCadastro(String nome, String login, String senha, String repeteSenha) throws DadoInvalidoNoCadastroDeUsuarioException {
@@ -51,16 +68,6 @@ public class UsuarioController extends Activity {
             }
         }
         return true;
-    }
-
-    public long login(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {
-        if (dadosValidosParaLogin(login, senha)){
-            long idUsuarioLogado = usuarioExistente(login, senha);
-            if (idUsuarioLogado != -1) {
-                return idUsuarioLogado;
-            }
-        }
-        throw new DadoInvalidoNoCadastroDeUsuarioException("Usuário não cadastrado");
     }
 
     private boolean dadosValidosParaLogin(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {

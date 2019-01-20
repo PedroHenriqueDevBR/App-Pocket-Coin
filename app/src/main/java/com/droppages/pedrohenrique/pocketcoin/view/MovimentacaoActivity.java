@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
+import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeMovimentacaoException;
 
 import io.objectbox.BoxStore;
@@ -43,7 +44,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         boxStore = ((App)getApplication()).getBoxStore();
 
         // Controller
-        controller = new MovimentacaoController(boxStore);
+        controller = new MovimentacaoController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
 
         preencherSpninnersComDados();
     }
@@ -59,7 +60,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         // Spinner Carteira
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, controller.selecionarTodasAsCarteirasComoList());
         spnCarteira.setAdapter(adapter);
-        // Spinner Tag
+        // Spinner Natureza
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, controller.selecionarTodasAsNaturezasComoList());
         spnNatureza.setAdapter(adapter);
     }
@@ -83,6 +84,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         try {
             controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNatureza, concluido);
             mostrarMEnsagem("Movimentação cadastrada com sucesso");
+            this.finish();
         } catch (DadoInvalidoNoCadastroDeMovimentacaoException e){
             mostrarMEnsagem(e.getMensagem());
         } catch (Exception e) {

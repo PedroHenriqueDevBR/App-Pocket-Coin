@@ -12,7 +12,7 @@ public class Usuario {
     private String                  login;
     private String                  senha;
     public  ToMany<Movimentacao>    movimentacoes;
-    public  ToMany<Configuracao>   configuracoes;
+    public  ToMany<Configuracao>    configuracoes;
     public  ToMany<Carteira>        carteiras;
     public  ToMany<Categoria>       categorias;
     public  ToMany<Tag>             tags;

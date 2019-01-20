@@ -1,11 +1,15 @@
 package com.droppages.pedrohenrique.pocketcoin.controllers;
 
+import android.content.SharedPreferences;
+
+import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeMovimentacaoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
 import com.droppages.pedrohenrique.pocketcoin.model.Movimentacao;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Tag;
+import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,35 +23,17 @@ public class MovimentacaoController {
     private Box<Categoria>      categoriaBox;
     private Box<Carteira>       carteiraBox;
     private Box<NaturezaDaAcao> naturezaBox;
+    private Box<Usuario>        usuarioBox;
+    private Sessao              sessao;
 
-    /* Movimentacao
-    private double                  valor;
-    private boolean                 concuildo;
-    private String                  data;
-    private String                  descricao;
-    public  ToMany<Tag>             tag;
-    public  ToOne<Categoria>        categoria;
-    public  ToOne<Carteira>         carteira;
-    public  ToOne<NaturezaDaAcao>   natureza;
-    */
-
-    /* MovimentacaoActivity
-    txtValor        = findViewById(R.id.edit_valor);
-    txtData         = findViewById(R.id.edit_data);
-    txtDescricao    = findViewById(R.id.edit_descricao);
-    spnCategoria    = findViewById(R.id.spn_categoria);
-    spnCarteira     = findViewById(R.id.spn_carteira);
-    spnTag          = findViewById(R.id.spn_tag);
-    spnNatureza     = findViewById(R.id.spn_natureza);
-    checkConcluido  = findViewById(R.id.check_concluido);
-    */
-
-    public MovimentacaoController(BoxStore boxStore) {
+    public MovimentacaoController(BoxStore boxStore, SharedPreferences preferences) {
         this.tagBox          = boxStore.boxFor(Tag.class);
         this.categoriaBox    = boxStore.boxFor(Categoria.class);
         this.carteiraBox     = boxStore.boxFor(Carteira.class);
         this.naturezaBox     = boxStore.boxFor(NaturezaDaAcao.class);
         this.movimentacaoBox = boxStore.boxFor(Movimentacao.class);
+        this.usuarioBox      = boxStore.boxFor(Usuario.class);
+        this.sessao          = new Sessao(preferences);
     }
 
     public boolean cadastrarNovaMovimentacao(String valor, String data, String descricao, long idCategoria, long idCarteira, long idTag, long idNatureza, boolean concluido) throws DadoInvalidoNoCadastroDeMovimentacaoException {
@@ -64,7 +50,10 @@ public class MovimentacaoController {
             movimentacao.tag.add(tag);
             movimentacao.natureza.setTarget(natureza);
 
-            movimentacaoBox.put(movimentacao);
+            long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
+            Usuario usuarioLogado = usuarioBox.get(idDoUsuarioLogado);
+            usuarioLogado.movimentacoes.add(movimentacao);
+
             return true;
         }
         return false;
