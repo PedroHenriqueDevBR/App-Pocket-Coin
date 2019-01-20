@@ -20,7 +20,7 @@ public class Movimentacao {
 
     public Movimentacao(){}
 
-    public Movimentacao(double valor, boolean concuildo, String data, String descricao) {
+    public Movimentacao(double valor, String data, String descricao, boolean concuildo) {
         this.valor = valor;
         this.concuildo = concuildo;
         this.data = data;

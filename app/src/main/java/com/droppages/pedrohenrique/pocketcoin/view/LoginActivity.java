@@ -12,7 +12,7 @@ import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.controllers.UsuarioController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoDeUsuarioException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeUsuarioException;
 
 import io.objectbox.BoxStore;
 
@@ -64,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
             limparCampos();
             startActivity(new Intent(this, MainActivity.class));
 
-        } catch (DadoInvalidoDeUsuarioException e){
+        } catch (DadoInvalidoNoCadastroDeUsuarioException e){
             mostrarMensagem(e.getMensagem());
         } catch (Exception e) {
             System.out.println("Erro no login: " +  e.getMessage());

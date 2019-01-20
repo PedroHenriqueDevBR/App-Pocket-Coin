@@ -1,4 +1,4 @@
-package com.droppages.pedrohenrique.pocketcoin;
+package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,9 +10,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoDeMovimentacaoException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeMovimentacaoException;
 
 import io.objectbox.BoxStore;
 
@@ -82,7 +83,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         try {
             controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNatureza, concluido);
             mostrarMEnsagem("Movimentação cadastrada com sucesso");
-        } catch (DadoInvalidoDeMovimentacaoException e){
+        } catch (DadoInvalidoNoCadastroDeMovimentacaoException e){
             mostrarMEnsagem(e.getMensagem());
         } catch (Exception e) {
             Log.e("cadastroMovimentacao", e.getMessage());

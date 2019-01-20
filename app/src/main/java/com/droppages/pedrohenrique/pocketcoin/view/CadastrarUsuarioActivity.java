@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.controllers.UsuarioController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoDeUsuarioException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeUsuarioException;
 
 import io.objectbox.BoxStore;
 
@@ -50,7 +50,7 @@ public class CadastrarUsuarioActivity extends AppCompatActivity {
             controller.cadastrarNovoUsuario(nome, login, senha, repeteSenha);
             mostrarMensagem("Usuário cadastrado com sucesso!");
             finalizarCadastroERetornarLogin(login);
-        } catch (DadoInvalidoDeUsuarioException e){
+        } catch (DadoInvalidoNoCadastroDeUsuarioException e){
             mostrarMensagem(e.getMensagem());
         } catch (Exception e) {
             System.out.println(" Erro no cadastro: " + e.getMessage());
