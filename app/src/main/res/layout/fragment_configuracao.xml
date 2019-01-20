@@ -76,6 +76,7 @@
                             android:text="Carteiras" />
 
                         <Button
+                            android:id="@+id/btn_gerenciar_carteira"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Gerenciar" />
@@ -95,6 +96,7 @@
                             android:text="Categoria" />
 
                         <Button
+                            android:id="@+id/btn_gerenciar_categoria"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Gerenciar" />
@@ -114,6 +116,7 @@
                             android:text="Tag" />
 
                         <Button
+                            android:id="@+id/btn_gerenciar_tag"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Gerenciar" />
