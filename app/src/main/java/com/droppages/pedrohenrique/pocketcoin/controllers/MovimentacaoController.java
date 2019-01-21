@@ -59,6 +59,13 @@ public class MovimentacaoController {
         return false;
     }
 
+    public List<Movimentacao> selecionarTodasMovimentacoesDoUsuario(){
+        long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
+        Usuario usuarioLogado = usuarioBox.get(idDoUsuarioLogado);
+        List<Movimentacao> retorno = usuarioLogado.movimentacoes;
+        return retorno;
+    }
+
     private boolean dadosValidosParaCadastro(String valor, String data, String descricao) throws DadoInvalidoNoCadastroDeMovimentacaoException {
         if (valor.length() == 0){
             throw new DadoInvalidoNoCadastroDeMovimentacaoException("Preencha o campo valor");
