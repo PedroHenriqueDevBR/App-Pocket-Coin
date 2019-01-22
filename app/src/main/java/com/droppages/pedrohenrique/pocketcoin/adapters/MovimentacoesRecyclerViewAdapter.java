@@ -22,45 +22,47 @@ public class MovimentacoesRecyclerViewAdapter extends RecyclerView.Adapter<Movim
         this.context = context;
     }
 
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.item_movimentacoes, parent, false);
-
-        ViewHolder  viewHolder = new ViewHolder(view);
-        return viewHolder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        final Movimentacao movimentacao = movimentacoes.get(position);
-
-        viewHolder.txtValor.setText((int) movimentacao.getValor());
-        viewHolder.txtData.setText((movimentacao.getData()));
-        viewHolder.txtDescricao.setText((movimentacao.getDescricao()));
-        viewHolder.txtConcluido.setText("Concluido");
-
-//        setupClick(holder, aluno);
-//
-//        setupLongClick(holder, aluno);
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return movimentacoes.size();
-    }
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView txtValor, txtData, txtDescricao, txtConcluido;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            txtValor = itemView.findViewById(R.id.text_view_valor);
-            txtData =  itemView.findViewById(R.id.text_view_data);
-            txtDescricao =  itemView.findViewById(R.id.text_view_descricao);
+            txtValor     = itemView.findViewById(R.id.text_view_valor);
+            txtData      = itemView.findViewById(R.id.text_view_data);
+            txtDescricao = itemView.findViewById(R.id.text_view_descricao);
+            txtConcluido = itemView.findViewById(R.id.text_view_concluido);
         }
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.item_movimentacoes, parent, false);
+
+        ViewHolder viewHolder = new ViewHolder(view);
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Movimentacao movimentacao = movimentacoes.get(position);
+
+        String valor        = Double.toString(movimentacao.getValor());
+        String data         = movimentacao.getData();
+        String descricao    = movimentacao.getDescricao();
+        String finalizado;
+        if (movimentacao.isConcuildo()){ finalizado = "Sim"; }
+        else { finalizado = "Nao"; }
+
+        holder.txtValor.setText(valor);
+        holder.txtData.setText(data);
+        holder.txtDescricao.setText(descricao);
+        holder.txtConcluido.setText(finalizado);
+    }
+
+    @Override
+    public int getItemCount() {
+        return movimentacoes.size();
     }
 }

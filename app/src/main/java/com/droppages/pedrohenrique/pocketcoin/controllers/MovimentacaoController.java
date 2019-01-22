@@ -53,6 +53,7 @@ public class MovimentacaoController {
             long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
             Usuario usuarioLogado = usuarioBox.get(idDoUsuarioLogado);
             usuarioLogado.movimentacoes.add(movimentacao);
+            usuarioBox.put(usuarioLogado);
 
             return true;
         }
@@ -62,8 +63,7 @@ public class MovimentacaoController {
     public List<Movimentacao> selecionarTodasMovimentacoesDoUsuario(){
         long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
         Usuario usuarioLogado = usuarioBox.get(idDoUsuarioLogado);
-        List<Movimentacao> retorno = usuarioLogado.movimentacoes;
-        return retorno;
+        return usuarioLogado.movimentacoes;
     }
 
     private boolean dadosValidosParaCadastro(String valor, String data, String descricao) throws DadoInvalidoNoCadastroDeMovimentacaoException {

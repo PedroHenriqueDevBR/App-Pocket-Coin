@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
-
-
-    <!--private long                    id;-->
-    <!--private double                  valor;-->
-    <!--private boolean                 concluido;-->
-    <!--private String                  data;-->
-    <!--private String                  descricao;  -->
+    android:layout_margin="8dp"
+    android:elevation="6dp"
+    android:padding="8dp"
+    app:cardBackgroundColor="@color/colorWhite"
+    app:cardCornerRadius="8dp"
+    android:clickable="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,8 +32,8 @@
                 android:id="@+id/textView11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Valor: RS"
-                android:layout_marginRight="8dp"/>
+                android:layout_marginRight="8dp"
+                android:text="Valor: RS" />
 
             <TextView
                 android:id="@+id/text_view_valor"
@@ -75,6 +72,25 @@
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Concluido: " />
+
+            <TextView
+                android:id="@+id/text_view_concluido"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>
