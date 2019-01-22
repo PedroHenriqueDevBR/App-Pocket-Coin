@@ -8,6 +8,8 @@ import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
+import java.util.List;
+
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 import io.objectbox.relation.ToOne;
@@ -30,12 +32,15 @@ public class CarteiraController {
         if (dadosValidosParaCadastro(nome, saldo)){
             Carteira carteira = new Carteira(nome, saldo);
             carteira.natureza.setTarget(natureza);
-
-            long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
-            Usuario usuarioLogado = usuarioBox.get(idDoUsuarioLogado);
-
-            carteiraBox.put(carteira);
+            Usuario usuarioLogado = selecionarUsuarioLogado();
+            usuarioLogado.carteiras.add(carteira);
+            usuarioBox.put(usuarioLogado);
         }
+    }
+
+    public List<Carteira> selecionarTodasAsCarteirasDoUsuarioLogado(){
+        Usuario usuarioLogado = selecionarUsuarioLogado();
+        return usuarioLogado.carteiras;
     }
 
     private boolean dadosValidosParaCadastro(String nome, float saldo) throws DadoInvalidoNoCadastroDeCarteiraException {
@@ -45,5 +50,10 @@ public class CarteiraController {
             throw new DadoInvalidoNoCadastroDeCarteiraException("O saldo inicial nao pode ser negativo.");
         }
         return true;
+    }
+
+    private Usuario selecionarUsuarioLogado() {
+        long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
+        return usuarioBox.get(idDoUsuarioLogado);
     }
 }
