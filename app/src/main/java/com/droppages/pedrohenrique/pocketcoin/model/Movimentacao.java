@@ -59,5 +59,11 @@ public class Movimentacao {
         this.descricao = descricao;
     }
 
+    public ToOne<NaturezaDaAcao> getNatureza() {
+        return natureza;
+    }
 
+    public void setNatureza(ToOne<NaturezaDaAcao> natureza) {
+        this.natureza = natureza;
+    }
 }

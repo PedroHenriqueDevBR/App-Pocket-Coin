@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
@@ -24,6 +25,7 @@ import io.objectbox.BoxStore;
 public class HomeFragment extends Fragment {
     private BoxStore boxStore;
     private MovimentacaoController controller;
+    private TextView txtSaldoAtual;
 
     public HomeFragment() {}
 
@@ -33,9 +35,24 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Bind
+        txtSaldoAtual = view.findViewById(R.id.text_view_saldo_atual);
         boxStore = ((App)getActivity().getApplication()).getBoxStore();
         controller = new MovimentacaoController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
+
+        setarSaldoTotal();
+
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        setarSaldoTotal();
+        super.onResume();
+    }
+
+    private void setarSaldoTotal(){
+        String valor = Float.toString(controller.calcularSaldoTotalDeTodasAsCarteiras());
+        txtSaldoAtual.setText(valor);
     }
 
     private void mostrarListaDeMovimentacoes(){

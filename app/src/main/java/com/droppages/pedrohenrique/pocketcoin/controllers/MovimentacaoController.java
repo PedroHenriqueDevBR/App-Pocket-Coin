@@ -11,11 +11,15 @@ import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
+import io.objectbox.relation.ToMany;
 
 public class MovimentacaoController {
     private Box<Movimentacao>   movimentacaoBox;
@@ -25,6 +29,7 @@ public class MovimentacaoController {
     private Box<NaturezaDaAcao> naturezaBox;
     private Box<Usuario>        usuarioBox;
     private Sessao              sessao;
+
 
     public MovimentacaoController(BoxStore boxStore, SharedPreferences preferences) {
         this.tagBox          = boxStore.boxFor(Tag.class);
@@ -36,35 +41,114 @@ public class MovimentacaoController {
         this.sessao          = new Sessao(preferences);
     }
 
-    public boolean cadastrarNovaMovimentacao(String valor, String data, String descricao, long idCategoria, long idCarteira, long idTag, long idNatureza, boolean concluido) throws DadoInvalidoNoCadastroDeMovimentacaoException {
-        if (dadosValidosParaCadastro(valor, data, descricao)){
-            double valorMovimentacao = Double.parseDouble(valor);
-            Tag tag = selecionarTagPorId(idTag);
-            Carteira carteira = selecionarCarteiraPorId(idCarteira);
-            Categoria categoria = selecionarCategoriaPorId(idCategoria);
-            NaturezaDaAcao natureza = selecionarNaturezaPorId(idNatureza);
 
+    public void cadastrarNovaMovimentacao(String valor, String data, String descricao, long idCategoria, long idCarteira, long idTag, long idNatureza, boolean concluido) throws DadoInvalidoNoCadastroDeMovimentacaoException {
+        if (dadosValidosParaCadastro(valor, data, descricao)){
+            // Prepara os dados
+            double valorMovimentacao = Double.parseDouble(valor);
+            Tag tag = selecionarTagaAPartirDoId(idTag);
+            Carteira carteira = selecionarCarteiraaAPartirDoId(idCarteira);
+            Categoria categoria = selecionarCategoriaaAPartirDoId(idCategoria);
+            NaturezaDaAcao natureza = selecionarNaturezaAPartirDoId(idNatureza);
+
+            // Configura a movimentação para cadstrar
             Movimentacao movimentacao = new Movimentacao(valorMovimentacao, data, descricao, concluido);
             movimentacao.carteira.setTarget(carteira);
             movimentacao.categoria.setTarget(categoria);
             movimentacao.tag.add(tag);
             movimentacao.natureza.setTarget(natureza);
 
-            long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
-            Usuario usuarioLogado = usuarioBox.get(idDoUsuarioLogado);
+            // Adiciona nova movimentação
+            Usuario usuarioLogado = selecionarUsuarioLogado();
             usuarioLogado.movimentacoes.add(movimentacao);
-            usuarioBox.put(usuarioLogado);
 
-            return true;
+            // Deposita valor na carteira
+            carteira.depositar(Float.parseFloat(valor));
+            carteiraBox.put(carteira);
+
+            // Efetua o cadastro da movimentação
+            usuarioBox.put(usuarioLogado);
         }
-        return false;
     }
+
 
     public List<Movimentacao> selecionarTodasMovimentacoesDoUsuario(){
-        long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
-        Usuario usuarioLogado = usuarioBox.get(idDoUsuarioLogado);
+        Usuario usuarioLogado = selecionarUsuarioLogado();
         return usuarioLogado.movimentacoes;
     }
+
+
+    public List<String> selecionarTodasAsTagsComoList(){
+        List<String> lista = new ArrayList<>();
+        Usuario usuario = selecionarUsuarioLogado();
+        for (Tag tag: usuario.getTags()){
+            lista.add(tag.id + " - " + tag.getNome());
+        }
+        return lista;
+    }
+
+
+    public List<String> selecionarTodasAsCategoriasComoList(){
+        List<String> lista = new ArrayList<>();
+        Usuario usuario = selecionarUsuarioLogado();
+        for (Categoria categoria: usuario.getCategorias()){
+            lista.add(categoria.id + " - " + categoria.getNome());
+        }
+        return lista;
+    }
+
+
+    public List<String> selecionarTodasAsCarteirasComoList(){
+        List<String> lista = new ArrayList<>();
+        Usuario usuario = selecionarUsuarioLogado();
+        for (Carteira carteira: usuario.getCarteiras()){
+            lista.add(carteira.id + " - " + carteira.getNome());
+        }
+        return lista;
+    }
+
+
+    public List<String> selecionarTodasAsNaturezasComoList(){
+        List<String> lista = new ArrayList<>();
+        for (NaturezaDaAcao natureza: naturezaBox.getAll()){
+            lista.add(natureza.id + " - " + natureza.getNome());
+        }
+        return lista;
+    }
+
+
+    public float calcularSaldoTotalDeTodasAsCarteiras(){
+        float total = 0f;
+
+        Usuario usuario = selecionarUsuarioLogado();
+
+        for (Carteira carteira: usuario.getCarteiras()){
+            total += carteira.getSaldo();
+        }
+        return total;
+    }
+
+
+    public float calcularMovimentacaoTotalDoMesEAnoAtualAPartirDaNatureza(String natureza){
+        String dataAtual = dataAtual();
+        int mesAtual = selecionarDadoAPartirDeUmaData(dataAtual, "mes");
+        int anoAtual = selecionarDadoAPartirDeUmaData(dataAtual, "ano");
+        float total = 0f;
+
+        for (Movimentacao movimentacao: selecionarTodasAsMovimentacoesAPartirDoMesEAno(mesAtual, anoAtual)){
+            if (movimentacao.getNatureza().getTarget().getNome().equals(natureza)){
+                total += movimentacao.getValor();
+            }
+        }
+
+        return total;
+    }
+
+
+    /*
+    * Métodos de apoio aos métodos públicos
+    */
+
 
     private boolean dadosValidosParaCadastro(String valor, String data, String descricao) throws DadoInvalidoNoCadastroDeMovimentacaoException {
         if (valor.length() == 0){
@@ -77,52 +161,71 @@ public class MovimentacaoController {
         return true;
     }
 
-    private Tag selecionarTagPorId(long id){
+
+    private Usuario selecionarUsuarioLogado() {
+        long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
+        return usuarioBox.get(idDoUsuarioLogado);
+    }
+
+
+    private List<Movimentacao> selecionarTodasAsMovimentacoesAPartirDoMesEAno(int mes, int ano){
+        List<Movimentacao> movimentacoes = new ArrayList<>();
+        for (Movimentacao movimentacao: movimentacaoBox.getAll()){
+            int mesDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "mes");
+            int anoDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "ano");
+
+            if (mes == mesDaMovimentacao && ano == anoDaMovimentacao){
+                movimentacoes.add(movimentacao);
+            }
+        }
+        return movimentacoes;
+    }
+
+
+    private Tag selecionarTagaAPartirDoId(long id){
         return tagBox.get(id);
     }
 
-    private Categoria selecionarCategoriaPorId(long id){
+
+    private Categoria selecionarCategoriaaAPartirDoId(long id){
         return categoriaBox.get(id);
     }
 
-    private Carteira selecionarCarteiraPorId(long id){
+
+    private Carteira selecionarCarteiraaAPartirDoId(long id){
         return carteiraBox.get(id);
     }
 
-    private NaturezaDaAcao selecionarNaturezaPorId(long id){
+
+    private NaturezaDaAcao selecionarNaturezaAPartirDoId(long id){
         return naturezaBox.get(id);
     }
 
-    public List<String> selecionarTodasAsTagsComoList(){
-        List<String> lista = new ArrayList();
-        for (Tag tag: tagBox.getAll()){
-            lista.add(tag.id + " - " + tag.getNome());
-        }
-        return lista;
+
+    private String dataAtual(){
+        String formatoDaData = "dd/MM/yyyy";
+        DateFormat format = new SimpleDateFormat(formatoDaData);
+        Date date = new Date();
+        return format.format(date);
     }
 
-    public List<String> selecionarTodasAsCategoriasComoList(){
-        List<String> lista = new ArrayList();
-        for (Categoria categoria: categoriaBox.getAll()){
-            lista.add(categoria.id + " - " + categoria.getNome());
-        }
-        return lista;
-    }
 
-    public List<String> selecionarTodasAsCarteirasComoList(){
-        List<String> lista = new ArrayList();
-        for (Carteira carteira: carteiraBox.getAll()){
-            lista.add(carteira.id + " - " + carteira.getNome());
-        }
-        return lista;
-    }
+    private int selecionarDadoAPartirDeUmaData(String data, String dado){
+        String dataSeparadaPorBarra[] = data.split("/");
+        int resultado;
 
-    public List<String> selecionarTodasAsNaturezasComoList(){
-        List<String> lista = new ArrayList();
-        for (NaturezaDaAcao natureza: naturezaBox.getAll()){
-            lista.add(natureza.id + " - " + natureza.getNome());
+        switch (dado) {
+            case "mes":
+                resultado = Integer.parseInt(dataSeparadaPorBarra[1]);
+                break;
+            case "ano":
+                resultado = Integer.parseInt(dataSeparadaPorBarra[2]);
+                break;
+            default:
+                resultado = Integer.parseInt(dataSeparadaPorBarra[0]);
+                break;
         }
-        return lista;
+        return resultado;
     }
 
 }
