@@ -73,13 +73,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         long idCarteira     = selecionarIdDoSpinnerCarteira();
         long idTag          = selecionarIdDoSpinnerTag();
         long idNatureza     = selecionarIdDoSpinnerNatureza();
-        boolean concluido;
-
-        if (checkConcluido.isChecked()){
-            concluido = true;
-        } else {
-            concluido = false;
-        }
+        boolean concluido   = checkConcluido.isChecked();;
 
         try {
             controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNatureza, concluido);

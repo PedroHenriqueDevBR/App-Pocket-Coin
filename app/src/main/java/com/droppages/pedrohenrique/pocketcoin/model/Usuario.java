@@ -49,4 +49,52 @@ public class Usuario {
     public void setSenha(String senha) {
         this.senha = senha;
     }
+
+    public ToMany<Movimentacao> getMovimentacoes() {
+        return movimentacoes;
+    }
+
+    public void setMovimentacoes(ToMany<Movimentacao> movimentacoes) {
+        this.movimentacoes = movimentacoes;
+    }
+
+    public ToMany<Configuracao> getConfiguracoes() {
+        return configuracoes;
+    }
+
+    public void setConfiguracoes(ToMany<Configuracao> configuracoes) {
+        this.configuracoes = configuracoes;
+    }
+
+    public ToMany<Carteira> getCarteiras() {
+        return carteiras;
+    }
+
+    public void setCarteiras(ToMany<Carteira> carteiras) {
+        this.carteiras = carteiras;
+    }
+
+    public ToMany<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(ToMany<Categoria> categorias) {
+        this.categorias = categorias;
+    }
+
+    public ToMany<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(ToMany<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public ToMany<Log> getLog() {
+        return log;
+    }
+
+    public void setLog(ToMany<Log> log) {
+        this.log = log;
+    }
 }

@@ -4,10 +4,9 @@
     <item>
         <shape>
             <gradient
-                android:endColor="@color/colorPrimary"
-                android:startColor="@color/colorWhite"
-                android:type="sweep"
-                android:centerX="-10"
+                android:endColor="@color/colorGradientUm"
+                android:startColor="@color/colorGradientDois"
+                android:angle="135"
                 />
         </shape>
 

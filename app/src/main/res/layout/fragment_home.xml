@@ -24,23 +24,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+            <LinearLayout
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
                 android:gravity="center"
-                android:paddingTop="50dp"
-                android:paddingBottom="50dp"
-                android:text="Saldo: R$ 1200.00"
-                android:textColor="@color/colorWhite"
-                android:textSize="22sp"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingTop="25dp"
+                android:paddingBottom="25dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saldo Atual R$ "
+                    android:gravity="right"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="25sp"/>
+
+                <TextView
+                    android:id="@+id/text_view_saldo_atual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0,00"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="25sp"/>
+
+            </LinearLayout>
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView"
@@ -54,7 +66,7 @@
                 app:cardElevation="6dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8">
+                app:layout_constraintTop_toBottomOf="@+id/line1">
 
                 <TextView
                     android:layout_width="match_parent"
