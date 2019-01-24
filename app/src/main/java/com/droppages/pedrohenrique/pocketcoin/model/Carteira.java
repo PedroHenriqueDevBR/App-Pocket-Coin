@@ -22,7 +22,7 @@ public class Carteira {
     // Atenção para esta parte
     // Precisa-se criar retornos personalizados
     // Catch
-    private boolean depositar(float valor){
+    public boolean depositar(float valor){
         if (valor > 0){
             this.saldo += valor;
             return true;
@@ -33,7 +33,7 @@ public class Carteira {
     // Atenção para esta parte
     // Precisa-se criar retornos personalizados
     // Catch
-    private boolean sacar(float valor){
+    public boolean sacar(float valor){
         if (valor > 0 && haSaldoSuficiente(valor)){
             this.saldo -= valor;
         }

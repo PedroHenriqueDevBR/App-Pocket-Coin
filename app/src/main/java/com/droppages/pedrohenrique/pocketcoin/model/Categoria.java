@@ -17,15 +17,19 @@ public class Categoria {
         this.nome = nome;
     }
 
-    public Categoria(String tipo, String nome) {
-        this.nome = nome;
-    }
-
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public ToOne<NaturezaDaAcao> getNatureza() {
+        return natureza;
+    }
+
+    public void setNatureza(NaturezaDaAcao natureza) {
+        this.natureza.setTarget(natureza);
     }
 }

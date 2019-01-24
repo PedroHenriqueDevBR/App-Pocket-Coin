@@ -16,17 +16,17 @@ import io.objectbox.relation.ToOne;
 
 public class CarteiraController {
 
-    private Box<Carteira> carteiraBox;
-    private Box<NaturezaDaAcao> naturezaBox;
+    private Box<Carteira>       carteiraBox;
     private Box<Usuario>        usuarioBox;
-    private Sessao sessao;
+    private Sessao              sessao;
+
 
     public CarteiraController(BoxStore boxStore, SharedPreferences preferences) {
         carteiraBox = boxStore.boxFor(Carteira.class);
-        naturezaBox = boxStore.boxFor(NaturezaDaAcao.class);
         usuarioBox  = boxStore.boxFor(Usuario.class);
         this.sessao = new Sessao(preferences);
     }
+
 
     public void cadastrarNovaCarteira(String nome, float saldo, NaturezaDaAcao natureza) throws DadoInvalidoNoCadastroDeCarteiraException {
         if (dadosValidosParaCadastro(nome, saldo)){
@@ -38,10 +38,17 @@ public class CarteiraController {
         }
     }
 
+
     public List<Carteira> selecionarTodasAsCarteirasDoUsuarioLogado(){
         Usuario usuarioLogado = selecionarUsuarioLogado();
         return usuarioLogado.carteiras;
     }
+
+
+    /*
+    * Métodos de apoio aos métodos públicos
+    */
+
 
     private boolean dadosValidosParaCadastro(String nome, float saldo) throws DadoInvalidoNoCadastroDeCarteiraException {
         if (nome.length() == 0) {
@@ -51,6 +58,7 @@ public class CarteiraController {
         }
         return true;
     }
+
 
     private Usuario selecionarUsuarioLogado() {
         long idDoUsuarioLogado = Long.parseLong(sessao.recuperarDadosDaSessao(Sessao.USUARIO_ID));
