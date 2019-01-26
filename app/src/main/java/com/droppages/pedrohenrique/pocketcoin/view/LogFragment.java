@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
-import com.droppages.pedrohenrique.pocketcoin.adapters.MovimentacoesRecyclerViewAdapter;
+import com.droppages.pedrohenrique.pocketcoin.adapters.MovimentacoesAdapter;
 import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
@@ -54,7 +54,7 @@ public class LogFragment extends Fragment {
     private void mostrarListaDeMovimentacoes(){
         List<Movimentacao> movimentacoes = movimentacaoControllercontroller.selecionarTodasMovimentacoesDoUsuario();
         mostrarMensage("Numero de elementos: " + movimentacoes.size());
-        MovimentacoesRecyclerViewAdapter adapter = new MovimentacoesRecyclerViewAdapter(movimentacoes, getActivity().getApplicationContext());
+        MovimentacoesAdapter adapter = new MovimentacoesAdapter(movimentacoes, getActivity().getApplicationContext());
         listaDeMovimentacoes.setAdapter(adapter);
         listaDeMovimentacoes.setLayoutManager(new LinearLayoutManager(this.getActivity()));
     }

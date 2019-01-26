@@ -13,11 +13,11 @@ import com.droppages.pedrohenrique.pocketcoin.model.Movimentacao;
 
 import java.util.List;
 
-public class MovimentacoesRecyclerViewAdapter extends RecyclerView.Adapter<MovimentacoesRecyclerViewAdapter.ViewHolder> {
+public class MovimentacoesAdapter extends RecyclerView.Adapter<MovimentacoesAdapter.ViewHolder> {
     List<Movimentacao> movimentacoes;
     Context context;
 
-    public MovimentacoesRecyclerViewAdapter(List<Movimentacao> movimentacoes, Context context) {
+    public MovimentacoesAdapter(List<Movimentacao> movimentacoes, Context context) {
         this.movimentacoes = movimentacoes;
         this.context = context;
     }

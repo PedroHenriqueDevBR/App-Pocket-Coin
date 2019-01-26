@@ -8,6 +8,7 @@ import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
@@ -41,6 +42,20 @@ public class CategoriaController {
     public List<Categoria> selecionarTodasAsCategoriasDoUsuarioLogado(){
         Usuario usuarioLogado = selecionarUsuarioLogado();
         return usuarioLogado.getCategorias();
+    }
+
+
+    public List<Categoria> selecionarTodasAsCategoriasDespesaDoUsuarioLogado(){
+        Usuario usuarioLogado = selecionarUsuarioLogado();
+        List<Categoria> categorias = new ArrayList<>();
+
+        for (Categoria categoria: usuarioLogado.getCategorias()){
+            if (categoria.getNatureza().getTarget().getNome().equals("Débito")){
+                categorias.add(categoria);
+            }
+        }
+
+        return categorias;
     }
 
 

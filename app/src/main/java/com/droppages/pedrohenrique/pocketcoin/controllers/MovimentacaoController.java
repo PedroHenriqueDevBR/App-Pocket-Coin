@@ -145,6 +145,19 @@ public class MovimentacaoController {
     }
 
 
+    public double calcularValorGastoNoMesPorCategoriaSelecionada(Categoria categoria){
+        List<Movimentacao> movimentacoes = selecionarTodasAsMovimentacoesComDespesa();
+        double resultado = 0f;
+
+        for (Movimentacao movimentacao: movimentacoes){
+            if (movimentacao.getCategoria().getTarget().id == categoria.id){
+                resultado += movimentacao.getValor();
+            }
+        }
+        return resultado;
+    }
+
+
     /*
     * Métodos de apoio aos métodos públicos
     */
@@ -157,6 +170,8 @@ public class MovimentacaoController {
             throw new DadoInvalidoNoCadastroDeMovimentacaoException("Preencha o campo data");
         } else if (descricao.length() == 0){
             throw new DadoInvalidoNoCadastroDeMovimentacaoException("Preencha o campo descrição");
+        } else if (Float.parseFloat(valor) < 0){
+            throw new DadoInvalidoNoCadastroDeMovimentacaoException("O valor não pode ser inferior a zero");
         }
         return true;
     }
@@ -225,6 +240,29 @@ public class MovimentacaoController {
                 resultado = Integer.parseInt(dataSeparadaPorBarra[0]);
                 break;
         }
+        return resultado;
+    }
+
+
+    private List<Movimentacao> selecionarTodasAsMovimentacoesComDespesa(){
+        List<Movimentacao> movimentacoes = movimentacaoBox.getAll();
+        List<Movimentacao> resultado = new ArrayList<>();
+        NaturezaDaAcao natureza = naturezaBox.get(2);
+
+        for (Movimentacao movimentacao: movimentacoes){
+            if (movimentacao.getNatureza().getTarget().id == natureza.id){
+                String[] dataDaMovimentacao = movimentacao.getData().split("/");
+                int mes = Integer.parseInt(dataDaMovimentacao[1]);
+                int ano = Integer.parseInt(dataDaMovimentacao[2]);
+                int mesAtual = selecionarDadoAPartirDeUmaData(dataAtual(), "mes");
+                int anoAtual = selecionarDadoAPartirDeUmaData(dataAtual(), "ano");
+
+                if (mes == mesAtual && ano == anoAtual){
+                    resultado.add(movimentacao);
+                }
+            }
+        }
+
         return resultado;
     }
 
