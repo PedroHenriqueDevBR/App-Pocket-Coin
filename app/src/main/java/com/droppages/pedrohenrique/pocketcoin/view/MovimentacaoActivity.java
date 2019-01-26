@@ -1,11 +1,13 @@
 package com.droppages.pedrohenrique.pocketcoin.view;
 
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -15,6 +17,10 @@ import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeMovimentacaoException;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import io.objectbox.BoxStore;
 
@@ -46,7 +52,10 @@ public class MovimentacaoActivity extends AppCompatActivity {
         // Controller
         controller = new MovimentacaoController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
 
+        // Metodos
         preencherSpninnersComDados();
+        preencherTxtDataComDataAtual();
+        txtData.setOnClickListener(a -> abrirDatePicker());
     }
 
     private void preencherSpninnersComDados(){
@@ -77,13 +86,45 @@ public class MovimentacaoActivity extends AppCompatActivity {
 
         try {
             controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNatureza, concluido);
-            mostrarMEnsagem("Movimentação cadastrada com sucesso");
+            mostrarMensagem("Movimentação cadastrada com sucesso");
             this.finish();
         } catch (DadoInvalidoNoCadastroDeMovimentacaoException e){
-            mostrarMEnsagem(e.getMensagem());
+            mostrarMensagem(e.getMensagem());
         } catch (Exception e) {
             Log.e("cadastroMovimentacao", e.getMessage());
         }
+    }
+
+    private void abrirDatePicker(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Layout
+        View date_picker_layout = View.inflate(this, R.layout.date_picker, null);
+
+        // Builder
+        builder.setView(date_picker_layout);
+        builder.setNeutralButton("Cancelar", null);
+        builder.setCancelable(false);
+        builder.setPositiveButton("Concluído", (a, b) -> {
+            DatePicker picker = date_picker_layout.findViewById(R.id.date_picker_dialog);
+            String dia = Integer.toString(picker.getDayOfMonth());
+            String mes = Integer.toString(picker.getMonth() + 1); // Soma mais um para que o mês venha no formato correto
+            String ano = Integer.toString(picker.getYear());
+            if (dia.length() == 1) { dia = "0"+dia; }
+            if (mes.length() == 1){ mes = "0"+mes; }
+            String dataFormatada = dia + "/" + mes + "/" + ano;
+            txtData.setText(dataFormatada);
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void preencherTxtDataComDataAtual() {
+        // verificar a criação de uma classe externa para recuperar a data atual
+        String formatoDaData = "dd/MM/yyyy";
+        DateFormat format = new SimpleDateFormat(formatoDaData);
+        Date date = new Date();
+        txtData.setText(format.format(date));
     }
 
     private long selecionarIdDoSpinnerCategoria(){
@@ -106,7 +147,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         return Long.parseLong(valor[0]);
     }
 
-    private void mostrarMEnsagem(String msg){
+    private void mostrarMensagem(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
 
