@@ -66,4 +66,12 @@ public class Movimentacao {
     public void setNatureza(ToOne<NaturezaDaAcao> natureza) {
         this.natureza = natureza;
     }
+
+    public ToOne<Categoria> getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(ToOne<Categoria> categoria) {
+        this.categoria = categoria;
+    }
 }

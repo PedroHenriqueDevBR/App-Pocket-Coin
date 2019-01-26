@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_launcher_gradient"
     tools:context=".view.LogFragment">
 
 
@@ -20,7 +19,6 @@
         android:paddingTop="25dp"
         android:paddingBottom="25dp"
         android:text="Movimentações realizadas"
-        android:textColor="@color/colorWhite"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
