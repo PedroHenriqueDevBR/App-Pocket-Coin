@@ -20,7 +20,12 @@ import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroD
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import io.objectbox.BoxStore;
 
@@ -30,6 +35,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
     private CheckBox                checkConcluido;
     private BoxStore                boxStore;
     private MovimentacaoController  controller;
+    private List<Long>              tagIndice, carteiraIndice, categoriaIndice, naturezaIndice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +55,12 @@ public class MovimentacaoActivity extends AppCompatActivity {
         // ObjectBox
         boxStore = ((App)getApplication()).getBoxStore();
 
-        // Controller
-        controller = new MovimentacaoController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        // Controller e Instancia
+        controller      = new MovimentacaoController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        tagIndice       = new ArrayList<>();
+        carteiraIndice  = new ArrayList<>();
+        categoriaIndice = new ArrayList<>();
+        naturezaIndice  = new ArrayList<>();
 
         // Metodos
         preencherSpninnersComDados();
@@ -61,16 +71,16 @@ public class MovimentacaoActivity extends AppCompatActivity {
     private void preencherSpninnersComDados(){
         ArrayAdapter<String> adapter;
         // Spinner Tag
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, controller.selecionarTodasAsTagsComoList());
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, selecionarListaDeTags());
         spnTag.setAdapter(adapter);
         // Spinner Categoria
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, controller.selecionarTodasAsCategoriasComoList());
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, selecionarListaDeCategoria());
         spnCategoria.setAdapter(adapter);
         // Spinner Carteira
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, controller.selecionarTodasAsCarteirasComoList());
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, selecionarListaDeCarteira());
         spnCarteira.setAdapter(adapter);
         // Spinner Natureza
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, controller.selecionarTodasAsNaturezasComoList());
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, selecionarListaDeNatureza());
         spnNatureza.setAdapter(adapter);
     }
 
@@ -119,6 +129,54 @@ public class MovimentacaoActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    private List<String> selecionarListaDeTags() {
+        List<String> resultado = new ArrayList<>();
+
+        for (Map<Long, String> map: controller.selecionarTodasAsTagsComoDicionario()){
+            String chaveNaoFormatada = map.keySet().toString().replace("[", "").replace("]", "");
+            Long chaveFormatada = Long.parseLong(chaveNaoFormatada);
+            tagIndice.add(chaveFormatada);
+            resultado.add(map.get(chaveFormatada));
+        }
+        return resultado;
+    }
+
+    private List<String> selecionarListaDeCarteira() {
+        List<String> resultado = new ArrayList<>();
+
+        for (Map<Long, String> map: controller.selecionarTodasAsCarteirasComoDicionario()){
+            String chaveNaoFormatada = map.keySet().toString().replace("[", "").replace("]", "");
+            Long chaveFormatada = Long.parseLong(chaveNaoFormatada);
+            carteiraIndice.add(chaveFormatada);
+            resultado.add(map.get(chaveFormatada));
+        }
+        return resultado;
+    }
+
+    private List<String> selecionarListaDeCategoria() {
+        List<String> resultado = new ArrayList<>();
+
+        for (Map<Long, String> map: controller.selecionarTodasAsCategoriasComoDicionario()){
+            String chaveNaoFormatada = map.keySet().toString().replace("[", "").replace("]", "");
+            Long chaveFormatada = Long.parseLong(chaveNaoFormatada);
+            categoriaIndice.add(chaveFormatada);
+            resultado.add(map.get(chaveFormatada));
+        }
+        return resultado;
+    }
+
+    private List<String> selecionarListaDeNatureza() {
+        List<String> resultado = new ArrayList<>();
+
+        for (Map<Long, String> map: controller.selecionarTodasAsNaturezaComoDicionario()){
+            String chaveNaoFormatada = map.keySet().toString().replace("[", "").replace("]", "");
+            Long chaveFormatada = Long.parseLong(chaveNaoFormatada);
+            naturezaIndice.add(chaveFormatada);
+            resultado.add(map.get(chaveFormatada));
+        }
+        return resultado;
+    }
+
     private void preencherTxtDataComDataAtual() {
         // verificar a criação de uma classe externa para recuperar a data atual
         String formatoDaData = "dd/MM/yyyy";
@@ -128,23 +186,19 @@ public class MovimentacaoActivity extends AppCompatActivity {
     }
 
     private long selecionarIdDoSpinnerCategoria(){
-        String valor[] = spnCategoria.getSelectedItem().toString().trim().split(" ");
-        return Long.parseLong(valor[0]);
+        return categoriaIndice.get(spnCategoria.getSelectedItemPosition());
     }
 
     private long selecionarIdDoSpinnerCarteira(){
-        String valor[] = spnCarteira.getSelectedItem().toString().trim().split(" ");
-        return Long.parseLong(valor[0]);
+        return carteiraIndice.get(spnCarteira.getSelectedItemPosition());
     }
 
     private long selecionarIdDoSpinnerTag(){
-        String valor[] = spnTag.getSelectedItem().toString().trim().split(" ");
-        return Long.parseLong(valor[0]);
+        return tagIndice.get(spnTag.getSelectedItemPosition());
     }
 
     private long selecionarIdDoSpinnerNatureza(){
-        String valor[] = spnNatureza.getSelectedItem().toString().trim().split(" ");
-        return Long.parseLong(valor[0]);
+        return naturezaIndice.get(spnNatureza.getSelectedItemPosition());
     }
 
     private void mostrarMensagem(String msg){

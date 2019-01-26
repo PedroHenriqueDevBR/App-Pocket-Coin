@@ -15,7 +15,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
@@ -78,13 +80,48 @@ public class MovimentacaoController {
     }
 
 
-    public List<String> selecionarTodasAsTagsComoList(){
-        List<String> lista = new ArrayList<>();
+    public List<Map<Long, String>> selecionarTodasAsTagsComoDicionario(){
+        List<Map<Long, String>> mapList = new ArrayList<>();
         Usuario usuario = selecionarUsuarioLogado();
         for (Tag tag: usuario.getTags()){
-            lista.add(tag.id + " - " + tag.getNome());
+            Map<Long, String> map = new HashMap<Long, String>();
+            map.put(tag.id, tag.getNome());
+            mapList.add(map);
         }
-        return lista;
+        return mapList;
+    }
+
+    public List<Map<Long, String>> selecionarTodasAsCategoriasComoDicionario(){
+        List<Map<Long, String>> mapList = new ArrayList<>();
+        Usuario usuario = selecionarUsuarioLogado();
+        for (Categoria categoria: usuario.getCategorias()){
+            Map<Long, String> map = new HashMap<Long, String>();
+            map.put(categoria.id, categoria.getNome());
+            mapList.add(map);
+        }
+        return mapList;
+    }
+
+    public List<Map<Long, String>> selecionarTodasAsCarteirasComoDicionario(){
+        List<Map<Long, String>> mapList = new ArrayList<>();
+        Usuario usuario = selecionarUsuarioLogado();
+        for (Carteira carteira: usuario.getCarteiras()){
+            Map<Long, String> map = new HashMap<Long, String>();
+            map.put(carteira.id, carteira.getNome());
+            mapList.add(map);
+        }
+        return mapList;
+    }
+
+    public List<Map<Long, String>> selecionarTodasAsNaturezaComoDicionario(){
+        List<Map<Long, String>> mapList = new ArrayList<>();
+        Usuario usuario = selecionarUsuarioLogado();
+        for (NaturezaDaAcao natureza: naturezaBox.getAll()){
+            Map<Long, String> map = new HashMap<Long, String>();
+            map.put(natureza.id, natureza.getNome());
+            mapList.add(map);
+        }
+        return mapList;
     }
 
 
@@ -185,7 +222,7 @@ public class MovimentacaoController {
 
     private List<Movimentacao> selecionarTodasAsMovimentacoesAPartirDoMesEAno(int mes, int ano){
         List<Movimentacao> movimentacoes = new ArrayList<>();
-        for (Movimentacao movimentacao: movimentacaoBox.getAll()){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().getMovimentacoes()){
             int mesDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "mes");
             int anoDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "ano");
 

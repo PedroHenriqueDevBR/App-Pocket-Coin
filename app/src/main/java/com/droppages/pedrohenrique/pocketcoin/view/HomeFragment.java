@@ -113,16 +113,18 @@ public class HomeFragment extends Fragment {
         int difereca    = (int) (receita - despesa);
         int resultado   = (int) ((despesa * 100) / receita);
         int economia    = 100 - resultado;
-
         String msg;
-        if (economia == 0) {
+
+        if (receita == 0 && despesa == 0){
+            msg = "No mês atual, nenhuma movimentação foi realizada.";
+        } else if (difereca == 0) {
             msg = "Neste mês sua economia foi zero. Seu gasto mensal é equivalente a entrada de dinheiro.";
-        } else if (economia > 0) {
+        } else if (difereca > 0) {
             msg = "Parabéns, sua economia no mês atual é "+ economia +"%, sua economia líquida é igual a R$ "+ difereca;
         } else {
             economia *= -1;
             difereca *= -1;
-            msg = "No mês atual a sua despesa superou a receita, o seu gasto superou a receita em " + economia + "% cuidado para não perder o controle das suas contas";
+            msg = "No mês atual a sua despesa superou a sua receita em R$" + difereca + ", a sua despesa superou a receita em " + economia + "% cuidado para não perder o controle das suas contas";
         }
         txtEconomia.setText(msg);
     }
