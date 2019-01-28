@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_nova_entrada"
+        android:icon="@drawable/ic_nova_entrada"
+        android:title="Entrada" />
+    <item
+        android:id="@+id/nav_nova_despesa"
+        android:icon="@drawable/ic_nova_despesa"
+        android:title="Despesa"/>
+
+    <item
+        android:id="@+id/nav_transferencia"
+        android:icon="@drawable/ic_transferencia"
+        android:title="Transferencia"/>
+
+</menu>
