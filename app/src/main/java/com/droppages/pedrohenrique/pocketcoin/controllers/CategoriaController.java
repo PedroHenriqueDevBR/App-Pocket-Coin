@@ -68,8 +68,18 @@ public class CategoriaController {
     private boolean dadosValidosParaCadastro(String nome) throws DadoInvalidoNoCadastroDeCategoriaException {
         if (nome.length() == 0) {
             throw new DadoInvalidoNoCadastroDeCategoriaException("Digite o nome da categoria.");
+        } else if (categoriaJaCadastrada(nome)) {
+            throw new DadoInvalidoNoCadastroDeCategoriaException("Categoria já cadastrada, altere o nome da categoria e tente novamente.");
         }
         return true;
+    }
+
+
+    private boolean categoriaJaCadastrada(String nome){
+        for (Categoria categoria: categoriaBox.getAll()){
+            if (categoria.getNome().toLowerCase().equals(nome.toLowerCase())) { return true; }
+        }
+        return false;
     }
 
 

@@ -53,10 +53,20 @@ public class CarteiraController {
     private boolean dadosValidosParaCadastro(String nome, float saldo) throws DadoInvalidoNoCadastroDeCarteiraException {
         if (nome.length() == 0) {
             throw new DadoInvalidoNoCadastroDeCarteiraException("Digite o nome da carteira.");
+        } else if (carteiraJaCadastrada(nome)) {
+            throw new DadoInvalidoNoCadastroDeCarteiraException("Carteira já cadastrada, altere o campo nome e tente novamente.");
         } else if (saldo < 0){
             throw new DadoInvalidoNoCadastroDeCarteiraException("O saldo inicial nao pode ser negativo.");
         }
         return true;
+    }
+
+
+    private boolean carteiraJaCadastrada(String nome){
+        for (Carteira carteira: carteiraBox.getAll()){
+            if (carteira.getNome().toLowerCase().equals(nome.toLowerCase())) { return true; }
+        }
+        return false;
     }
 
 

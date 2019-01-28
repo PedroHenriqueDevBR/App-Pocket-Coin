@@ -52,8 +52,18 @@ public class TagController {
     private boolean dadosValidosParaCadastro(String nome) throws DadoInvalidoNoCadastroDeTagException {
         if (nome.length() == 0) {
             throw new DadoInvalidoNoCadastroDeTagException("Digite o nome da tag.");
+        } else if (tagJaCadastrado(nome)) {
+            throw new DadoInvalidoNoCadastroDeTagException("Tag já cadastrada, altere o nome da tag e tente novamente.");
         }
         return true;
+    }
+
+
+    private boolean tagJaCadastrado(String nome){
+        for (Tag tag: tagBox.getAll()){
+            if (tag.getNome().toLowerCase().equals(nome.toLowerCase())) { return true; }
+        }
+        return false;
     }
 
 

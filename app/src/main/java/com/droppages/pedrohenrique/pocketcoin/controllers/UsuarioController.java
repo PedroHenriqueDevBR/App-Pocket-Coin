@@ -73,7 +73,9 @@ public class UsuarioController {
     }
 
     private boolean dadosValidosParaCadastro(String nome, String login, String senha, String repeteSenha) throws DadoInvalidoNoCadastroDeUsuarioException {
-        if (nome.length() == 0){
+        if (usuarioJaCadastrado(login)) {
+            throw new DadoInvalidoNoCadastroDeUsuarioException("Usuario já cadastrado, altere o campo login e tente novamente.");
+        } else if (nome.length() == 0){
             throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo nome");
         } else if (login.length() == 0){
             throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo login");
@@ -87,6 +89,13 @@ public class UsuarioController {
             }
         }
         return true;
+    }
+
+    private boolean usuarioJaCadastrado(String login){
+        for (Usuario usuario: usuarioBox.getAll()){
+            if (usuario.getLogin().toLowerCase().equals(login.toLowerCase())){ return true; }
+        }
+        return false;
     }
 
     private boolean dadosValidosParaLogin(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {
