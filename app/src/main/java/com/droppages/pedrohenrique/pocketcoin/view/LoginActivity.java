@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         if (!dadosDoUsuarioLogado.get(0).equals(Sessao.DEFAULT)){
             mostrarMensagem("Seja bem vindo de volta " + dadosDoUsuarioLogado.get(1));
             startActivity(new Intent(this, MainActivity.class));
+            this.finish();
         }
     }
 

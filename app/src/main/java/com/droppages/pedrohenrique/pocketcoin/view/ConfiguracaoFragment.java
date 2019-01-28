@@ -56,6 +56,7 @@ public class ConfiguracaoFragment extends Fragment {
         sessao.deletarDadosDaSessao(Sessao.USUARIO_NOME);
         sessao.deletarDadosDaSessao(Sessao.USUARIO_LOGIN);
         sessao.deletarDadosDaSessao(Sessao.USUARIO_SENHA);
+        startActivity(new Intent(getActivity(), LoginActivity.class));
         getActivity().finish();
     }
 }

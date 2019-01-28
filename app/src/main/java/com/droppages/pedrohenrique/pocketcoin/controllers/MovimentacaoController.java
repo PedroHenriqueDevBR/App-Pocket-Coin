@@ -64,11 +64,11 @@ public class MovimentacaoController {
             Usuario usuarioLogado = selecionarUsuarioLogado();
             usuarioLogado.movimentacoes.add(movimentacao);
 
-            // Deposita valor na carteira
-            carteira.depositar(Float.parseFloat(valor));
-            carteiraBox.put(carteira);
+            // Deposita ou saca o valor na carteira
+            if (idNatureza == 1){ carteira.depositar(Float.parseFloat(valor)); } else { carteira.sacar(Float.parseFloat(valor)); }
 
             // Efetua o cadastro da movimentação
+            carteiraBox.put(carteira);
             usuarioBox.put(usuarioLogado);
         }
     }
