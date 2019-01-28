@@ -66,11 +66,14 @@ public class TransferenciaActivity extends AppCompatActivity {
     public void transferir(View view){
         long idOrigem   = carteiraIndice.get(spinnerOrigem.getSelectedItemPosition());
         long idDestino  = carteiraIndice.get(spinnerDestino.getSelectedItemPosition());
-        float valor     = Float.parseFloat(txtValor.getText().toString().trim());
+        float valor;
 
         if (idOrigem == idDestino){
             mostrarMensagem("Impossível transferir dinheiro de uma carteira para ela mesma");
+        } else if (txtValor.getText().toString().trim().length() == 0) {
+            mostrarMensagem("Digite o valor da tranferência.");
         } else {
+            valor = Float.parseFloat(txtValor.getText().toString().trim());
             if (movimentacaoController.transferir(idOrigem, idDestino, valor)){
                 mostrarMensagem("Transferência realizada com sucesso!");
                 this.finish();

@@ -27,6 +27,7 @@
         <activity android:name=".view.CategoriaActivity" />
         <activity android:name=".view.CarteiraActivity" />
         <activity android:name=".view.CadastrarUsuarioActivity" />
+        <activity android:name=".view.TransferenciaActivity" />
     </application>
 
 </manifest>
