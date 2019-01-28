@@ -19,9 +19,6 @@ public class Carteira {
         this.saldo = saldo;
     }
 
-    // Atenção para esta parte
-    // Precisa-se criar retornos personalizados
-    // Catch
     public boolean depositar(float valor){
         if (valor > 0){
             this.saldo += valor;
@@ -30,12 +27,18 @@ public class Carteira {
         return false;
     }
 
-    // Atenção para esta parte
-    // Precisa-se criar retornos personalizados
-    // Catch
     public boolean sacar(float valor){
         if (valor > 0 && haSaldoSuficiente(valor)){
             this.saldo -= valor;
+        }
+        return false;
+    }
+
+    public boolean transferir(Carteira carteira, float valor){
+        if (haSaldoSuficiente(valor)) {
+            this.sacar(valor);
+            carteira.depositar(valor);
+            return true;
         }
         return false;
     }

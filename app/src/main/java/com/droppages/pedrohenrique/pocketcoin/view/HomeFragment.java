@@ -164,8 +164,7 @@ public class HomeFragment extends Fragment {
             intent = new Intent(getActivity(), MovimentacaoActivity.class);
             intent.putExtra("idNatureza", 2L);
         } else { // Nova transferência
-            intent = new Intent(getActivity(), MovimentacaoActivity.class);
-            intent.putExtra("idNatureza", 1L);
+            intent = new Intent(getActivity(), TransferenciaActivity.class);
         }
         startActivity(intent);
     }

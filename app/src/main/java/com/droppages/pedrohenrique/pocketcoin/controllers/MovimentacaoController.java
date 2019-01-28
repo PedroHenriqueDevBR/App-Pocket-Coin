@@ -74,6 +74,13 @@ public class MovimentacaoController {
     }
 
 
+    public boolean transferir(long idOrigem, long idDestino, float valor){
+        Carteira origem = carteiraBox.get(idOrigem);
+        Carteira destino = carteiraBox.get(idDestino);
+        return origem.transferir(destino, valor);
+    }
+
+
     public List<Movimentacao> selecionarTodasMovimentacoesDoUsuario(){
         Usuario usuarioLogado = selecionarUsuarioLogado();
         return usuarioLogado.movimentacoes;
@@ -91,6 +98,7 @@ public class MovimentacaoController {
         return mapList;
     }
 
+
     public List<Map<Long, String>> selecionarTodasAsCategoriasComoDicionario(Long idNatureza){
         List<Map<Long, String>> mapList = new ArrayList<>();
         Usuario usuario = selecionarUsuarioLogado();
@@ -106,6 +114,7 @@ public class MovimentacaoController {
         return mapList;
     }
 
+
     public List<Map<Long, String>> selecionarTodasAsCarteirasComoDicionario(){
         List<Map<Long, String>> mapList = new ArrayList<>();
         Usuario usuario = selecionarUsuarioLogado();
@@ -116,6 +125,7 @@ public class MovimentacaoController {
         }
         return mapList;
     }
+
 
     public List<Map<Long, String>> selecionarTodasAsNaturezaComoDicionario(){
         List<Map<Long, String>> mapList = new ArrayList<>();
