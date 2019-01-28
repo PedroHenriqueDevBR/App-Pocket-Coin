@@ -6,6 +6,9 @@
     <color name="colorAccent">#f44336</color>
     <color name="colorGradientUm">#209cff</color>
     <color name="colorGradientDois">#68e0cf</color>
+    <color name="colorAcaoReceita">#4CAF50</color>
+    <color name="colorAcaoDespesa">#f44336</color>
+    <color name="colorAcaoTransferencia">#3F51B5</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorDark">#000000</color>
 </resources>
