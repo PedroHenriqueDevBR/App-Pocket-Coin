@@ -30,14 +30,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Bind
         toolbar     = findViewById(R.id.toolbar);
         drawer      = findViewById(R.id.drawer_layout);
-        fab         = findViewById(R.id.fab);
+//        fab         = findViewById(R.id.fab);
         frameLayout = findViewById(R.id.frame_layout);
 
         // FloatActionButton
         setSupportActionBar(toolbar);
-        fab.setOnClickListener(
-                c -> startActivity(new Intent(this, MovimentacaoActivity.class))
-        );
+//        fab.setOnClickListener(
+//                c -> startActivity(new Intent(this, MovimentacaoActivity.class))
+//        );
 
         // AppBar
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

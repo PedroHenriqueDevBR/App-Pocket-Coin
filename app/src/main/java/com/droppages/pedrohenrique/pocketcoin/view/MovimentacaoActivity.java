@@ -1,6 +1,7 @@
 package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,43 +25,43 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
 
 import io.objectbox.BoxStore;
 
 public class MovimentacaoActivity extends AppCompatActivity {
     private EditText                txtValor, txtData, txtDescricao;
-    private Spinner                 spnCategoria, spnCarteira, spnTag, spnNatureza;
+    private Spinner                 spnCategoria, spnCarteira, spnTag;
     private CheckBox                checkConcluido;
-    private BoxStore                boxStore;
     private MovimentacaoController  controller;
-    private List<Long>              tagIndice, carteiraIndice, categoriaIndice, naturezaIndice;
+    private List<Long>              tagIndice, carteiraIndice, categoriaIndice;
+    private Long                    idNaturezaRecebida;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movimentacao);
 
+        // Recuperando Intent
+        Intent intent = getIntent();
+        idNaturezaRecebida = intent.getLongExtra("idNatureza", 0);
+
         // Bind
-        txtValor        = findViewById(R.id.edit_valor);
-        txtData         = findViewById(R.id.edit_data);
-        txtDescricao    = findViewById(R.id.edit_descricao);
-        spnCategoria    = findViewById(R.id.spn_categoria);
-        spnCarteira     = findViewById(R.id.spn_carteira);
-        spnTag          = findViewById(R.id.spn_tag);
-        spnNatureza     = findViewById(R.id.spn_acao);
-        checkConcluido  = findViewById(R.id.check_concluido);
+        txtValor            = findViewById(R.id.edit_valor);
+        txtData             = findViewById(R.id.edit_data);
+        txtDescricao        = findViewById(R.id.edit_descricao);
+        spnCategoria        = findViewById(R.id.spn_categoria);
+        spnCarteira         = findViewById(R.id.spn_carteira);
+        spnTag              = findViewById(R.id.spn_tag);
+        checkConcluido      = findViewById(R.id.check_concluido);
 
         // ObjectBox
-        boxStore = ((App)getApplication()).getBoxStore();
+        BoxStore boxStore   = ((App) getApplication()).getBoxStore();
 
         // Controller e Instancia
-        controller      = new MovimentacaoController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
-        tagIndice       = new ArrayList<>();
-        carteiraIndice  = new ArrayList<>();
-        categoriaIndice = new ArrayList<>();
-        naturezaIndice  = new ArrayList<>();
+        controller          = new MovimentacaoController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        tagIndice           = new ArrayList<>();
+        carteiraIndice      = new ArrayList<>();
+        categoriaIndice     = new ArrayList<>();
 
         // Metodos
         preencherSpninnersComDados();
@@ -79,9 +80,6 @@ public class MovimentacaoActivity extends AppCompatActivity {
         // Spinner Carteira
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, selecionarListaDeCarteira());
         spnCarteira.setAdapter(adapter);
-        // Spinner Natureza
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, selecionarListaDeNatureza());
-        spnNatureza.setAdapter(adapter);
     }
 
     public void cadastrarNovaMovimentacao(View view){
@@ -91,11 +89,10 @@ public class MovimentacaoActivity extends AppCompatActivity {
         long idCategoria    = selecionarIdDoSpinnerCategoria();
         long idCarteira     = selecionarIdDoSpinnerCarteira();
         long idTag          = selecionarIdDoSpinnerTag();
-        long idNatureza     = selecionarIdDoSpinnerNatureza();
-        boolean concluido   = checkConcluido.isChecked();;
+        boolean concluido   = checkConcluido.isChecked();
 
         try {
-            controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNatureza, concluido);
+            controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNaturezaRecebida, concluido);
             mostrarMensagem("Movimentação cadastrada com sucesso");
             this.finish();
         } catch (DadoInvalidoNoCadastroDeMovimentacaoException e){
@@ -156,7 +153,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
     private List<String> selecionarListaDeCategoria() {
         List<String> resultado = new ArrayList<>();
 
-        for (Map<Long, String> map: controller.selecionarTodasAsCategoriasComoDicionario()){
+        for (Map<Long, String> map: controller.selecionarTodasAsCategoriasComoDicionario(idNaturezaRecebida)){
             String chaveNaoFormatada = map.keySet().toString().replace("[", "").replace("]", "");
             Long chaveFormatada = Long.parseLong(chaveNaoFormatada);
             categoriaIndice.add(chaveFormatada);
@@ -165,20 +162,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         return resultado;
     }
 
-    private List<String> selecionarListaDeNatureza() {
-        List<String> resultado = new ArrayList<>();
-
-        for (Map<Long, String> map: controller.selecionarTodasAsNaturezaComoDicionario()){
-            String chaveNaoFormatada = map.keySet().toString().replace("[", "").replace("]", "");
-            Long chaveFormatada = Long.parseLong(chaveNaoFormatada);
-            naturezaIndice.add(chaveFormatada);
-            resultado.add(map.get(chaveFormatada));
-        }
-        return resultado;
-    }
-
     private void preencherTxtDataComDataAtual() {
-        // verificar a criação de uma classe externa para recuperar a data atual
         String formatoDaData = "dd/MM/yyyy";
         DateFormat format = new SimpleDateFormat(formatoDaData);
         Date date = new Date();
@@ -195,10 +179,6 @@ public class MovimentacaoActivity extends AppCompatActivity {
 
     private long selecionarIdDoSpinnerTag(){
         return tagIndice.get(spnTag.getSelectedItemPosition());
-    }
-
-    private long selecionarIdDoSpinnerNatureza(){
-        return naturezaIndice.get(spnNatureza.getSelectedItemPosition());
     }
 
     private void mostrarMensagem(String msg){

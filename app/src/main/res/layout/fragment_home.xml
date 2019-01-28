@@ -318,4 +318,19 @@
 
     </ScrollView>
 
+    <io.github.yavski.fabspeeddial.FabSpeedDial
+        android:id="@+id/fab_speed_dial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:fabGravity="bottom_end"
+        app:fabMenu="@menu/menu_acoes_receita_despesa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:miniFabBackgroundTintList="@array/fab_menu_item_colors"
+        app:miniFabDrawableTint="@color/colorWhite"
+        app:miniFabTitleTextColorList="@array/fab_menu_item_colors" />
+
 </android.support.constraint.ConstraintLayout>

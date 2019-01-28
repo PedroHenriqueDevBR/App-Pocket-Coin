@@ -15,7 +15,8 @@ import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
 public class CategoriaController {
-
+    public final static String CREDITO = "credito";
+    public final static String DEBITO = "debito";
     private Box<Categoria> categoriaBox;
     private Box<Usuario>        usuarioBox;
     private Sessao sessao;

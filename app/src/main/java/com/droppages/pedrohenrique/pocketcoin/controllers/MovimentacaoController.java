@@ -91,13 +91,17 @@ public class MovimentacaoController {
         return mapList;
     }
 
-    public List<Map<Long, String>> selecionarTodasAsCategoriasComoDicionario(){
+    public List<Map<Long, String>> selecionarTodasAsCategoriasComoDicionario(Long idNatureza){
         List<Map<Long, String>> mapList = new ArrayList<>();
         Usuario usuario = selecionarUsuarioLogado();
+        NaturezaDaAcao natureza = naturezaBox.get(idNatureza);
+
         for (Categoria categoria: usuario.getCategorias()){
-            Map<Long, String> map = new HashMap<Long, String>();
-            map.put(categoria.id, categoria.getNome());
-            mapList.add(map);
+            if (categoria.getNatureza().getTarget().getNome().equals(natureza.getNome())) {
+                Map<Long, String> map = new HashMap<Long, String>();
+                map.put(categoria.id, categoria.getNome());
+                mapList.add(map);
+            }
         }
         return mapList;
     }

@@ -2,11 +2,14 @@ package com.droppages.pedrohenrique.pocketcoin.view;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.internal.NavigationMenu;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,20 +21,20 @@ import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
-import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.objectbox.BoxStore;
 
 
 public class HomeFragment extends Fragment {
-    private BoxStore                boxStore;
     private MovimentacaoController  movimentacaoController;
     private CategoriaController     categoriaController;
     private TextView                txtSaldoAtual, txtReceitaGeral, txtDespesaGeral, txtReceitaMensal, txtDespesaMensal, txtEconomia;
     private RecyclerView            recyclerView;
+    private FabSpeedDial            fabSpeedDial;
 
     public HomeFragment() {}
 
@@ -48,13 +51,36 @@ public class HomeFragment extends Fragment {
         txtDespesaMensal        = view.findViewById(R.id.text_view_despesa_mensal);
         txtEconomia             = view.findViewById(R.id.text_view_economia);
         recyclerView            = view.findViewById(R.id.lista_gasto_por_categoria);
-        boxStore                = ((App)getActivity().getApplication()).getBoxStore();
+        fabSpeedDial            = view.findViewById(R.id.fab_speed_dial);
+        BoxStore boxStore       = ((App) getActivity().getApplication()).getBoxStore();
         movimentacaoController  = new MovimentacaoController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
         categoriaController     = new CategoriaController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
 
         // Metodos
         setarTodosOsDados();
 
+        // Float Action Button
+        fabSpeedDial.setMenuListener(new FabSpeedDial.MenuListener() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.nav_nova_entrada) {
+                    novaAcaoAbrirActivity(1);
+                } else if (menuItem.getItemId() == R.id.nav_nova_despesa) {
+                    novaAcaoAbrirActivity(2);
+                } else {
+                    novaAcaoAbrirActivity(3);
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onPrepareMenu(NavigationMenu navigationMenu) { return true; }
+
+            @Override
+            public void onMenuClosed() {}
+        });
+
+        // Retorna a view preenchida com os dados
         return view;
     }
 
@@ -127,6 +153,21 @@ public class HomeFragment extends Fragment {
             msg = "No mês atual a sua despesa superou a sua receita em R$" + difereca + ", a sua despesa superou a receita em " + economia + "% cuidado para não perder o controle das suas contas";
         }
         txtEconomia.setText(msg);
+    }
+
+    private void novaAcaoAbrirActivity(int codigo){
+        Intent intent;
+        if (codigo == 1) { // Nova receita
+            intent = new Intent(getActivity(), MovimentacaoActivity.class);
+            intent.putExtra("idNatureza", 1L);
+        } else if (codigo == 2) { // Nova despesa
+            intent = new Intent(getActivity(), MovimentacaoActivity.class);
+            intent.putExtra("idNatureza", 2L);
+        } else { // Nova transferência
+            intent = new Intent(getActivity(), MovimentacaoActivity.class);
+            intent.putExtra("idNatureza", 1L);
+        }
+        startActivity(intent);
     }
 
 }
