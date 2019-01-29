@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#2196f3</color>
-    <color name="colorPrimaryDark">#0069c0</color>
-    <color name="colorPrimaryLight">#6ec6ff</color>
-    <color name="colorAccent">#f44336</color>
-    <color name="colorGradientUm">#209cff</color>
+    <color name="colorPrimary">#0D47A1</color>
+    <color name="colorPrimaryDark">#002171</color>
+    <color name="colorPrimaryLight">#5472D3</color>
+    <color name="colorAccent">#F44336</color>
+    <color name="colorGradientUm">#209CFF</color>
     <color name="colorGradientDois">#68e0cf</color>
     <color name="colorAcaoReceita">#4CAF50</color>
     <color name="colorAcaoDespesa">#f44336</color>
     <color name="colorAcaoTransferencia">#3F51B5</color>
+    <color name="colorCinzaEscuro">#102027</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorDark">#000000</color>
 </resources>

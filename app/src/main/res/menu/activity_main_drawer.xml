@@ -6,11 +6,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_home"
             android:title="Inicio" />
         <item
             android:id="@+id/nav_registro"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_register"
             android:title="Registro" />
         <item
             android:id="@+id/nav_configuracao"
@@ -22,15 +22,15 @@
         <menu>
             <item
                 android:id="@+id/nav_carteira"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_bank"
                 android:title="Carteiras" />
             <item
                 android:id="@+id/nav_categoria"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_category"
                 android:title="Categorias" />
             <item
                 android:id="@+id/nav_tag"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_tag"
                 android:title="Tags" />
         </menu>
     </item>
@@ -39,7 +39,7 @@
         <menu>
             <item
                 android:id="@+id/nav_sair"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_exit"
                 android:title="Sair" />
         </menu>
     </item>

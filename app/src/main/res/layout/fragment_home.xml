@@ -41,14 +41,16 @@
                     android:layout_height="wrap_content"
                     android:text="Saldo Atual R$ "
                     android:gravity="right"
-                    android:textSize="25sp"/>
+                    android:textSize="25sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/text_view_saldo_atual"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0,00"
-                    android:textSize="25sp"/>
+                    android:textSize="25sp"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -59,8 +61,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="6dp"
+                style="@style/cardDefault"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/line1">
@@ -68,17 +69,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Visão geral" />
+                        android:text="Visão geral"
+                        style="@style/textTitulo"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="4dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -91,14 +95,16 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:text="0,00"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1"
+                            android:textColor="@color/colorAcaoReceita"/>
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="8dp">
 
                         <TextView
                             android:layout_width="0dp"
@@ -111,7 +117,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="0,00" />
+                            android:text="0,00"
+                            android:textColor="@color/colorAcaoDespesa"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -124,9 +131,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:outlineSpotShadowColor="@color/colorAccent"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="6dp"
+                style="@style/cardDefault"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView">
@@ -134,12 +139,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="DESPESAS POR CATEGORIA"/>
+                        android:text="DESPESAS POR CATEGORIA"
+                        style="@style/textTitulo"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -178,7 +185,7 @@
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/lista_gasto_por_categoria"
                                 android:layout_width="match_parent"
-                                android:layout_height="150dp"/>
+                                android:layout_height="wrap_content"/>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -192,9 +199,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:outlineSpotShadowColor="@color/colorAccent"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="6dp"
+                style="@style/cardDefault"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -203,12 +208,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="BALANÇO MENSAL" />
+                        android:text="BALANÇO MENSAL"
+                        style="@style/textTitulo"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -270,15 +277,14 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                style="@style/cardDefault"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
-                android:outlineSpotShadowColor="@color/colorAccent"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="6dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView4">
@@ -286,12 +292,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <TextView
+                        style="@style/textTitulo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ECONOMIA MENSAL"/>
+                        android:text="ECONOMIA MENSAL" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -301,15 +309,15 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:text="Gráfico"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1"
+                            android:text="Gráfico" />
 
                         <TextView
                             android:id="@+id/text_view_economia"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:text=""
-                            android:layout_weight="2"/>
+                            android:layout_weight="2"
+                            android:text="" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -329,8 +337,9 @@
         app:fabMenu="@menu/menu_acoes_receita_despesa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:miniFabBackgroundTintList="@array/fab_menu_item_colors"
+        app:miniFabBackgroundTint="@color/colorPrimary"
         app:miniFabDrawableTint="@color/colorWhite"
-        app:miniFabTitleTextColorList="@array/fab_menu_item_colors" />
+        app:miniFabTitleTextColor="@color/colorWhite"
+        app:miniFabTitleBackgroundTint="@color/colorPrimaryLight"/>
 
 </android.support.constraint.ConstraintLayout>

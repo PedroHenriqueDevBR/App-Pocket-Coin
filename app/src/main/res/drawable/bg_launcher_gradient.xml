@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item>
         <shape>
             <gradient
-                android:endColor="@color/colorGradientUm"
-                android:startColor="@color/colorGradientDois"
-                android:angle="135"
+                android:startColor="@color/colorAcaoTransferencia"
+                android:endColor="@color/colorPrimaryDark"
+                android:type="linear"
                 />
         </shape>
-
     </item>
-
 </selector>
