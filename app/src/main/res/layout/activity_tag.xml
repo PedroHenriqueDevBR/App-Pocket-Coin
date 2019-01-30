@@ -8,11 +8,9 @@
 
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        style="@style/descricaoDaPagina"
         android:text="Cadastrar nova Tag"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +31,8 @@
             android:id="@+id/edit_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nome da tag" />
+            android:hint="Nome da tag"
+            android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
@@ -41,24 +40,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="cadastrarNovaTag"
+        style="@style/botaoPadrao"
         android:text="Cadastrar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout10" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="mostrarTagsCadastradas"
-        android:text="Mostrar tags"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
 </android.support.constraint.ConstraintLayout>

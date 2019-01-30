@@ -10,10 +10,8 @@
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:text="Cadastrar usuario"
+        style="@style/descricaoDaPagina"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +31,8 @@
             android:id="@+id/edit_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="nome" />
+            android:hint="nome"
+            android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -51,7 +50,8 @@
             android:id="@+id/edit_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="login" />
+            android:hint="login"
+            android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -69,7 +69,8 @@
             android:id="@+id/edit_senha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="senha" />
+            android:hint="senha"
+            android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -87,19 +88,21 @@
             android:id="@+id/edit_repetir_senha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="repetir senha" />
+            android:hint="repetir senha"
+            android:inputType="textPassword" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/btn_cadastrar"
+        style="@style/botaoPadrao"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="cadastrarNovoUsuario"
         android:text="Cadastrar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -10,9 +10,7 @@
         android:id="@+id/textView3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        style="@style/descricaoDaPagina"
         android:text="Cadastrar nova carteira"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +31,8 @@
             android:id="@+id/edit_nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="nome da carteira" />
+            android:hint="nome da carteira"
+            android:inputType="textPersonName" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -51,7 +50,8 @@
             android:id="@+id/edit_valor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Valor inicial" />
+            android:hint="Valor inicial"
+            android:inputType="number|numberDecimal" />
     </android.support.design.widget.TextInputLayout>
 
     <Spinner
@@ -67,27 +67,16 @@
 
     <Button
         android:id="@+id/button"
+        style="@style/botaoPadrao"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:onClick="cadastrarCarteira"
         android:text="Cadastrar carteira"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spn_natureza" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="MostrarQuantidadeDeCarteirasCadastradas"
-        android:text="carteiras cadastradas"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
 </android.support.constraint.ConstraintLayout>

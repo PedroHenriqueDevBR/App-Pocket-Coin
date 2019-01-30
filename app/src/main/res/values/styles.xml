@@ -22,11 +22,25 @@
         <item name="cardElevation">6dp</item>
     </style>
 
+    <style name="descricaoDaPagina">
+        <item name="android:background">@drawable/bg_launcher_gradient</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingBottom">50dp</item>
+        <item name="android:paddingTop">50dp</item>
+    </style>
+
     <style name="textTitulo">
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="botaoPadrao">
+        <item name="android:background">@drawable/button_default</item>
+        <item name="android:textColor">@color/colorWhite</item>
     </style>
 
 </resources>

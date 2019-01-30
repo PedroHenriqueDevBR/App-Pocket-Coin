@@ -22,11 +22,8 @@
                 android:id="@+id/textView9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
+                style="@style/descricaoDaPagina"
                 android:text="Cadastrar nova movimentação"
-                android:textAlignment="center"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -46,7 +43,8 @@
                     android:id="@+id/edit_valor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Valor" />
+                    android:hint="Valor"
+                    android:inputType="number|numberDecimal" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -83,7 +81,8 @@
                     android:id="@+id/edit_descricao"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="descrição" />
+                    android:hint="descrição"
+                    android:inputType="textLongMessage" />
             </android.support.design.widget.TextInputLayout>
 
             <Spinner
@@ -131,29 +130,19 @@
                 tools:layout_editor_absoluteY="455dp"
                 app:layout_constraintTop_toBottomOf="@+id/spn_tag"/>
 
-            <Spinner
-                android:id="@+id/spn_acao"
+            <Button
+                android:id="@+id/button9"
+                style="@style/botaoPadrao"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/check_concluido" />
-
-            <Button
-                android:id="@+id/button9"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
                 android:onClick="cadastrarNovaMovimentacao"
                 android:text="Cadastrar"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spn_acao" />
+                app:layout_constraintTop_toBottomOf="@+id/check_concluido" />
 
         </android.support.constraint.ConstraintLayout>
 
