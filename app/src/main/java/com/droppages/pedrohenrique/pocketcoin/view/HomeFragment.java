@@ -3,6 +3,7 @@ package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenu;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
@@ -21,6 +23,16 @@ import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +47,10 @@ public class HomeFragment extends Fragment {
     private TextView                txtSaldoAtual, txtReceitaGeral, txtDespesaGeral, txtReceitaMensal, txtDespesaMensal, txtEconomia;
     private RecyclerView            recyclerView;
     private FabSpeedDial            fabSpeedDial;
+    private PieChart                chartCategoria;
+    private BarChart                chartComparacao;
+    private ProgressBar             progressBarEconomiaMensal;
+
 
     public HomeFragment() {}
 
@@ -44,21 +60,43 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Bind
-        txtSaldoAtual           = view.findViewById(R.id.text_view_saldo_atual);
-        txtReceitaGeral         = view.findViewById(R.id.text_view_receita_geral);
-        txtDespesaGeral         = view.findViewById(R.id.text_view_despesa_geral);
-        txtReceitaMensal        = view.findViewById(R.id.text_view_receita_mensal);
-        txtDespesaMensal        = view.findViewById(R.id.text_view_despesa_mensal);
-        txtEconomia             = view.findViewById(R.id.text_view_economia);
-        recyclerView            = view.findViewById(R.id.lista_gasto_por_categoria);
-        fabSpeedDial            = view.findViewById(R.id.fab_speed_dial);
-        BoxStore boxStore       = ((App) getActivity().getApplication()).getBoxStore();
-        movimentacaoController  = new MovimentacaoController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
-        categoriaController     = new CategoriaController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
+        txtSaldoAtual               = view.findViewById(R.id.text_view_saldo_atual);
+        txtReceitaGeral             = view.findViewById(R.id.text_view_receita_geral);
+        txtDespesaGeral             = view.findViewById(R.id.text_view_despesa_geral);
+        txtReceitaMensal            = view.findViewById(R.id.text_view_receita_mensal);
+        txtDespesaMensal            = view.findViewById(R.id.text_view_despesa_mensal);
+        txtEconomia                 = view.findViewById(R.id.text_view_economia);
+        recyclerView                = view.findViewById(R.id.lista_gasto_por_categoria);
+        fabSpeedDial                = view.findViewById(R.id.fab_speed_dial);
+        chartCategoria              = view.findViewById(R.id.chart_despesa_por_categoria);
+        chartComparacao             = view.findViewById(R.id.chart_comparacao);
+        progressBarEconomiaMensal   = view.findViewById(R.id.progress_bar_economia_mensal);
+        BoxStore boxStore           = ((App) getActivity().getApplication()).getBoxStore();
+        movimentacaoController      = new MovimentacaoController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
+        categoriaController         = new CategoriaController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
 
-        // Metodos
+        // Retorna a view preenchida com os dados
+        return view;
+    }
+
+    @Override
+    public void onResume() {
         setarTodosOsDados();
+        super.onResume();
+    }
 
+    private void setarTodosOsDados() {
+        setarSaldoTotal();
+        setarVisaoGeral();
+        setarBalancoMensal();
+        setarDespesasPorCategoria();
+        calcularEconomiaMesal();
+        preencherGraficoComparacao();
+        setarEconomiaMensal();
+        configuraMenu();
+    }
+
+    private void configuraMenu() {
         // Float Action Button
         fabSpeedDial.setMenuListener(new FabSpeedDial.MenuListener() {
             @Override
@@ -79,23 +117,110 @@ public class HomeFragment extends Fragment {
             @Override
             public void onMenuClosed() {}
         });
-
-        // Retorna a view preenchida com os dados
-        return view;
     }
 
-    @Override
-    public void onResume() {
-        setarTodosOsDados();
-        super.onResume();
+    private void preencherGraficoCategoria(List<DespesaPorCategoriaAdapter.CategoriaComValor> lista){
+        chartCategoria.setRotationEnabled(true);
+        chartCategoria.setUsePercentValues(true);
+
+        chartCategoria.getDescription().setEnabled(false);
+        chartCategoria.setExtraOffsets(5, 10, 5, 5);
+        chartCategoria.setHoleColor(Color.WHITE);
+        chartCategoria.setDrawHoleEnabled(true);
+
+
+        chartCategoria.setCenterTextColor(Color.BLACK);
+        chartCategoria.setCenterTextSize(10);
+        chartCategoria.setHoleRadius(50f);
+        chartCategoria.setTransparentCircleAlpha(1);
+        chartCategoria.setDrawEntryLabels(true);
+        chartCategoria.setEntryLabelTextSize(10);
+
+        dadosParaOGraficoDeCategoria(lista);
     }
 
-    private void setarTodosOsDados() {
-        setarSaldoTotal();
-        setarVisaoGeral();
-        setarBalancoMensal();
-        setarDespesasPorCategoria();
-        calcularEconomiaMesal();
+    private void dadosParaOGraficoDeCategoria(List<DespesaPorCategoriaAdapter.CategoriaComValor> lista) {
+        ArrayList<PieEntry> yEntrys = new ArrayList<>();
+
+        for(int i = 0; i < lista.size(); i++){
+            yEntrys.add(new PieEntry(lista.get(i).valor, lista.get(i).categoria));
+        }
+
+        //create the data set
+        PieDataSet pieDataSet = new PieDataSet(yEntrys, "");
+        pieDataSet.setSliceSpace(3f);
+        pieDataSet.setSelectionShift(5f);
+        pieDataSet.setSliceSpace(2);
+        pieDataSet.setValueTextSize(12);
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+
+        //create pie data object
+        PieData pieData = new PieData(pieDataSet);
+        pieData.setValueTextSize(10);
+        pieData.setValueTextColor(Color.WHITE);
+        chartCategoria.setData(pieData);
+        chartCategoria.invalidate();
+    }
+
+    private void preencherGraficoComparacao(){
+        float receita = movimentacaoController.calcularMovimentacaoTotalDoMesEAnoAtualAPartirDaNatureza("Crédito");
+        float despesa = movimentacaoController.calcularMovimentacaoTotalDoMesEAnoAtualAPartirDaNatureza("Débito");
+
+        Description description = new Description();
+        description.setText("");
+
+        chartComparacao.setDescription(description);
+        chartComparacao.setDrawBarShadow(false);
+        chartComparacao.setDrawValueAboveBar(true);
+        chartComparacao.setPinchZoom(true);
+        chartComparacao.setDrawGridBackground(true);
+        chartComparacao.setDrawValueAboveBar(true);
+        chartComparacao.setFitBars(true);
+
+        ArrayList<BarEntry> entries = new ArrayList<>();
+
+        entries.add(new BarEntry(0, 0f));
+        entries.add(new BarEntry(1, receita));
+        entries.add(new BarEntry(2, despesa));
+        entries.add(new BarEntry(3, 0f));
+
+        List<Integer> colors = new ArrayList<>();
+        colors.add(Color.rgb(255,255,255));
+        colors.add(Color.rgb(76,175,80));
+        colors.add(Color.rgb(244,67,54));
+        colors.add(Color.rgb(255,255,255));
+
+        BarDataSet dataSet = new BarDataSet(entries, "Dados");
+        dataSet.setColors(colors);
+        dataSet.setValueTextSize(0);
+
+        BarData data = new BarData(dataSet);
+        data.setBarWidth(0.9f);
+
+        chartComparacao.setData(data);
+    }
+
+    private void setarEconomiaMensal() {
+        int receita = (int) movimentacaoController.calcularMovimentacaoTotalDoMesEAnoAtualAPartirDaNatureza("Crédito");
+        int despesa = (int) movimentacaoController.calcularMovimentacaoTotalDoMesEAnoAtualAPartirDaNatureza("Débito");
+        int max, min;
+
+        if (despesa > receita) {
+            max = despesa;
+            min = receita;
+            // 244,67,54
+            // 76,175,80
+            progressBarEconomiaMensal.getProgressDrawable().setColorFilter(
+                    Color.rgb(244,67,54), android.graphics.PorterDuff.Mode.SRC_IN);
+        } else {
+            max = receita;
+            min = despesa;
+            progressBarEconomiaMensal.getProgressDrawable().setColorFilter(
+                    Color.rgb(76,175,80), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+
+        progressBarEconomiaMensal.setMax(max);
+        progressBarEconomiaMensal.setProgress(min);
     }
 
     private void setarSaldoTotal() {
@@ -128,9 +253,13 @@ public class HomeFragment extends Fragment {
             listaCategoriaComValor.add(categoriaComValor);
         }
 
+        // Preenche o grafico
+        preencherGraficoCategoria(listaCategoriaComValor);
+
         DespesaPorCategoriaAdapter adapter = new DespesaPorCategoriaAdapter(listaCategoriaComValor, getActivity().getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
     }
 
     private void calcularEconomiaMesal(){

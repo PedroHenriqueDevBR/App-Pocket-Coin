@@ -10,25 +10,40 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.MovimentacaoActivity"></activity>
+
+        <activity
+            android:name=".view.MovimentacaoActivity"
+            android:label="Movimentação"/>
         <activity
             android:name=".view.MainActivity"
-            android:label="@string/title_activity_main"
+            android:label="Dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.LoginActivity"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+            android:label="Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.TagActivity" />
-        <activity android:name=".view.LogActivity" />
-        <activity android:name=".view.CategoriaActivity" />
-        <activity android:name=".view.CarteiraActivity" />
-        <activity android:name=".view.CadastrarUsuarioActivity" />
-        <activity android:name=".view.TransferenciaActivity" />
+        <activity
+            android:name=".view.TagActivity"
+            android:label="Tag"/>
+        <activity
+            android:name=".view.LogActivity"
+            android:label="Log" />
+        <activity
+            android:name=".view.CategoriaActivity"
+            android:label="Categoria"/>
+        <activity
+            android:name=".view.CarteiraActivity"
+            android:label="Carteira"/>
+        <activity
+            android:name=".view.CadastrarUsuarioActivity"
+            android:label="Cadastrar usuário"/>
+        <activity
+            android:name=".view.TransferenciaActivity"
+            android:label="Transferência"/>
     </application>
 
 </manifest>

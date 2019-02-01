@@ -12,8 +12,10 @@
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -143,12 +145,12 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView2"
+                style="@style/cardDefault"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                style="@style/cardDefault"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardView">
@@ -160,27 +162,26 @@
                     android:padding="8dp">
 
                     <TextView
+                        style="@style/textTitulo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="DESPESAS POR CATEGORIA"
-                        style="@style/textTitulo"/>
+                        android:text="DESPESAS POR CATEGORIA" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="Gráfico"/>
-
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:layout_weight="2">
+                            android:layout_weight="2"
+                            android:orientation="vertical">
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/chart_despesa_por_categoria"
+                                android:layout_width="match_parent"
+                                android:layout_height="300dp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -189,20 +190,20 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Categoria"
-                                    android:layout_weight="1"/>
+                                    android:layout_weight="1"
+                                    android:text="Categoria" />
 
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Valor"
-                                    android:layout_weight="2"/>
+                                    android:layout_weight="2"
+                                    android:text="Valor" />
                             </LinearLayout>
 
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/lista_gasto_por_categoria"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -211,12 +212,12 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView4"
+                style="@style/cardDefault"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
-                style="@style/cardDefault"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -229,27 +230,26 @@
                     android:padding="8dp">
 
                     <TextView
+                        style="@style/textTitulo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="BALANÇO MENSAL"
-                        style="@style/textTitulo"/>
+                        android:text="BALANÇO MENSAL" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="Gráfico" />
-
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
                             android:orientation="vertical">
+
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/chart_comparacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="250dp" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -289,7 +289,7 @@
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
+                                    android:layout_weight="2"
                                     android:text="Despesa" />
 
                                 <TextView
@@ -330,16 +330,16 @@
                         android:layout_height="wrap_content"
                         android:text="ECONOMIA MENSAL" />
 
+                    <ProgressBar
+                        android:id="@+id/progress_bar_economia_mensal"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:text="Gráfico" />
 
                         <TextView
                             android:id="@+id/text_view_economia"
