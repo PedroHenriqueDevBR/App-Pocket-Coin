@@ -106,7 +106,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         // Layout
-        View date_picker_layout = View.inflate(this, R.layout.date_picker, null);
+        View date_picker_layout = View.inflate(this, R.layout.dialog_date_picker, null);
 
         // Builder
         builder.setView(date_picker_layout);

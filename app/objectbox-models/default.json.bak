@@ -50,6 +50,22 @@
         {
           "id": "5:2365995798570467227",
           "name": "movimentacoes"
+        },
+        {
+          "id": "9:3317830341880050943",
+          "name": "carteiras"
+        },
+        {
+          "id": "10:2619916397578212989",
+          "name": "categorias"
+        },
+        {
+          "id": "11:7256978218534029447",
+          "name": "tags"
+        },
+        {
+          "id": "12:4831719868792821455",
+          "name": "log"
         }
       ]
     },
@@ -202,7 +218,7 @@
   ],
   "lastEntityId": "9:1096240547450534268",
   "lastIndexId": "5:8693719183935183467",
-  "lastRelationId": "8:589486557599052962",
+  "lastRelationId": "12:4831719868792821455",
   "lastSequenceId": "0:0",
   "modelVersion": 4,
   "modelVersionParserMinimum": 4,

@@ -28,10 +28,9 @@ public class CarteiraController {
     }
 
 
-    public void cadastrarNovaCarteira(String nome, float saldo, NaturezaDaAcao natureza) throws DadoInvalidoNoCadastroDeCarteiraException {
+    public void cadastrarNovaCarteira(String nome, float saldo) throws DadoInvalidoNoCadastroDeCarteiraException {
         if (dadosValidosParaCadastro(nome, saldo)){
             Carteira carteira = new Carteira(nome, saldo);
-            carteira.natureza.setTarget(natureza);
             Usuario usuarioLogado = selecionarUsuarioLogado();
             usuarioLogado.carteiras.add(carteira);
             usuarioBox.put(usuarioLogado);

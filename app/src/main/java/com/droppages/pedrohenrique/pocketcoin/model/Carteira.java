@@ -10,7 +10,6 @@ public class Carteira {
     public long id;
     private String nome;
     private float saldo;
-    public ToOne<NaturezaDaAcao> natureza;
 
     public Carteira(){}
 

@@ -128,7 +128,6 @@ public class HomeFragment extends Fragment {
         chartCategoria.setHoleColor(Color.WHITE);
         chartCategoria.setDrawHoleEnabled(true);
 
-
         chartCategoria.setCenterTextColor(Color.BLACK);
         chartCategoria.setCenterTextSize(10);
         chartCategoria.setHoleRadius(50f);
@@ -141,9 +140,13 @@ public class HomeFragment extends Fragment {
 
     private void dadosParaOGraficoDeCategoria(List<DespesaPorCategoriaAdapter.CategoriaComValor> lista) {
         ArrayList<PieEntry> yEntrys = new ArrayList<>();
+        boolean haDadosCadastrados = false;
 
         for(int i = 0; i < lista.size(); i++){
-            yEntrys.add(new PieEntry(lista.get(i).valor, lista.get(i).categoria));
+            if (lista.get(i).valor > 0) {
+                yEntrys.add(new PieEntry(lista.get(i).valor, lista.get(i).categoria));
+                haDadosCadastrados = true;
+            }
         }
 
         //create the data set
@@ -160,6 +163,8 @@ public class HomeFragment extends Fragment {
         pieData.setValueTextColor(Color.WHITE);
         chartCategoria.setData(pieData);
         chartCategoria.invalidate();
+
+        if (!haDadosCadastrados){ chartCategoria.setVisibility(View.GONE); }
     }
 
     private void preencherGraficoComparacao(){

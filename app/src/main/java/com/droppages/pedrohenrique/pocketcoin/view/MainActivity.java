@@ -16,7 +16,6 @@ import com.droppages.pedrohenrique.pocketcoin.R;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar                 toolbar;
-    private FloatingActionButton    fab;
     private DrawerLayout            drawer;
     private ActionBarDrawerToggle   toggle;
     private NavigationView          navigationView;
@@ -30,14 +29,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Bind
         toolbar     = findViewById(R.id.toolbar);
         drawer      = findViewById(R.id.drawer_layout);
-//        fab         = findViewById(R.id.fab);
         frameLayout = findViewById(R.id.frame_layout);
 
-        // FloatActionButton
+        // Toolbar
         setSupportActionBar(toolbar);
-//        fab.setOnClickListener(
-//                c -> startActivity(new Intent(this, MovimentacaoActivity.class))
-//        );
 
         // AppBar
         toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -78,16 +73,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new ConfiguracaoFragment()).commit();
         } else if (id == R.id.nav_carteira) {
             // Atalho - tela de gerencia de carteiras
-            sair();
+            abrirActivityCarteiras();
         } else if (id == R.id.nav_categoria) {
             // Atalho - tela de gerencia de categorias
-            return true;
+            abrirActivityCategoria();
         } else if (id == R.id.nav_tag) {
             // Atalho - tela de gerencia de tags
-            return true;
+            abrirActivityTag();
         } else if (id == R.id.nav_sair) {
             // Sair - Finaliza o app (Sessão continua segura)
-            return true;
+            sair();
         }
 
         drawer = findViewById(R.id.drawer_layout);
@@ -95,14 +90,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-
-    public void cadastrarCarteira(){
+    private void abrirActivityCarteiras(){
         startActivity(new Intent(this, CarteiraActivity.class));
     }
 
-    public void cadastrarCategoria(){ startActivity(new Intent(this, CategoriaActivity.class)); }
+    private void abrirActivityCategoria(){
+        startActivity(new Intent(this, CategoriaActivity.class));
+    }
 
-    public void cadastrarTag(){ startActivity(new Intent(this, TagActivity.class)); }
+    private void abrirActivityTag(){
+        startActivity(new Intent(this, TagActivity.class));
+    }
 
     public void sair(){ this.finish(); }
 }
