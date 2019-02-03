@@ -19,7 +19,7 @@
             android:label="Dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".view.LoginActivity"
-            android:label="Login">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
