@@ -86,9 +86,44 @@ public class MovimentacaoController {
     }
 
 
-    public List<Movimentacao> selecionarTodasMovimentacoesDoUsuario(){
-        Usuario usuarioLogado = selecionarUsuarioLogado();
-        return usuarioLogado.movimentacoes;
+    public List<Movimentacao> selecionarTodasAsMovimentacoesDoUsuarioNoMesAtual(){
+        String dataAtual = dataAtual();
+        int mesAtual = selecionarDadoAPartirDeUmaData(dataAtual, "mes");
+        int anoAtual = selecionarDadoAPartirDeUmaData(dataAtual, "ano");
+        return selecionarTodasAsMovimentacoesAPartirDoMesEAno(mesAtual, anoAtual);
+    }
+
+
+    public List<String> selecionarTodasAsDatasCadastradas(){
+        List<String> datas = new ArrayList<>();
+        datas.add("Mês atual");
+
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().movimentacoes){
+            String data[] = movimentacao.getData().split("/");
+            String dataComparacao = data[1] + "/" + data[2];
+
+            if (!verificaSeDataEstaNaLista(datas, dataComparacao)){
+                datas.add(dataComparacao);
+            }
+        }
+
+        return datas;
+    }
+
+
+    public List<Movimentacao> selecionarTodasAsMovimentacoesDoUsuarioNoMesEAnoSelecionado(String mesAno){
+        List<Movimentacao> movimentacoes = new ArrayList<>();
+
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().getMovimentacoes()){
+            String data[] = movimentacao.getData().split("/");
+            String dataComparacao = data[1] + "/" + data[2];
+
+            if (dataComparacao.equals(mesAno)){
+                movimentacoes.add(movimentacao);
+            }
+        }
+
+        return movimentacoes;
     }
 
 
@@ -129,47 +164,6 @@ public class MovimentacaoController {
             mapList.add(map);
         }
         return mapList;
-    }
-
-
-    public List<Map<Long, String>> selecionarTodasAsNaturezaComoDicionario(){
-        List<Map<Long, String>> mapList = new ArrayList<>();
-        Usuario usuario = selecionarUsuarioLogado();
-        for (NaturezaDaAcao natureza: naturezaBox.getAll()){
-            Map<Long, String> map = new HashMap<Long, String>();
-            map.put(natureza.id, natureza.getNome());
-            mapList.add(map);
-        }
-        return mapList;
-    }
-
-
-    public List<String> selecionarTodasAsCategoriasComoList(){
-        List<String> lista = new ArrayList<>();
-        Usuario usuario = selecionarUsuarioLogado();
-        for (Categoria categoria: usuario.getCategorias()){
-            lista.add(categoria.id + " - " + categoria.getNome());
-        }
-        return lista;
-    }
-
-
-    public List<String> selecionarTodasAsCarteirasComoList(){
-        List<String> lista = new ArrayList<>();
-        Usuario usuario = selecionarUsuarioLogado();
-        for (Carteira carteira: usuario.getCarteiras()){
-            lista.add(carteira.id + " - " + carteira.getNome());
-        }
-        return lista;
-    }
-
-
-    public List<String> selecionarTodasAsNaturezasComoList(){
-        List<String> lista = new ArrayList<>();
-        for (NaturezaDaAcao natureza: naturezaBox.getAll()){
-            lista.add(natureza.id + " - " + natureza.getNome());
-        }
-        return lista;
     }
 
 
@@ -296,6 +290,16 @@ public class MovimentacaoController {
                 break;
         }
         return resultado;
+    }
+
+
+    private boolean verificaSeDataEstaNaLista(List<String> lista, String data){
+        for (String dado: lista){
+            if (dado.equals(data)){
+                return true;
+            }
+        }
+        return false;
     }
 
 

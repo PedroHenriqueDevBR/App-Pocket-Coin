@@ -61,4 +61,8 @@
         <item name="android:textColor">@color/colorWhite</item>
     </style>
 
+    <style name="circle">
+        <item name="android:background">@drawable/bg_circle_receita</item>
+    </style>
+
 </resources>

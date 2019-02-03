@@ -34,7 +34,6 @@ public class MovimentacaoActivity extends AppCompatActivity {
     private EditText                txtValor, txtData, txtDescricao;
     private TextView                txtDescricaoMovimentacao;
     private Spinner                 spnCategoria, spnCarteira, spnTag;
-    private CheckBox                checkConcluido;
     private MovimentacaoController  controller;
     private List<Long>              tagIndice, carteiraIndice, categoriaIndice;
     private Long                    idNaturezaRecebida;
@@ -55,7 +54,6 @@ public class MovimentacaoActivity extends AppCompatActivity {
         spnCategoria                = findViewById(R.id.spn_categoria);
         spnCarteira                 = findViewById(R.id.spn_carteira);
         spnTag                      = findViewById(R.id.spn_tag);
-        checkConcluido              = findViewById(R.id.check_concluido);
         txtDescricaoMovimentacao    = findViewById(R.id.txt_descricao_movimentacao);
 
         // ObjectBox
@@ -98,14 +96,13 @@ public class MovimentacaoActivity extends AppCompatActivity {
     public void cadastrarNovaMovimentacao(View view){
         String valor        = txtValor.getText().toString().trim();
         String data         = txtData.getText().toString().trim();
-        String descricao    = txtDescricao.getText().toString().trim();
+        String descricao    = selecionarDescricao(txtDescricao.getText().toString().trim());
         long idCategoria    = selecionarIdDoSpinnerCategoria();
         long idCarteira     = selecionarIdDoSpinnerCarteira();
         long idTag          = selecionarIdDoSpinnerTag();
-        boolean concluido   = checkConcluido.isChecked();
 
         try {
-            controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNaturezaRecebida, concluido);
+            controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNaturezaRecebida, true);
             mostrarMensagem("Movimentação cadastrada com sucesso");
             this.finish();
         } catch (DadoInvalidoNoCadastroDeMovimentacaoException e){
@@ -113,6 +110,13 @@ public class MovimentacaoActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("cadastroMovimentacao", e.getMessage());
         }
+    }
+
+    private String selecionarDescricao(String descricao){
+        if (descricao.length() == 0) {
+            descricao = "Sem descrição";
+        }
+        return descricao;
     }
 
     private void abrirDatePicker(){

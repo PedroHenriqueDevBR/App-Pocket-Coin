@@ -1,0 +1,93 @@
+package com.droppages.pedrohenrique.pocketcoin.adapters;
+
+import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.droppages.pedrohenrique.pocketcoin.R;
+import com.droppages.pedrohenrique.pocketcoin.model.Movimentacao;
+import com.droppages.pedrohenrique.pocketcoin.model.Tag;
+
+import java.util.List;
+
+public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapter.ViewHolder> {
+    List<Movimentacao> movimentacoes;
+    Context context;
+
+    public MovimentacaoAdapter(List<Movimentacao> movimentacoes, Context context) {
+        this.movimentacoes = movimentacoes;
+        this.context = context;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.item_movimentacao, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Movimentacao movimentacao = movimentacoes.get(position);
+
+        String natureza     = movimentacao.getNatureza().getTarget().getNome();
+        String valor        = Double.toString(movimentacao.getValor());
+        String descricao    = movimentacao.getDescricao();
+        String carteira     = movimentacao.getCarteira().getTarget().getNome();
+        String categoria    = movimentacao.getCategoria().getTarget().getNome();
+        String data         = movimentacao.getData();
+        String tag          = "";
+
+        for (Tag tags: movimentacao.getTag()){
+            tag += tags.getNome();
+        }
+
+        holder.txtValor.setText("R$ " + valor);
+        holder.txtDescricao.setText(descricao);
+        holder.txtCarteira.setText(carteira);
+        holder.txtCategoria.setText(categoria);
+        // holder.txtData.setText(data);
+        // holder.txtTag.setText(tag);
+
+        // Seta a cor da movimentacoa
+        if (natureza.equals("Crédito")){
+            holder.txtNatureza.setText("R");
+            holder.txtNatureza.setBackgroundResource(R.drawable.bg_circle_receita);
+            holder.txtCor.setBackgroundColor(Color.rgb(76,175,80));
+        } else {
+            holder.txtNatureza.setText("D");
+            holder.txtNatureza.setBackgroundResource(R.drawable.bg_circle_despesa);
+            holder.txtCor.setBackgroundColor(Color.rgb(244,67,54));
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return movimentacoes.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtValor, txtData, txtDescricao, txtNatureza, txtCarteira, txtCategoria, txtTag, txtCor;
+        ImageView imageMenu;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            txtNatureza     = itemView.findViewById(R.id.txt_natureza_movimentacao);
+            txtValor        = itemView.findViewById(R.id.txt_valor_movimentacao);
+            // txtData         = itemView.findViewById(R.id.txt_data_movimentacao);
+            txtDescricao    = itemView.findViewById(R.id.txt_descricao_movimentacao);
+            txtCarteira     = itemView.findViewById(R.id.txt_carteira_movimentacao);
+            txtCategoria    = itemView.findViewById(R.id.txt_categoria_movimentacao);
+            // txtTag          = itemView.findViewById(R.id.txt_tag_movimentacao);
+            txtCor          = itemView.findViewById(R.id.txt_cor_movimentacao);
+            imageMenu       = itemView.findViewById(R.id.image_menu_movimentacao);
+        }
+    }
+}

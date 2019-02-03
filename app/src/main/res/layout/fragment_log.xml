@@ -7,23 +7,41 @@
     android:layout_height="match_parent"
     tools:context=".view.LogFragment">
 
-
-    <TextView
-        android:id="@+id/textView12"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:id="@+id/layout_titulo_log"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center"
-        android:paddingTop="25dp"
-        android:paddingBottom="25dp"
-        android:text="Movimentações realizadas"
-        android:textSize="22sp"
-        android:textStyle="bold"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:paddingLeft="8dp"
+        android:paddingTop="16dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView9"
+            style="@style/textTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Movimentações realizadas"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite" />
+
+        <Spinner
+            android:id="@+id/spn_datas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorWhite"
+            android:dropDownWidth="match_parent"
+            android:spinnerMode="dialog" />
+
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_movimentacoes"
@@ -36,7 +54,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/layout_titulo_log" />
 </android.support.constraint.ConstraintLayout>

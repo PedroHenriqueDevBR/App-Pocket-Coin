@@ -39,10 +39,6 @@ public class Movimentacao {
         return concuildo;
     }
 
-    public void setConcuildo(boolean concuildo) {
-        this.concuildo = concuildo;
-    }
-
     public String getData() {
         return data;
     }
@@ -73,5 +69,13 @@ public class Movimentacao {
 
     public void setCategoria(ToOne<Categoria> categoria) {
         this.categoria = categoria;
+    }
+
+    public ToOne<Carteira> getCarteira() {
+        return carteira;
+    }
+
+    public ToMany<Tag> getTag() {
+        return tag;
     }
 }

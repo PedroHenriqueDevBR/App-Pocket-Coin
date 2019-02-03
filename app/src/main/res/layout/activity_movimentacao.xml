@@ -85,50 +85,129 @@
                     android:inputType="textLongMessage" />
             </android.support.design.widget.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spn_categoria"
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/layout_spinner_categoria"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout13" />
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout13">
 
-            <Spinner
-                android:id="@+id/spn_carteira"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/keyline_1_minus_8dp"
+                    android:text="selecionar categoria"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:background="@color/colorWhite"
+                    android:layout_gravity="bottom">
+
+                    <Spinner
+                        android:id="@+id/spn_categoria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
+
+                    <ImageView
+                        android:id="@+id/imageView6"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/ic_more" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_spinner_carteira"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spn_categoria" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_spinner_categoria">
 
-            <Spinner
-                android:id="@+id/spn_tag"
-                android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/keyline_1_minus_8dp"
+                    android:text="selecionar carteira"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spn_carteira"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/ic_more" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_spinner_tag"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spn_carteira" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_spinner_carteira">
 
-            <CheckBox
-                android:id="@+id/check_concluido"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="Concluído"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:layout_editor_absoluteY="455dp"
-                app:layout_constraintTop_toBottomOf="@+id/spn_tag"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/keyline_1_minus_8dp"
+                    android:text="selecionar tag"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/colorWhite"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spn_tag"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"/>
+
+                    <ImageView
+                        android:id="@+id/imageView8"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0"
+                        app:srcCompat="@drawable/ic_more" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/button9"
@@ -136,13 +215,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
                 android:onClick="cadastrarNovaMovimentacao"
                 android:text="Cadastrar"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/check_concluido" />
+                app:layout_constraintTop_toBottomOf="@+id/layout_spinner_tag" />
 
         </android.support.constraint.ConstraintLayout>
 
