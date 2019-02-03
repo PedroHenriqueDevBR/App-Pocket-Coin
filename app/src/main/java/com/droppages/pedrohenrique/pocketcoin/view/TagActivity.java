@@ -1,19 +1,31 @@
 package com.droppages.pedrohenrique.pocketcoin.view;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
+import com.droppages.pedrohenrique.pocketcoin.adapters.TagAdapter;
 import com.droppages.pedrohenrique.pocketcoin.controllers.TagController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCategoriaException;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeTagException;
+import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.BoxStore;
@@ -22,6 +34,7 @@ public class TagActivity extends AppCompatActivity {
     private BoxStore        boxStore;
     private EditText        txtNome;
     private TagController   controller;
+    private RecyclerView    rvTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,36 +43,67 @@ public class TagActivity extends AppCompatActivity {
 
         // Bind
         txtNome     = findViewById(R.id.edit_nome);
+        rvTags      = findViewById(R.id.rv_lista_de_tag);
 
         // ObjectBox
         boxStore    = ((App)getApplication()).getBoxStore();
         controller  = new TagController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
     }
 
-
-    public void cadastrarNovaTag(View view){
-        try {
-            String nome = txtNome.getText().toString().trim();
-            controller.cadastrarTag(nome);
-            mostrarMensagem("Tag cadastrada com sucesso");
-            limparCampos();
-        } catch (DadoInvalidoNoCadastroDeTagException e) {
-            mostrarMensagem(e.getMensagem());
-        } catch (Exception e) {
-            Log.e("TagCadastro", e.getMessage());
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mostrarTagsCadastradas();
     }
 
-    public void mostrarTagsCadastradas(View view){
+    private void mostrarTagsCadastradas(){
         List<Tag> tags = controller.selecionarTodasAsTagsDoUsuarioLogado();
-        mostrarMensagem("" + tags.size());
+        TagAdapter adapter = new TagAdapter(this, tags, boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        rvTags.setAdapter(adapter);
+        rvTags.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
     }
+
+    public void cadastrarTag(View v){
+        View            dialogCategoria = View.inflate(this, R.layout.dialog_cadastrar_tag, null);
+        EditText        txtNome         = dialogCategoria.findViewById(R.id.edit_nome);
+
+        // Criação do AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogCategoria);
+        builder.setPositiveButton("Cadastrar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                try {
+                    String nome = txtNome.getText().toString().trim();
+                    controller.cadastrarTag(nome);
+                    mostrarMensagem("Categoria cadastrada com sucesso!");
+                    onResume();
+                } catch (DadoInvalidoNoCadastroDeTagException e){
+                    mostrarMensagem(e.getMensagem());
+                } catch (Exception e) {
+                    System.out.println("Erro no cadastro: " + e.getMessage());
+                }
+            }
+        });
+        builder.setNeutralButton("Cancelar", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+//    public void cadastrarNovaTag(View view){
+//        try {
+//            String nome = txtNome.getText().toString().trim();
+//            controller.cadastrarTag(nome);
+//            mostrarMensagem("Tag cadastrada com sucesso");
+//            limparCampos();
+//        } catch (DadoInvalidoNoCadastroDeTagException e) {
+//            mostrarMensagem(e.getMensagem());
+//        } catch (Exception e) {
+//            Log.e("TagCadastro", e.getMessage());
+//        }
+//    }
 
     private void mostrarMensagem(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-
-    private void limparCampos(){
-        txtNome.setText("");
     }
 }

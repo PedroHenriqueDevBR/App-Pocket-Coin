@@ -1,15 +1,12 @@
 package com.droppages.pedrohenrique.pocketcoin.view;
 
-import android.se.omapi.Session;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
@@ -19,21 +16,24 @@ import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCarteiraException;
 import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
-import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
-import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
 public class CarteiraActivity extends AppCompatActivity {
     private BoxStore                boxStore;
-    private Box<Carteira>           carteiraBox;
-    private Box<NaturezaDaAcao>     naturezaBox;
     private CarteiraController      controller;
     private RecyclerView            rvCarteiras;
+    private BarChart                chartCarteiras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,25 +41,55 @@ public class CarteiraActivity extends AppCompatActivity {
         setContentView(R.layout.activity_carteira);
 
         // Bind
-        rvCarteiras = findViewById(R.id.rv_lista_de_carteiras);
+        rvCarteiras     = findViewById(R.id.rv_lista_de_carteiras);
+        chartCarteiras  = findViewById(R.id.chart_carteiras_cadastradas);
 
         // ObjectBox
         boxStore    = ((App)getApplication()).getBoxStore();
-        carteiraBox = boxStore.boxFor(Carteira.class);
-        naturezaBox = boxStore.boxFor(NaturezaDaAcao.class);
         controller  = new CarteiraController(boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         listarCarteirasCadastradas();
+        mostrarGraficoDeCarteirasCadastradas();
+    }
+
+    private void mostrarGraficoDeCarteirasCadastradas(){
+        Description description = new Description();
+        description.setText("");
+
+        chartCarteiras.setDescription(description);
+        chartCarteiras.setDrawBarShadow(false);
+        chartCarteiras.setDrawValueAboveBar(true);
+        chartCarteiras.setPinchZoom(true);
+        chartCarteiras.setDrawGridBackground(true);
+        chartCarteiras.setDrawValueAboveBar(true);
+        chartCarteiras.setFitBars(true);
+
+        List<BarEntry> entries = new ArrayList<>();
+
+
+        List<Carteira> carteiras = controller.selecionarTodasAsCarteirasDoUsuarioLogado();
+        for (int i = 0; i < carteiras.size(); i++){
+            entries.add(new BarEntry(i, carteiras.get(i).getSaldo()));
+        }
+
+        BarDataSet dataSet = new BarDataSet(entries, "Dados");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        dataSet.setValueTextSize(10);
+
+        BarData data = new BarData(dataSet);
+
+        chartCarteiras.animateY(2500, Easing.EasingOption.EaseInOutCubic);
+        chartCarteiras.animateX(2500, Easing.EasingOption.EaseInOutCubic);
+        chartCarteiras.setData(data);
     }
 
     private void listarCarteirasCadastradas(){
         List<Carteira> carteiras = controller.selecionarTodasAsCarteirasDoUsuarioLogado();
-        CarteiraAdapter adapter = new CarteiraAdapter(this, carteiras);
+        CarteiraAdapter adapter = new CarteiraAdapter(this, carteiras, boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
         rvCarteiras.setAdapter(adapter);
         rvCarteiras.setLayoutManager(new LinearLayoutManager(this));
     }

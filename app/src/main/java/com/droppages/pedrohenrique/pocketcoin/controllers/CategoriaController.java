@@ -14,17 +14,21 @@ import java.util.List;
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
 
+import static com.droppages.pedrohenrique.pocketcoin.model.Movimentacao_.carteira;
+
 public class CategoriaController {
     public final static String CREDITO = "credito";
     public final static String DEBITO = "debito";
-    private Box<Categoria> categoriaBox;
+    private Box<Categoria>      categoriaBox;
     private Box<Usuario>        usuarioBox;
-    private Sessao sessao;
+    private Box<NaturezaDaAcao> naturezaBox;
+    private Sessao              sessao;
 
 
     public CategoriaController(BoxStore boxStore, SharedPreferences preferences) {
         categoriaBox = boxStore.boxFor(Categoria.class);
         usuarioBox  = boxStore.boxFor(Usuario.class);
+        naturezaBox = boxStore.boxFor(NaturezaDaAcao.class);
         this.sessao = new Sessao(preferences);
     }
 
@@ -37,6 +41,23 @@ public class CategoriaController {
             usuarioLogado.categorias.add(categoria);
             usuarioBox.put(usuarioLogado);
         }
+    }
+
+
+    public void cadastrarNovaCategoria(String nome, long idNatureza) throws DadoInvalidoNoCadastroDeCategoriaException {
+        if (dadosValidosParaCadastro(nome)){
+            Categoria categoria = new Categoria(nome);
+            NaturezaDaAcao natureza = naturezaBox.get(idNatureza);
+            categoria.setNatureza(natureza);
+            Usuario usuarioLogado = selecionarUsuarioLogado();
+            usuarioLogado.categorias.add(categoria);
+            usuarioBox.put(usuarioLogado);
+        }
+    }
+
+
+    public List<NaturezaDaAcao> selecionarTodasAsNaturezas(){
+        return naturezaBox.getAll();
     }
 
 
@@ -57,6 +78,16 @@ public class CategoriaController {
         }
 
         return categorias;
+    }
+
+
+    public Categoria selecionarCategoriaPeloId(long id){
+        return categoriaBox.get(id);
+    }
+
+
+    public void deletarCategoria(long id){
+        categoriaBox.remove(id);
     }
 
 

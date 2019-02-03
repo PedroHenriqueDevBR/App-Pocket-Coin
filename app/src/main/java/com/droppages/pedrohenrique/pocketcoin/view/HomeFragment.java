@@ -23,6 +23,7 @@ import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -134,6 +135,7 @@ public class HomeFragment extends Fragment {
         chartCategoria.setTransparentCircleAlpha(1);
         chartCategoria.setDrawEntryLabels(true);
         chartCategoria.setEntryLabelTextSize(10);
+        chartCategoria.animateY(2500, Easing.EasingOption.EaseInOutCubic);
 
         dadosParaOGraficoDeCategoria(lista);
     }
@@ -264,7 +266,6 @@ public class HomeFragment extends Fragment {
         DespesaPorCategoriaAdapter adapter = new DespesaPorCategoriaAdapter(listaCategoriaComValor, getActivity().getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
     }
 
     private void calcularEconomiaMesal(){

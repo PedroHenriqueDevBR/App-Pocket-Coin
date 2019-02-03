@@ -44,6 +44,16 @@ public class TagController {
     }
 
 
+    public Tag selecionarTagPeloId(long id){
+        return tagBox.get(id);
+    }
+
+
+    public void deletarTag(long id){
+        tagBox.remove(id);
+    }
+
+
     /*
      * Métodos de apoio aos métodos públicos
      */

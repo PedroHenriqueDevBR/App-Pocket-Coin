@@ -44,6 +44,26 @@ public class CarteiraController {
     }
 
 
+    public Carteira selecionarCarteiraPeloId(long id){
+        return carteiraBox.get(id);
+    }
+
+
+    public void atualizarCarteira(Carteira carteira) throws DadoInvalidoNoCadastroDeCarteiraException {
+        String nome = carteira.getNome();
+        float saldo = carteira.getSaldo();
+
+        if (dadosValidosParaCadastro(nome, saldo)){
+            carteiraBox.put(carteira);
+        }
+    }
+
+
+    public void deletarCarteira(long id){
+        carteiraBox.remove(id);
+    }
+
+
     /*
     * Métodos de apoio aos métodos públicos
     */

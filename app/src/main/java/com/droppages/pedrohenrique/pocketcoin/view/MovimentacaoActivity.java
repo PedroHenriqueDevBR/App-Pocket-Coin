@@ -2,6 +2,7 @@ package com.droppages.pedrohenrique.pocketcoin.view;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
@@ -30,6 +32,7 @@ import io.objectbox.BoxStore;
 
 public class MovimentacaoActivity extends AppCompatActivity {
     private EditText                txtValor, txtData, txtDescricao;
+    private TextView                txtDescricaoMovimentacao;
     private Spinner                 spnCategoria, spnCarteira, spnTag;
     private CheckBox                checkConcluido;
     private MovimentacaoController  controller;
@@ -46,13 +49,14 @@ public class MovimentacaoActivity extends AppCompatActivity {
         idNaturezaRecebida = intent.getLongExtra("idNatureza", 0);
 
         // Bind
-        txtValor            = findViewById(R.id.edit_valor);
-        txtData             = findViewById(R.id.edit_data);
-        txtDescricao        = findViewById(R.id.edit_descricao);
-        spnCategoria        = findViewById(R.id.spn_categoria);
-        spnCarteira         = findViewById(R.id.spn_carteira);
-        spnTag              = findViewById(R.id.spn_tag);
-        checkConcluido      = findViewById(R.id.check_concluido);
+        txtValor                    = findViewById(R.id.edit_valor);
+        txtData                     = findViewById(R.id.edit_data);
+        txtDescricao                = findViewById(R.id.edit_descricao);
+        spnCategoria                = findViewById(R.id.spn_categoria);
+        spnCarteira                 = findViewById(R.id.spn_carteira);
+        spnTag                      = findViewById(R.id.spn_tag);
+        checkConcluido              = findViewById(R.id.check_concluido);
+        txtDescricaoMovimentacao    = findViewById(R.id.txt_descricao_movimentacao);
 
         // ObjectBox
         BoxStore boxStore   = ((App) getApplication()).getBoxStore();
@@ -66,7 +70,16 @@ public class MovimentacaoActivity extends AppCompatActivity {
         // Metodos
         preencherSpninnersComDados();
         preencherTxtDataComDataAtual();
+        setaCorDoTopo();
         txtData.setOnClickListener(a -> abrirDatePicker());
+    }
+
+    private void setaCorDoTopo() {
+        if (idNaturezaRecebida == 1){
+            txtDescricaoMovimentacao.setBackgroundColor(Color.rgb(76,175,80));
+        } else {
+            txtDescricaoMovimentacao.setBackgroundColor(Color.rgb(244,67,54));
+        }
     }
 
     private void preencherSpninnersComDados(){

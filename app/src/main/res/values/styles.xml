@@ -31,6 +31,24 @@
         <item name="android:paddingTop">50dp</item>
     </style>
 
+    <style name="descricaoDaPaginaVerde">
+        <item name="android:background">@drawable/bg_gradient_green</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingBottom">50dp</item>
+        <item name="android:paddingTop">50dp</item>
+    </style>
+
+    <style name="descricaoDaPaginaVermelho">
+        <item name="android:background">@drawable/bg_gradient_red</item>
+        <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">18dp</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:paddingBottom">50dp</item>
+        <item name="android:paddingTop">50dp</item>
+    </style>
+
     <style name="textTitulo">
         <item name="android:layout_marginBottom">8dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>

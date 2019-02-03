@@ -33,10 +33,10 @@ public class Carteira {
         return false;
     }
 
-    public boolean transferir(Carteira carteira, float valor){
+    public boolean transferir(Carteira destino, float valor){
         if (haSaldoSuficiente(valor)) {
+            destino.depositar(valor);
             this.sacar(valor);
-            carteira.depositar(valor);
             return true;
         }
         return false;

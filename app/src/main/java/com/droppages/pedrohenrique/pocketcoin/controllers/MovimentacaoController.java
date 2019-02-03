@@ -77,7 +77,12 @@ public class MovimentacaoController {
     public boolean transferir(long idOrigem, long idDestino, float valor){
         Carteira origem = carteiraBox.get(idOrigem);
         Carteira destino = carteiraBox.get(idDestino);
-        return origem.transferir(destino, valor);
+        if (origem.transferir(destino, valor)) {
+            carteiraBox.put(origem);
+            carteiraBox.put(destino);
+            return true;
+        }
+        return false;
     }
 
 
@@ -197,11 +202,10 @@ public class MovimentacaoController {
 
 
     public double calcularValorGastoNoMesPorCategoriaSelecionada(Categoria categoria){
-        List<Movimentacao> movimentacoes = selecionarTodasAsMovimentacoesComDespesa();
         double resultado = 0f;
 
-        for (Movimentacao movimentacao: movimentacoes){
-            if (movimentacao.getCategoria().getTarget().id == categoria.id){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().getMovimentacoes()){
+            if (movimentacao.getCategoria().getTargetId() == categoria.id){
                 resultado += movimentacao.getValor();
             }
         }
