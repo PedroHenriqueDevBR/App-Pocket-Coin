@@ -4,15 +4,10 @@ import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
@@ -20,12 +15,9 @@ import com.droppages.pedrohenrique.pocketcoin.adapters.TagAdapter;
 import com.droppages.pedrohenrique.pocketcoin.controllers.TagController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCategoriaException;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeTagException;
-import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.BoxStore;
@@ -76,9 +68,9 @@ public class TagActivity extends AppCompatActivity {
                 try {
                     String nome = txtNome.getText().toString().trim();
                     controller.cadastrarTag(nome);
-                    mostrarMensagem("Categoria cadastrada com sucesso!");
+                    mostrarMensagem("Tag cadastrada com sucesso!");
                     onResume();
-                } catch (DadoInvalidoNoCadastroDeTagException e){
+                } catch (CadastroInvalidoException e){
                     mostrarMensagem(e.getMensagem());
                 } catch (Exception e) {
                     System.out.println("Erro no cadastro: " + e.getMessage());
@@ -89,19 +81,6 @@ public class TagActivity extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-
-//    public void cadastrarNovaTag(View view){
-//        try {
-//            String nome = txtNome.getText().toString().trim();
-//            controller.cadastrarTag(nome);
-//            mostrarMensagem("Tag cadastrada com sucesso");
-//            limparCampos();
-//        } catch (DadoInvalidoNoCadastroDeTagException e) {
-//            mostrarMensagem(e.getMensagem());
-//        } catch (Exception e) {
-//            Log.e("TagCadastro", e.getMessage());
-//        }
-//    }
 
     private void mostrarMensagem(String msg){
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

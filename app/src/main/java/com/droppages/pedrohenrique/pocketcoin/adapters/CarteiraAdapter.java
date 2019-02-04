@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TextInputEditText;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +15,8 @@ import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.controllers.CarteiraController;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCarteiraException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
-import com.droppages.pedrohenrique.pocketcoin.model.Log;
 
 import java.util.List;
 
@@ -144,7 +142,7 @@ public class CarteiraAdapter extends RecyclerView.Adapter<CarteiraAdapter.ViewHo
                     carteira.setNome(editarNome.getText().toString().trim());
                     carteira.setSaldo(Float.parseFloat(txtValor.getText().toString().trim()));
                     controller.atualizarCarteira(carteira);
-                } catch (DadoInvalidoNoCadastroDeCarteiraException e) {
+                } catch (CadastroInvalidoException e) {
                     Toast.makeText(context, e.getMensagem(), Toast.LENGTH_SHORT).show();
                 } catch (Exception e){
                     System.out.println("Erro: " + e.getMessage());

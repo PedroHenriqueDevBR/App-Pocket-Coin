@@ -37,15 +37,15 @@ public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Movimentacao movimentacao = movimentacoes.get(position);
 
-        String natureza     = movimentacao.getNatureza().getTarget().getNome();
+        String natureza     = movimentacao.selecionarNatureza().getNome();
         String valor        = Double.toString(movimentacao.getValor());
         String descricao    = movimentacao.getDescricao();
-        String carteira     = movimentacao.getCarteira().getTarget().getNome();
-        String categoria    = movimentacao.getCategoria().getTarget().getNome();
+        String carteira     = movimentacao.selecionarCarteira().getNome();
+        String categoria    = movimentacao.selecionarCategoria().getNome();
         String data         = movimentacao.getData();
         String tag          = "";
 
-        for (Tag tags: movimentacao.getTag()){
+        for (Tag tags: movimentacao.selecionarListaDeTag()){
             tag += tags.getNome();
         }
 
@@ -53,7 +53,7 @@ public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapte
         holder.txtDescricao.setText(descricao);
         holder.txtCarteira.setText(carteira);
         holder.txtCategoria.setText(categoria);
-        // holder.txtData.setText(data);
+        holder.txtData.setText(data);
         // holder.txtTag.setText(tag);
 
         // Seta a cor da movimentacoa
@@ -81,7 +81,7 @@ public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapte
             super(itemView);
             txtNatureza     = itemView.findViewById(R.id.txt_natureza_movimentacao);
             txtValor        = itemView.findViewById(R.id.txt_valor_movimentacao);
-            // txtData         = itemView.findViewById(R.id.txt_data_movimentacao);
+            txtData         = itemView.findViewById(R.id.txt_data_movimentacao);
             txtDescricao    = itemView.findViewById(R.id.txt_descricao_movimentacao);
             txtCarteira     = itemView.findViewById(R.id.txt_carteira_movimentacao);
             txtCategoria    = itemView.findViewById(R.id.txt_categoria_movimentacao);

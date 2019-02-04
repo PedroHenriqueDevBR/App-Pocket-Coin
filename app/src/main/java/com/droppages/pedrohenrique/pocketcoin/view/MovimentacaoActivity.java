@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -19,7 +18,7 @@ import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeMovimentacaoException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -105,7 +104,7 @@ public class MovimentacaoActivity extends AppCompatActivity {
             controller.cadastrarNovaMovimentacao(valor, data, descricao, idCategoria, idCarteira, idTag, idNaturezaRecebida, true);
             mostrarMensagem("Movimentação cadastrada com sucesso");
             this.finish();
-        } catch (DadoInvalidoNoCadastroDeMovimentacaoException e){
+        } catch (CadastroInvalidoException e){
             mostrarMensagem(e.getMensagem());
         } catch (Exception e) {
             Log.e("cadastroMovimentacao", e.getMessage());

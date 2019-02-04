@@ -1,9 +1,10 @@
 package com.droppages.pedrohenrique.pocketcoin.exceptions;
 
-public class DadoInvalidoNoCadastroDeMovimentacaoException extends Exception {
+public class CadastroInvalidoException extends Exception {
+
     private String mensagem;
 
-    public DadoInvalidoNoCadastroDeMovimentacaoException(String mensagem){
+    public CadastroInvalidoException(String mensagem){
         this.mensagem = mensagem;
     }
 

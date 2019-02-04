@@ -3,16 +3,14 @@ package com.droppages.pedrohenrique.pocketcoin.controllers;
 import android.content.SharedPreferences;
 
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCarteiraException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
-import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
 import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
-import io.objectbox.relation.ToOne;
 
 public class CarteiraController {
 
@@ -28,11 +26,11 @@ public class CarteiraController {
     }
 
 
-    public void cadastrarNovaCarteira(String nome, float saldo) throws DadoInvalidoNoCadastroDeCarteiraException {
+    public void cadastrarNovaCarteira(String nome, float saldo) throws CadastroInvalidoException {
         if (dadosValidosParaCadastro(nome, saldo)){
             Carteira carteira = new Carteira(nome, saldo);
             Usuario usuarioLogado = selecionarUsuarioLogado();
-            usuarioLogado.carteiras.add(carteira);
+            usuarioLogado.adicionarCarteira(carteira);
             usuarioBox.put(usuarioLogado);
         }
     }
@@ -40,7 +38,7 @@ public class CarteiraController {
 
     public List<Carteira> selecionarTodasAsCarteirasDoUsuarioLogado(){
         Usuario usuarioLogado = selecionarUsuarioLogado();
-        return usuarioLogado.carteiras;
+        return usuarioLogado.selecionarListaDeCarteiras();
     }
 
 
@@ -49,7 +47,7 @@ public class CarteiraController {
     }
 
 
-    public void atualizarCarteira(Carteira carteira) throws DadoInvalidoNoCadastroDeCarteiraException {
+    public void atualizarCarteira(Carteira carteira) throws CadastroInvalidoException {
         String nome = carteira.getNome();
         float saldo = carteira.getSaldo();
 
@@ -69,20 +67,20 @@ public class CarteiraController {
     */
 
 
-    private boolean dadosValidosParaCadastro(String nome, float saldo) throws DadoInvalidoNoCadastroDeCarteiraException {
+    private boolean dadosValidosParaCadastro(String nome, float saldo) throws CadastroInvalidoException {
         if (nome.length() == 0) {
-            throw new DadoInvalidoNoCadastroDeCarteiraException("Digite o nome da carteira.");
+            throw new CadastroInvalidoException("Digite o nome da carteira.");
         } else if (carteiraJaCadastrada(nome)) {
-            throw new DadoInvalidoNoCadastroDeCarteiraException("Carteira já cadastrada, altere o campo nome e tente novamente.");
+            throw new CadastroInvalidoException("Carteira já cadastrada, altere o campo nome e tente novamente.");
         } else if (saldo < 0){
-            throw new DadoInvalidoNoCadastroDeCarteiraException("O saldo inicial nao pode ser negativo.");
+            throw new CadastroInvalidoException("O saldo inicial nao pode ser negativo.");
         }
         return true;
     }
 
 
     private boolean carteiraJaCadastrada(String nome){
-        for (Carteira carteira: carteiraBox.getAll()){
+        for (Carteira carteira: selecionarUsuarioLogado().selecionarListaDeCarteiras()){
             if (carteira.getNome().toLowerCase().equals(nome.toLowerCase())) { return true; }
         }
         return false;

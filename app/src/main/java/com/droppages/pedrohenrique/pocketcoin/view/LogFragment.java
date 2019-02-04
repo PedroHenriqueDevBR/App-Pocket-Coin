@@ -21,6 +21,8 @@ import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.model.Movimentacao;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.objectbox.BoxStore;
@@ -75,23 +77,79 @@ public class LogFragment extends Fragment {
     }
 
     private void mostrarListaDeMovimentacoesDoMesAtual(){
-        List<Movimentacao> movimentacoes = controller.selecionarTodasAsMovimentacoesDoUsuarioNoMesAtual();
-        mostrarMensage("Numero de elementos: " + movimentacoes.size());
+        List<Movimentacao> movimentacoes = ordenarListaNaOrdemDecrescente(controller.selecionarTodasAsMovimentacoesDoUsuarioNoMesAtual());
         MovimentacaoAdapter adapter = new MovimentacaoAdapter(movimentacoes, getActivity().getApplicationContext());
         listaDeMovimentacoes.setAdapter(adapter);
         listaDeMovimentacoes.setLayoutManager(new LinearLayoutManager(this.getActivity()));
     }
 
     private void mostrarListaDeMovimentacoesDoMesSelecionado(String data){
-        List<Movimentacao> movimentacoes = controller.selecionarTodasAsMovimentacoesDoUsuarioNoMesEAnoSelecionado(data);
-        mostrarMensage("Numero de elementos: " + movimentacoes.size());
+        List<Movimentacao> movimentacoes = ordenarListaNaOrdemDecrescente(controller.selecionarTodasAsMovimentacoesDoUsuarioNoMesEAnoSelecionado(data));
         MovimentacaoAdapter adapter = new MovimentacaoAdapter(movimentacoes, getActivity().getApplicationContext());
         listaDeMovimentacoes.setAdapter(adapter);
         listaDeMovimentacoes.setLayoutManager(new LinearLayoutManager(this.getActivity()));
     }
 
+    private List<Movimentacao> ordenarListaNaOrdemDecrescente(List<Movimentacao> movimentacoes){
+        Collections.sort(movimentacoes, new Comparator<Movimentacao>() {
+            @Override
+            public int compare(Movimentacao o1, Movimentacao o2) {
+                if (o1.id < o2.id){
+                    return 1;
+                } else if (o1.id > o2.id) {
+                    return -1;
+                }
+                return 0;
+            }
+        });
+        return movimentacoes;
+    }
+
+    private List<String> ordenarDataPorAno(List<String> lista){
+        Collections.sort(lista, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1 != "Mês atual"  && o2 != "Mês atual"){
+                    int anoUm = Integer.parseInt(o1.split("/")[1]);
+                    int anoDois = Integer.parseInt(o2.split("/")[1]);
+
+                    if (anoUm > anoDois) {
+                        return 1;
+                    } else if (anoUm < anoDois) {
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        });
+        return lista;
+    }
+
+    private List<String> ordenarDataPorMes(List<String> lista){
+        Collections.sort(lista, new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                if (o1 != "Mês atual"  && o2 != "Mês atual"){
+                    int anoUm = Integer.parseInt(o1.split("/")[0]);
+                    int anoDois = Integer.parseInt(o2.split("/")[0]);
+
+                    if (anoUm > anoDois) {
+                        return 1;
+                    } else if (anoUm < anoDois) {
+                        return -1;
+                    }
+                }
+                return 0;
+            }
+        });
+        return lista;
+    }
+
     private void preecherSpinnerComDatas(){
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, controller.selecionarTodasAsDatasCadastradas());
+        List<String> listaDeDatas = controller.selecionarTodasAsDatasCadastradas();
+        ordenarDataPorMes(listaDeDatas);
+        ordenarDataPorAno(listaDeDatas);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, listaDeDatas);
         spnDatas.setAdapter(adapter);
     }
 

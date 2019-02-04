@@ -1,18 +1,17 @@
 package com.droppages.pedrohenrique.pocketcoin.view;
 
-import com.droppages.pedrohenrique.pocketcoin.R;
-import com.droppages.pedrohenrique.pocketcoin.controllers.CarteiraController;
-import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
-import com.droppages.pedrohenrique.pocketcoin.dal.App;
-import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.droppages.pedrohenrique.pocketcoin.R;
+import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
+import com.droppages.pedrohenrique.pocketcoin.dal.App;
+import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,12 +73,9 @@ public class TransferenciaActivity extends AppCompatActivity {
             mostrarMensagem("Digite o valor da tranferência.");
         } else {
             valor = Float.parseFloat(txtValor.getText().toString().trim());
-            if (movimentacaoController.transferir(idOrigem, idDestino, valor)){
-                mostrarMensagem("Transferência realizada com sucesso!");
-                this.finish();
-            } else {
-                mostrarMensagem("Saldo insuficiente para transferência!");
-            }
+            movimentacaoController.transferir(idOrigem, idDestino, valor);
+            mostrarMensagem("Transferência realizada com sucesso!");
+            this.finish();
         }
     }
 

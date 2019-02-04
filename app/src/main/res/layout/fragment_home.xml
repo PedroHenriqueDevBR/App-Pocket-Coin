@@ -27,7 +27,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/line1"
+                android:id="@+id/layout_mostra_saldo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/colorPrimary"
@@ -184,6 +184,7 @@
                                 android:layout_height="300dp" />
 
                             <LinearLayout
+                                android:id="@+id/layout_gasto_por_categoria"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 

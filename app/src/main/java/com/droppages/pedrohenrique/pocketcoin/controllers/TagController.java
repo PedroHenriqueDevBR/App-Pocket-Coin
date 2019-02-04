@@ -3,9 +3,7 @@ package com.droppages.pedrohenrique.pocketcoin.controllers;
 import android.content.SharedPreferences;
 
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeTagException;
-import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
-import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
@@ -28,11 +26,11 @@ public class TagController {
     }
 
 
-    public void cadastrarTag(String nome) throws DadoInvalidoNoCadastroDeTagException {
+    public void cadastrarTag(String nome) throws CadastroInvalidoException {
         if (dadosValidosParaCadastro(nome)){
             Tag tag = new Tag(nome);
             Usuario usuarioLogado = selecionarUsuarioLogado();
-            usuarioLogado.tags.add(tag);
+            usuarioLogado.adicionarTag(tag);
             usuarioBox.put(usuarioLogado);
         }
     }
@@ -40,7 +38,7 @@ public class TagController {
 
     public List<Tag> selecionarTodasAsTagsDoUsuarioLogado(){
         Usuario usuarioLogado = selecionarUsuarioLogado();
-        return usuarioLogado.getTags();
+        return usuarioLogado.selecionarListaDeTags();
     }
 
 
@@ -59,18 +57,18 @@ public class TagController {
      */
 
 
-    private boolean dadosValidosParaCadastro(String nome) throws DadoInvalidoNoCadastroDeTagException {
+    private boolean dadosValidosParaCadastro(String nome) throws CadastroInvalidoException {
         if (nome.length() == 0) {
-            throw new DadoInvalidoNoCadastroDeTagException("Digite o nome da tag.");
+            throw new CadastroInvalidoException("Digite o nome da tag.");
         } else if (tagJaCadastrado(nome)) {
-            throw new DadoInvalidoNoCadastroDeTagException("Tag já cadastrada, altere o nome da tag e tente novamente.");
+            throw new CadastroInvalidoException("Tag já cadastrada, altere o nome da tag e tente novamente.");
         }
         return true;
     }
 
 
     private boolean tagJaCadastrado(String nome){
-        for (Tag tag: tagBox.getAll()){
+        for (Tag tag: selecionarUsuarioLogado().selecionarListaDeTags()){
             if (tag.getNome().toLowerCase().equals(nome.toLowerCase())) { return true; }
         }
         return false;

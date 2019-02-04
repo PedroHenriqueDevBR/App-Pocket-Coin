@@ -27,19 +27,13 @@ public class Carteira {
     }
 
     public boolean sacar(float valor){
-        if (valor > 0 && haSaldoSuficiente(valor)){
-            this.saldo -= valor;
-        }
+        saldo -= valor;
         return false;
     }
 
-    public boolean transferir(Carteira destino, float valor){
-        if (haSaldoSuficiente(valor)) {
-            destino.depositar(valor);
-            this.sacar(valor);
-            return true;
-        }
-        return false;
+    public void transferir(Carteira destino, float valor){
+        destino.depositar(valor);
+        this.sacar(valor);
     }
 
     private boolean haSaldoSuficiente(float valor){

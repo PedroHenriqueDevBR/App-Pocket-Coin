@@ -24,13 +24,11 @@
             android:layout_height="40dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:text="A"
             android:textAlignment="center"
             android:textColor="@android:color/white"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/txt_cor_movimentacao"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,7 +40,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="Descrição"
-            android:textSize="18sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/txt_valor_movimentacao"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/txt_natureza_movimentacao"
@@ -53,9 +51,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="1dp"
             android:text="Carteira"
-            app:layout_constraintBottom_toTopOf="@+id/txt_cor_movimentacao"
+            android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/txt_natureza_movimentacao"
             app:layout_constraintTop_toBottomOf="@+id/txt_descricao_movimentacao" />
 
@@ -63,10 +61,9 @@
             android:id="@+id/textView30"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="1dp"
             android:text="|"
-            app:layout_constraintBottom_toTopOf="@+id/txt_cor_movimentacao"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@+id/txt_carteira_movimentacao"
             app:layout_constraintTop_toBottomOf="@+id/txt_descricao_movimentacao" />
 
@@ -74,11 +71,11 @@
             android:id="@+id/txt_categoria_movimentacao"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="1dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:text="TextView"
-            app:layout_constraintBottom_toTopOf="@+id/txt_cor_movimentacao"
+            android:text="Categoria"
+            android:textSize="10sp"
             app:layout_constraintEnd_toStartOf="@+id/txt_valor_movimentacao"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView30"
@@ -90,7 +87,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="TextView"
+            android:layout_marginBottom="8dp"
+            android:text="R$ 0.00"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/image_menu_movimentacao"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,10 +110,22 @@
             android:id="@+id/txt_cor_movimentacao"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="8dp"
             android:background="@color/colorAcaoTransferencia"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_data_movimentacao" />
+
+        <TextView
+            android:id="@+id/txt_data_movimentacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="00/00/0000"
+            android:textSize="10sp"
+            app:layout_constraintStart_toEndOf="@+id/txt_natureza_movimentacao"
+            app:layout_constraintTop_toBottomOf="@+id/textView30" />
     </android.support.constraint.ConstraintLayout>
 
 

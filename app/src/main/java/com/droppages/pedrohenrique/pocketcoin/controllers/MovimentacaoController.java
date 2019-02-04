@@ -3,7 +3,7 @@ package com.droppages.pedrohenrique.pocketcoin.controllers;
 import android.content.SharedPreferences;
 
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeMovimentacaoException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
 import com.droppages.pedrohenrique.pocketcoin.model.Movimentacao;
@@ -21,7 +21,6 @@ import java.util.Map;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
-import io.objectbox.relation.ToMany;
 
 public class MovimentacaoController {
     private Box<Movimentacao>   movimentacaoBox;
@@ -44,7 +43,7 @@ public class MovimentacaoController {
     }
 
 
-    public void cadastrarNovaMovimentacao(String valor, String data, String descricao, long idCategoria, long idCarteira, long idTag, long idNatureza, boolean concluido) throws DadoInvalidoNoCadastroDeMovimentacaoException {
+    public void cadastrarNovaMovimentacao(String valor, String data, String descricao, long idCategoria, long idCarteira, long idTag, long idNatureza, boolean concluido) throws CadastroInvalidoException {
         if (dadosValidosParaCadastro(valor, data, descricao)){
             // Prepara os dados
             double valorMovimentacao = Double.parseDouble(valor);
@@ -55,14 +54,14 @@ public class MovimentacaoController {
 
             // Configura a movimentação para cadstrar
             Movimentacao movimentacao = new Movimentacao(valorMovimentacao, data, descricao, concluido);
-            movimentacao.carteira.setTarget(carteira);
-            movimentacao.categoria.setTarget(categoria);
-            movimentacao.tag.add(tag);
-            movimentacao.natureza.setTarget(natureza);
+            movimentacao.configurarCarteira(carteira);
+            movimentacao.configurarCategoria(categoria);
+            movimentacao.adicionarTag(tag);
+            movimentacao.configurarNatureza(natureza);
 
             // Adiciona nova movimentação
             Usuario usuarioLogado = selecionarUsuarioLogado();
-            usuarioLogado.movimentacoes.add(movimentacao);
+            usuarioLogado.adicionarMovimentacao(movimentacao);
 
             // Deposita ou saca o valor na carteira
             if (idNatureza == 1){ carteira.depositar(Float.parseFloat(valor)); } else { carteira.sacar(Float.parseFloat(valor)); }
@@ -74,15 +73,12 @@ public class MovimentacaoController {
     }
 
 
-    public boolean transferir(long idOrigem, long idDestino, float valor){
+    public void transferir(long idOrigem, long idDestino, float valor){
         Carteira origem = carteiraBox.get(idOrigem);
         Carteira destino = carteiraBox.get(idDestino);
-        if (origem.transferir(destino, valor)) {
-            carteiraBox.put(origem);
-            carteiraBox.put(destino);
-            return true;
-        }
-        return false;
+        origem.transferir(destino, valor);
+        carteiraBox.put(origem);
+        carteiraBox.put(destino);
     }
 
 
@@ -98,7 +94,7 @@ public class MovimentacaoController {
         List<String> datas = new ArrayList<>();
         datas.add("Mês atual");
 
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().movimentacoes){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
             String data[] = movimentacao.getData().split("/");
             String dataComparacao = data[1] + "/" + data[2];
 
@@ -114,7 +110,7 @@ public class MovimentacaoController {
     public List<Movimentacao> selecionarTodasAsMovimentacoesDoUsuarioNoMesEAnoSelecionado(String mesAno){
         List<Movimentacao> movimentacoes = new ArrayList<>();
 
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().getMovimentacoes()){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
             String data[] = movimentacao.getData().split("/");
             String dataComparacao = data[1] + "/" + data[2];
 
@@ -130,7 +126,7 @@ public class MovimentacaoController {
     public List<Map<Long, String>> selecionarTodasAsTagsComoDicionario(){
         List<Map<Long, String>> mapList = new ArrayList<>();
         Usuario usuario = selecionarUsuarioLogado();
-        for (Tag tag: usuario.getTags()){
+        for (Tag tag: usuario.selecionarListaDeTags()){
             Map<Long, String> map = new HashMap<Long, String>();
             map.put(tag.id, tag.getNome());
             mapList.add(map);
@@ -144,8 +140,8 @@ public class MovimentacaoController {
         Usuario usuario = selecionarUsuarioLogado();
         NaturezaDaAcao natureza = naturezaBox.get(idNatureza);
 
-        for (Categoria categoria: usuario.getCategorias()){
-            if (categoria.getNatureza().getTarget().getNome().equals(natureza.getNome())) {
+        for (Categoria categoria: usuario.selecionarListaDeCategorias()){
+            if (categoria.selecionarNatureza().getNome().equals(natureza.getNome())) {
                 Map<Long, String> map = new HashMap<Long, String>();
                 map.put(categoria.id, categoria.getNome());
                 mapList.add(map);
@@ -158,7 +154,7 @@ public class MovimentacaoController {
     public List<Map<Long, String>> selecionarTodasAsCarteirasComoDicionario(){
         List<Map<Long, String>> mapList = new ArrayList<>();
         Usuario usuario = selecionarUsuarioLogado();
-        for (Carteira carteira: usuario.getCarteiras()){
+        for (Carteira carteira: usuario.selecionarListaDeCarteiras()){
             Map<Long, String> map = new HashMap<Long, String>();
             map.put(carteira.id, carteira.getNome());
             mapList.add(map);
@@ -172,7 +168,7 @@ public class MovimentacaoController {
 
         Usuario usuario = selecionarUsuarioLogado();
 
-        for (Carteira carteira: usuario.getCarteiras()){
+        for (Carteira carteira: usuario.selecionarListaDeCarteiras()){
             total += carteira.getSaldo();
         }
         return total;
@@ -186,7 +182,7 @@ public class MovimentacaoController {
         float total = 0f;
 
         for (Movimentacao movimentacao: selecionarTodasAsMovimentacoesAPartirDoMesEAno(mesAtual, anoAtual)){
-            if (movimentacao.getNatureza().getTarget().getNome().equals(natureza)){
+            if (movimentacao.selecionarNatureza().getNome().equals(natureza)){
                 total += movimentacao.getValor();
             }
         }
@@ -198,8 +194,8 @@ public class MovimentacaoController {
     public double calcularValorGastoNoMesPorCategoriaSelecionada(Categoria categoria){
         double resultado = 0f;
 
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().getMovimentacoes()){
-            if (movimentacao.getCategoria().getTargetId() == categoria.id){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
+            if (movimentacao.selecionarCategoria().id == categoria.id){
                 resultado += movimentacao.getValor();
             }
         }
@@ -212,15 +208,15 @@ public class MovimentacaoController {
     */
 
 
-    private boolean dadosValidosParaCadastro(String valor, String data, String descricao) throws DadoInvalidoNoCadastroDeMovimentacaoException {
+    private boolean dadosValidosParaCadastro(String valor, String data, String descricao) throws CadastroInvalidoException {
         if (valor.length() == 0){
-            throw new DadoInvalidoNoCadastroDeMovimentacaoException("Preencha o campo valor");
+            throw new CadastroInvalidoException("Preencha o campo valor");
         } else if (data.length() == 0){
-            throw new DadoInvalidoNoCadastroDeMovimentacaoException("Preencha o campo data");
+            throw new CadastroInvalidoException("Preencha o campo data");
         } else if (descricao.length() == 0){
-            throw new DadoInvalidoNoCadastroDeMovimentacaoException("Preencha o campo descrição");
+            throw new CadastroInvalidoException("Preencha o campo descrição");
         } else if (Float.parseFloat(valor) < 0){
-            throw new DadoInvalidoNoCadastroDeMovimentacaoException("O valor não pode ser inferior a zero");
+            throw new CadastroInvalidoException("O valor não pode ser inferior a zero");
         }
         return true;
     }
@@ -234,7 +230,7 @@ public class MovimentacaoController {
 
     private List<Movimentacao> selecionarTodasAsMovimentacoesAPartirDoMesEAno(int mes, int ano){
         List<Movimentacao> movimentacoes = new ArrayList<>();
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().getMovimentacoes()){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
             int mesDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "mes");
             int anoDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "ano");
 
@@ -309,7 +305,7 @@ public class MovimentacaoController {
         NaturezaDaAcao natureza = naturezaBox.get(2);
 
         for (Movimentacao movimentacao: movimentacoes){
-            if (movimentacao.getNatureza().getTarget().id == natureza.id){
+            if (movimentacao.selecionarNatureza().id == natureza.id){
                 String[] dataDaMovimentacao = movimentacao.getData().split("/");
                 int mes = Integer.parseInt(dataDaMovimentacao[1]);
                 int ano = Integer.parseInt(dataDaMovimentacao[2]);

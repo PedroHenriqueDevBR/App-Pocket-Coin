@@ -17,7 +17,7 @@ import com.droppages.pedrohenrique.pocketcoin.adapters.CategoriaAdapter;
 import com.droppages.pedrohenrique.pocketcoin.controllers.CategoriaController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCategoriaException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 
@@ -89,7 +89,7 @@ public class CategoriaActivity extends AppCompatActivity {
                     categoriaController.cadastrarNovaCategoria(nome, id);
                     mostrarMensagem("Categoria cadastrada com sucesso!");
                     onResume();
-                } catch (DadoInvalidoNoCadastroDeCategoriaException e){
+                } catch (CadastroInvalidoException e){
                     mostrarMensagem(e.getMensagem());
                 } catch (Exception e) {
                     System.out.println("Erro no cadastro: " + e.getMessage());

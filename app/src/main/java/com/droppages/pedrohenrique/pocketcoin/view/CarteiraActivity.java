@@ -14,7 +14,7 @@ import com.droppages.pedrohenrique.pocketcoin.adapters.CarteiraAdapter;
 import com.droppages.pedrohenrique.pocketcoin.controllers.CarteiraController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCarteiraException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
@@ -105,13 +105,17 @@ public class CarteiraActivity extends AppCompatActivity {
             EditText txtValor = dialogCadastrarCarteira.findViewById(R.id.edit_valor);
 
             String nome = txtNome.getText().toString().trim();
-            float valor = Float.parseFloat(txtValor.getText().toString().trim());
+            float valor = 0f;
+
+            if (!txtValor.getText().toString().trim().isEmpty()) {
+                valor = Float.parseFloat(txtValor.getText().toString().trim());
+            }
 
             try {
                 controller.cadastrarNovaCarteira(nome, valor);
                 mostrarMensagem("Carteira adicionada com sucesso");
                 onResume();
-            } catch (DadoInvalidoNoCadastroDeCarteiraException e){
+            } catch (CadastroInvalidoException e){
                 mostrarMensagem(e.getMensagem());
             }
         });

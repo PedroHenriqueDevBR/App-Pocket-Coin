@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class HomeFragment extends Fragment {
     private PieChart                chartCategoria;
     private BarChart                chartComparacao;
     private ProgressBar             progressBarEconomiaMensal;
+    private LinearLayout            lytMostraSaldo, lytGastoPorCategoria;
 
 
     public HomeFragment() {}
@@ -72,6 +74,8 @@ public class HomeFragment extends Fragment {
         chartCategoria              = view.findViewById(R.id.chart_despesa_por_categoria);
         chartComparacao             = view.findViewById(R.id.chart_comparacao);
         progressBarEconomiaMensal   = view.findViewById(R.id.progress_bar_economia_mensal);
+        lytMostraSaldo              = view.findViewById(R.id.layout_mostra_saldo);
+        lytGastoPorCategoria        = view.findViewById(R.id.layout_gasto_por_categoria);
         BoxStore boxStore           = ((App) getActivity().getApplication()).getBoxStore();
         movimentacaoController      = new MovimentacaoController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
         categoriaController         = new CategoriaController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
@@ -95,6 +99,8 @@ public class HomeFragment extends Fragment {
         preencherGraficoComparacao();
         setarEconomiaMensal();
         configuraMenu();
+        abrirActivityCarteira();
+        abrirActivityCategoria();
     }
 
     private void configuraMenu() {
@@ -302,6 +308,14 @@ public class HomeFragment extends Fragment {
             intent = new Intent(getActivity(), TransferenciaActivity.class);
         }
         startActivity(intent);
+    }
+
+    private void abrirActivityCarteira(){
+        lytMostraSaldo.setOnClickListener(c -> startActivity(new Intent(getActivity(), CarteiraActivity.class)));
+    }
+
+    private void abrirActivityCategoria(){
+        lytGastoPorCategoria.setOnClickListener(c -> startActivity(new Intent(getActivity(), CategoriaActivity.class)));
     }
 
 }

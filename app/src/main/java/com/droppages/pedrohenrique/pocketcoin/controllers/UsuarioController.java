@@ -4,12 +4,11 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeUsuarioException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Configuracao;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,14 +37,14 @@ public class UsuarioController {
         this.usuarioBox         = boxStore.boxFor(Usuario.class);
     }
 
-    public void cadastrarNovoUsuario(String nome, String login, String senha, String repeteSenha) throws DadoInvalidoNoCadastroDeUsuarioException {
+    public void cadastrarNovoUsuario(String nome, String login, String senha, String repeteSenha) throws CadastroInvalidoException {
         if (dadosValidosParaCadastro(nome, login, senha, repeteSenha)){
             Usuario usuario = new Usuario(nome, login, senha);
             usuarioBox.put(usuario);
         }
     }
 
-    public boolean login(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {
+    public boolean login(String login, String senha) throws CadastroInvalidoException {
         if (dadosValidosParaLogin(login, senha)){
             try {
                 Usuario usuarioLocalizado = usuarioExistente(login, senha);
@@ -55,7 +54,7 @@ public class UsuarioController {
                 sessao.adicionarDadosASessao(Sessao.USUARIO_SENHA, ""+usuarioLocalizado.getSenha());
                 return true;
             } catch (NullPointerException e) {
-                throw new DadoInvalidoNoCadastroDeUsuarioException("Usuário não localizado");
+                throw new CadastroInvalidoException("Usuário não localizado");
             } catch (Exception e) {
                 Log.e("loginUsuario", e.getMessage());
             }
@@ -72,20 +71,20 @@ public class UsuarioController {
         return retorno;
     }
 
-    private boolean dadosValidosParaCadastro(String nome, String login, String senha, String repeteSenha) throws DadoInvalidoNoCadastroDeUsuarioException {
+    private boolean dadosValidosParaCadastro(String nome, String login, String senha, String repeteSenha) throws CadastroInvalidoException {
         if (usuarioJaCadastrado(login)) {
-            throw new DadoInvalidoNoCadastroDeUsuarioException("Usuario já cadastrado, altere o campo login e tente novamente.");
+            throw new CadastroInvalidoException("Usuario já cadastrado, altere o campo login e tente novamente.");
         } else if (nome.length() == 0){
-            throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo nome");
+            throw new CadastroInvalidoException("Preencha o campo nome");
         } else if (login.length() == 0){
-            throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo login");
+            throw new CadastroInvalidoException("Preencha o campo login");
         } else if (senha.length() == 0){
-            throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo senha");
+            throw new CadastroInvalidoException("Preencha o campo senha");
         } else if (repeteSenha.length() == 0){
-            throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo repetir senha");
+            throw new CadastroInvalidoException("Preencha o campo repetir senha");
         } else {
             if (!senha.equals(repeteSenha)){
-                throw new DadoInvalidoNoCadastroDeUsuarioException("Senhas diferentes, tente novamente");
+                throw new CadastroInvalidoException("Senhas diferentes, tente novamente");
             }
         }
         return true;
@@ -98,11 +97,11 @@ public class UsuarioController {
         return false;
     }
 
-    private boolean dadosValidosParaLogin(String login, String senha) throws DadoInvalidoNoCadastroDeUsuarioException {
+    private boolean dadosValidosParaLogin(String login, String senha) throws CadastroInvalidoException {
         if (login.length() == 0){
-            throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo login");
+            throw new CadastroInvalidoException("Preencha o campo login");
         } else if (senha.length() == 0){
-            throw new DadoInvalidoNoCadastroDeUsuarioException("Preencha o campo senha");
+            throw new CadastroInvalidoException("Preencha o campo senha");
         }
         return true;
     }

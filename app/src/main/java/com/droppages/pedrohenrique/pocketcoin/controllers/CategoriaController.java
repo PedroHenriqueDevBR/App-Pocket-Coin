@@ -3,7 +3,7 @@ package com.droppages.pedrohenrique.pocketcoin.controllers;
 import android.content.SharedPreferences;
 
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
-import com.droppages.pedrohenrique.pocketcoin.exceptions.DadoInvalidoNoCadastroDeCategoriaException;
+import com.droppages.pedrohenrique.pocketcoin.exceptions.CadastroInvalidoException;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
@@ -13,8 +13,6 @@ import java.util.List;
 
 import io.objectbox.Box;
 import io.objectbox.BoxStore;
-
-import static com.droppages.pedrohenrique.pocketcoin.model.Movimentacao_.carteira;
 
 public class CategoriaController {
     public final static String CREDITO = "credito";
@@ -33,24 +31,24 @@ public class CategoriaController {
     }
 
 
-    public void cadastrarNovaCategoria(String nome, NaturezaDaAcao natureza) throws DadoInvalidoNoCadastroDeCategoriaException {
+    public void cadastrarNovaCategoria(String nome, NaturezaDaAcao natureza) throws CadastroInvalidoException {
         if (dadosValidosParaCadastro(nome)){
             Categoria categoria = new Categoria(nome);
-            categoria.setNatureza(natureza);
+            categoria.configurarNatureza(natureza);
             Usuario usuarioLogado = selecionarUsuarioLogado();
-            usuarioLogado.categorias.add(categoria);
+            usuarioLogado.adicionarCategoria(categoria);
             usuarioBox.put(usuarioLogado);
         }
     }
 
 
-    public void cadastrarNovaCategoria(String nome, long idNatureza) throws DadoInvalidoNoCadastroDeCategoriaException {
+    public void cadastrarNovaCategoria(String nome, long idNatureza) throws CadastroInvalidoException {
         if (dadosValidosParaCadastro(nome)){
             Categoria categoria = new Categoria(nome);
             NaturezaDaAcao natureza = naturezaBox.get(idNatureza);
-            categoria.setNatureza(natureza);
+            categoria.configurarNatureza(natureza);
             Usuario usuarioLogado = selecionarUsuarioLogado();
-            usuarioLogado.categorias.add(categoria);
+            usuarioLogado.adicionarCategoria(categoria);
             usuarioBox.put(usuarioLogado);
         }
     }
@@ -63,7 +61,7 @@ public class CategoriaController {
 
     public List<Categoria> selecionarTodasAsCategoriasDoUsuarioLogado(){
         Usuario usuarioLogado = selecionarUsuarioLogado();
-        return usuarioLogado.getCategorias();
+        return usuarioLogado.selecionarListaDeCategorias();
     }
 
 
@@ -71,8 +69,8 @@ public class CategoriaController {
         Usuario usuarioLogado = selecionarUsuarioLogado();
         List<Categoria> categorias = new ArrayList<>();
 
-        for (Categoria categoria: usuarioLogado.getCategorias()){
-            if (categoria.getNatureza().getTarget().getNome().equals("Débito")){
+        for (Categoria categoria: usuarioLogado.selecionarListaDeCategorias()){
+            if (categoria.selecionarNatureza().getNome().equals("Débito")){
                 categorias.add(categoria);
             }
         }
@@ -96,18 +94,18 @@ public class CategoriaController {
      */
 
 
-    private boolean dadosValidosParaCadastro(String nome) throws DadoInvalidoNoCadastroDeCategoriaException {
+    private boolean dadosValidosParaCadastro(String nome) throws CadastroInvalidoException {
         if (nome.length() == 0) {
-            throw new DadoInvalidoNoCadastroDeCategoriaException("Digite o nome da categoria.");
+            throw new CadastroInvalidoException("Digite o nome da categoria.");
         } else if (categoriaJaCadastrada(nome)) {
-            throw new DadoInvalidoNoCadastroDeCategoriaException("Categoria já cadastrada, altere o nome da categoria e tente novamente.");
+            throw new CadastroInvalidoException("Categoria já cadastrada, altere o nome da categoria e tente novamente.");
         }
         return true;
     }
 
 
     private boolean categoriaJaCadastrada(String nome){
-        for (Categoria categoria: categoriaBox.getAll()){
+        for (Categoria categoria: selecionarUsuarioLogado().selecionarListaDeCategorias()){
             if (categoria.getNome().toLowerCase().equals(nome.toLowerCase())) { return true; }
         }
         return false;
