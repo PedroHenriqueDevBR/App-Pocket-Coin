@@ -14,7 +14,7 @@ import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 
 
 public class ConfiguracaoFragment extends Fragment {
-    private Button btnGerenciarTag, btnGerenciarCategoria, btnGerenciarCarteira, btnEncerrarSessao;
+    // private Button btnGerenciarTag, btnGerenciarCategoria, btnGerenciarCarteira, btnEncerrarSessao;
     private Sessao sessao;
 
     public ConfiguracaoFragment() {}
@@ -24,34 +24,34 @@ public class ConfiguracaoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_configuracao, container, false);
 
         // Bind
-        btnGerenciarTag         = view.findViewById(R.id.btn_gerenciar_tag);
-        btnEncerrarSessao       = view.findViewById(R.id.btn_encerrar_sessao);
-        btnGerenciarCarteira    = view.findViewById(R.id.btn_gerenciar_carteira);
-        btnGerenciarCategoria   = view.findViewById(R.id.btn_gerenciar_categoria);
-        sessao                  = new Sessao(getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, getActivity().MODE_PRIVATE));
-
-        // Métodos
-        btnGerenciarTag.setOnClickListener(arg -> abrirActivityTag());
-        btnGerenciarCarteira.setOnClickListener(arg -> abrirActivityCarteiras());
-        btnGerenciarCategoria.setOnClickListener(arg -> abrirActivityCategoria());
-        btnEncerrarSessao.setOnClickListener(arg -> limparUsuarioDaSessao());
+//        btnGerenciarTag         = view.findViewById(R.id.btn_gerenciar_tag);
+//        btnEncerrarSessao       = view.findViewById(R.id.btn_encerrar_sessao);
+//        btnGerenciarCarteira    = view.findViewById(R.id.btn_gerenciar_carteira);
+//        btnGerenciarCategoria   = view.findViewById(R.id.btn_gerenciar_categoria);
+//        sessao                  = new Sessao(getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, getActivity().MODE_PRIVATE));
+//
+//        // Métodos
+//        btnGerenciarTag.setOnClickListener(arg -> abrirActivityTag());
+//        btnGerenciarCarteira.setOnClickListener(arg -> abrirActivityCarteiras());
+//        btnGerenciarCategoria.setOnClickListener(arg -> abrirActivityCategoria());
+//        btnEncerrarSessao.setOnClickListener(arg -> limparUsuarioDaSessao());
 
         return view;
     }
 
-    private void abrirActivityCarteiras(){
+    public void abrirActivityCarteiras(View view){
         startActivity(new Intent(this.getActivity(), CarteiraActivity.class));
     }
 
-    private void abrirActivityCategoria(){
+    public void abrirActivityCategoria(View view){
         startActivity(new Intent(getActivity(), CategoriaActivity.class));
     }
 
-    private void abrirActivityTag(){
+    public void abrirActivityTag(View view){
         startActivity(new Intent(getActivity(), TagActivity.class));
     }
 
-    private void limparUsuarioDaSessao(){
+    public void limparUsuarioDaSessao(View view){
         sessao.deletarDadosDaSessao(Sessao.USUARIO_ID);
         sessao.deletarDadosDaSessao(Sessao.USUARIO_NOME);
         sessao.deletarDadosDaSessao(Sessao.USUARIO_LOGIN);

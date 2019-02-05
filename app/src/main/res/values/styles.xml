@@ -23,7 +23,7 @@
     </style>
 
     <style name="descricaoDaPagina">
-        <item name="android:background">@drawable/bg_launcher_gradient</item>
+        <item name="android:background">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">18dp</item>
         <item name="android:textAlignment">center</item>
@@ -63,6 +63,19 @@
 
     <style name="circle">
         <item name="android:background">@drawable/bg_circle_receita</item>
+    </style>
+
+    <style name="textMenu">
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:layout_marginStart">1dp</item>
+        <item name="android:layout_marginEnd">1dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
 </resources>
