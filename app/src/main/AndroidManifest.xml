@@ -12,6 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:parentActivityName=".view.MainActivity"
             android:name=".view.MovimentacaoActivity"
             android:label="Movimentação"/>
         <activity
@@ -27,21 +28,27 @@
             </intent-filter>
         </activity>
         <activity
+            android:parentActivityName=".view.MainActivity"
             android:name=".view.TagActivity"
             android:label="Tag"/>
         <activity
+            android:parentActivityName=".view.MainActivity"
             android:name=".view.LogActivity"
             android:label="Log" />
         <activity
+            android:parentActivityName=".view.MainActivity"
             android:name=".view.CategoriaActivity"
             android:label="Categoria"/>
         <activity
+            android:parentActivityName=".view.MainActivity"
             android:name=".view.CarteiraActivity"
             android:label="Carteira"/>
         <activity
+            android:parentActivityName=".view.LoginActivity"
             android:name=".view.CadastrarUsuarioActivity"
             android:label="Cadastrar usuário"/>
         <activity
+            android:parentActivityName=".view.MainActivity"
             android:name=".view.TransferenciaActivity"
             android:label="Transferência"/>
     </application>
