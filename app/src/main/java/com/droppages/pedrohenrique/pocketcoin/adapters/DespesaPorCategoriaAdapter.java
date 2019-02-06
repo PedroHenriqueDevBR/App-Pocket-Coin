@@ -21,31 +21,12 @@ public class DespesaPorCategoriaAdapter extends RecyclerView.Adapter<DespesaPorC
         this.context = context;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtCategoria, txtValor;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            txtCategoria    = itemView.findViewById(R.id.text_view_nome_categoria);
-            txtValor        = itemView.findViewById(R.id.text_view_valor_categoria);
-        }
-    }
-
-    public static class CategoriaComValor {
-        public String categoria;
-        public float valor;
-
-        public CategoriaComValor(){}
-
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
         View view = inflater.inflate(R.layout.item_despesa_por_categoria, viewGroup, false);
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        return new ViewHolder(view);
     }
 
     @Override
@@ -63,4 +44,23 @@ public class DespesaPorCategoriaAdapter extends RecyclerView.Adapter<DespesaPorC
     public int getItemCount() {
         return listaDeCategoria.size();
     }
+
+    // ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView txtCategoria, txtValor;
+
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            txtCategoria    = itemView.findViewById(R.id.text_view_nome_categoria);
+            txtValor        = itemView.findViewById(R.id.text_view_valor_categoria);
+        }
+    }
+
+    public static class CategoriaComValor {
+        public String categoria;
+        public float valor;
+
+        public CategoriaComValor(){}
+    }
+
 }

@@ -20,9 +20,9 @@ import io.objectbox.BoxStore;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
 
-    Context context;
-    List<Tag> lista;
-    TagController controller;
+    private Context context;
+    private List<Tag> lista;
+    private TagController controller;
 
     public TagAdapter(Context context, List<Tag> lista, BoxStore boxStore, SharedPreferences preferences) {
         this.context = context;
@@ -55,10 +55,10 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtNome, txtId;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtId = itemView.findViewById(R.id.txt_id_da_tag);
             txtNome = itemView.findViewById(R.id.txt_nome_da_tag);
@@ -71,11 +71,15 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Atenção");
                 builder.setMessage("Deseja deletar a tag selecionada?");
-                builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> {
-                    long id = Long.parseLong(txtId.getText().toString());
-                    controller.deletarTag(id);
-                });
+
+                // ID
+                int posicao = getAdapterPosition();
+                long id = lista.get(posicao).id;
+
+                // Editar dados
+                builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> controller.deletarTag(id));
                 builder.setNeutralButton("Cancelar", null);
+
                 AlertDialog dialog = builder.create();
                 dialog.show();
             });

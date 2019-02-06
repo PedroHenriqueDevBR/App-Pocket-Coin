@@ -12,13 +12,12 @@ import android.widget.TextView;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.model.Movimentacao;
-import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 
 import java.util.List;
 
 public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapter.ViewHolder> {
-    List<Movimentacao> movimentacoes;
-    Context context;
+    private List<Movimentacao> movimentacoes;
+    private Context context;
 
     public MovimentacaoAdapter(List<Movimentacao> movimentacoes, Context context) {
         this.movimentacoes = movimentacoes;
@@ -38,23 +37,17 @@ public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapte
         final Movimentacao movimentacao = movimentacoes.get(position);
 
         String natureza     = movimentacao.selecionarNatureza().getNome();
-        String valor        = Double.toString(movimentacao.getValor());
+        String valor        = "R$ " + Double.toString(movimentacao.getValor());
         String descricao    = movimentacao.getDescricao();
         String carteira     = movimentacao.selecionarCarteira().getNome();
         String categoria    = movimentacao.selecionarCategoria().getNome();
         String data         = movimentacao.getData();
-        String tag          = "";
 
-        for (Tag tags: movimentacao.selecionarListaDeTag()){
-            tag += tags.getNome();
-        }
-
-        holder.txtValor.setText("R$ " + valor);
+        holder.txtValor.setText(valor);
         holder.txtDescricao.setText(descricao);
         holder.txtCarteira.setText(carteira);
         holder.txtCategoria.setText(categoria);
         holder.txtData.setText(data);
-        // holder.txtTag.setText(tag);
 
         // Seta a cor da movimentacoa
         if (natureza.equals("Crédito")){
@@ -73,11 +66,11 @@ public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapte
         return movimentacoes.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtValor, txtData, txtDescricao, txtNatureza, txtCarteira, txtCategoria, txtTag, txtCor;
-        ImageView imageMenu;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView txtValor, txtData, txtDescricao, txtNatureza, txtCarteira, txtCategoria, txtCor;
+        private ImageView imageMenu;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
             super(itemView);
             txtNatureza     = itemView.findViewById(R.id.txt_natureza_movimentacao);
             txtValor        = itemView.findViewById(R.id.txt_valor_movimentacao);
@@ -85,7 +78,6 @@ public class MovimentacaoAdapter extends RecyclerView.Adapter<MovimentacaoAdapte
             txtDescricao    = itemView.findViewById(R.id.txt_descricao_movimentacao);
             txtCarteira     = itemView.findViewById(R.id.txt_carteira_movimentacao);
             txtCategoria    = itemView.findViewById(R.id.txt_categoria_movimentacao);
-            // txtTag          = itemView.findViewById(R.id.txt_tag_movimentacao);
             txtCor          = itemView.findViewById(R.id.txt_cor_movimentacao);
             imageMenu       = itemView.findViewById(R.id.image_menu_movimentacao);
         }

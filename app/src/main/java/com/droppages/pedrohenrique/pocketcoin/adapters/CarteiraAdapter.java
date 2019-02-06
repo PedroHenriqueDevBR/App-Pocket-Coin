@@ -24,15 +24,13 @@ import io.objectbox.BoxStore;
 
 public class CarteiraAdapter extends RecyclerView.Adapter<CarteiraAdapter.ViewHolder> {
 
-    Context context;
-    List<Carteira> lista;
-    CarteiraController controller;
-    BoxStore boxStore;
+    private Context context;
+    private List<Carteira> lista;
+    private CarteiraController controller;
 
     public CarteiraAdapter(Context context, List<Carteira> lista, BoxStore boxStore, SharedPreferences preferences){
         this.context = context;
         this.lista = lista;
-        this.boxStore = boxStore;
         controller = new CarteiraController(boxStore, preferences);
     }
 
@@ -48,11 +46,9 @@ public class CarteiraAdapter extends RecyclerView.Adapter<CarteiraAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Carteira carteira = lista.get(i);
 
-        String id = Long.toString(carteira.id);
         String nome = carteira.getNome();
         String valor = Float.toString(carteira.getSaldo());
 
-        viewHolder.txtId.setText(id);
         viewHolder.txtNome.setText(nome);
         viewHolder.txtValor.setText(valor);
     }
@@ -62,62 +58,58 @@ public class CarteiraAdapter extends RecyclerView.Adapter<CarteiraAdapter.ViewHo
         return lista.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNome, txtValor, txtId;
-        ImageView imageAcao;
+    // ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView txtNome, txtValor;
+        private ImageView imageAcao;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtId                  = itemView.findViewById(R.id.txt_id_da_carteira);
             txtNome                = itemView.findViewById(R.id.txt_nome_da_carteira);
             txtValor               = itemView.findViewById(R.id.txt_valor_da_carteira);
-            imageAcao = itemView.findViewById(R.id.image_acao);
+            imageAcao              = itemView.findViewById(R.id.image_acao);
 
-            executarAcao();
+            escutarAcao();
         }
 
-        private void executarAcao(){
+        // Listener
+        private void escutarAcao(){
             imageAcao.setOnClickListener(c -> {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Opções");
                 builder.setIcon(R.drawable.ic_bank);
                 builder.setMessage("Escolha uma ação, para cancelar clique fora da caixa.");
-                // Editar dados
-                builder.setPositiveButton("Editar", (a, b) -> {
-                    long id = Long.parseLong(txtId.getText().toString().trim());
-                    editarCarteira(id);
-                });
 
-                builder.setNegativeButton("Deletar", (a, b) -> {
-                    long id = Long.parseLong(txtId.getText().toString().trim());
-                    deletarCarteira(id);
-                });
+                // ID
+                int posicao = getAdapterPosition();
+                long id = lista.get(posicao).id;
+
+                // Editar dados
+                builder.setPositiveButton("Editar", (a, b) -> editarCarteira(id));
+                builder.setNegativeButton("Deletar", (a, b) -> deletarCarteira(id));
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
             });
-            itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Opções");
-                    builder.setIcon(R.drawable.ic_bank);
-                    builder.setMessage("Escolha uma ação, para cancelar clique fora da caixa.");
-                    // Editar dados
-                    builder.setPositiveButton("Editar", (a, b) -> {
-                        long id = Long.parseLong(txtId.getText().toString().trim());
-                        editarCarteira(id);
-                    });
 
-                    builder.setNegativeButton("Deletar", (a, b) -> {
-                        long id = Long.parseLong(txtId.getText().toString().trim());
-                        deletarCarteira(id);
-                    });
+            itemView.setOnLongClickListener(v -> {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Opções");
+                builder.setIcon(R.drawable.ic_bank);
+                builder.setMessage("Escolha uma ação, para cancelar clique fora da caixa.");
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                    return false;
-                }
+                // ID
+                int posicao = getAdapterPosition();
+                long id = lista.get(posicao).id;
+
+                // Editar dados
+                builder.setPositiveButton("Editar", (a, b) -> editarCarteira(id));
+                builder.setNegativeButton("Deletar", (a, b) -> deletarCarteira(id));
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                return false;
             });
         }
 
@@ -160,9 +152,7 @@ public class CarteiraAdapter extends RecyclerView.Adapter<CarteiraAdapter.ViewHo
             builder.setTitle("Atenção");
             builder.setMessage("Deseja deletar a carteira selecionada?");
 
-            builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> {
-                controller.deletarCarteira(id);
-            });
+            builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> controller.deletarCarteira(id));
             builder.setNeutralButton("Cancelar", null);
 
             AlertDialog dialog = builder.create();

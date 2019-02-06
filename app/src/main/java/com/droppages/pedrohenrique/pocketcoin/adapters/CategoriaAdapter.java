@@ -20,9 +20,10 @@ import java.util.List;
 import io.objectbox.BoxStore;
 
 public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.ViewHolder> {
-    Context context;
-    List<Categoria> lista;
-    CategoriaController controller;
+
+    private Context context;
+    private List<Categoria> lista;
+    private CategoriaController controller;
 
     public CategoriaAdapter(Context context, List<Categoria> lista, BoxStore boxStore, SharedPreferences preferences) {
         this.context = context;
@@ -41,10 +42,7 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Categoria categoria = lista.get(i);
-        String id = Long.toString(categoria.id);
         String nome = categoria.getNome();
-
-        viewHolder.txtId.setText(id);
         viewHolder.txtNome.setText(nome);
     }
 
@@ -53,20 +51,19 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
         return lista.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txtNome, txtId;
-        ImageView imageAcao;
+    // ViewHolder
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView txtNome;
+        private ImageView imageAcao;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
-            txtId = itemView.findViewById(R.id.txt_id_da_categoria);
             txtNome = itemView.findViewById(R.id.txt_nome_da_categoria);
             imageAcao = itemView.findViewById(R.id.image_acao);
-
-            escolherAcao();
+            escutarAcao();
         }
 
-        private void escolherAcao(){
+        private void escutarAcao(){
             itemView.setOnLongClickListener(v -> {
                 deletarCategoria();
                 return false;
@@ -80,11 +77,14 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
             builder.setIcon(R.drawable.ic_alerta);
             builder.setTitle("Atenção");
             builder.setMessage("Deseja deletar categoria?");
-            builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> {
-                long id = Long.parseLong(txtId.getText().toString().trim());
-                controller.deletarCategoria(id);
-            });
+
+            // ID
+            int posicao = getAdapterPosition();
+            long id = lista.get(posicao).id;
+
+            builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> controller.deletarCategoria(id));
             builder.setNeutralButton("Cancelar", null);
+
             AlertDialog dialog = builder.create();
             dialog.show();
         }
