@@ -22,6 +22,12 @@ public class Categoria {
     }
 
 
+    public Categoria(String nome, NaturezaDaAcao natureza) {
+        this.nome = nome;
+        this.natureza.setTarget(natureza);
+    }
+
+
     public String getNome() {
         return nome;
     }
