@@ -51,8 +51,8 @@ public class Movimentacao {
     }
 
 
-    public void setConcuildo(boolean concuildo) {
-        this.concuildo = concuildo;
+    public void concluirMovimentacao() {
+        this.concuildo = true;
     }
 
 
@@ -118,6 +118,14 @@ public class Movimentacao {
 
     public void adicionarTag(Tag tag) {
         this.tag.add(tag);
+    }
+
+
+    /*
+     * Métodos abaixo foram solicitados pelo objectBox
+     * */
+    public void setConcuildo(boolean concuildo) {
+        this.concuildo = concuildo;
     }
 
 

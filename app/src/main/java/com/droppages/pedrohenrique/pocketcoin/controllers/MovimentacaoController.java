@@ -94,7 +94,7 @@ public class MovimentacaoController {
         List<String> datas = new ArrayList<>();
         datas.add("Mês atual");
 
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarMovimentacoes()){
             String data[] = movimentacao.getData().split("/");
             String dataComparacao = data[1] + "/" + data[2];
 
@@ -110,7 +110,7 @@ public class MovimentacaoController {
     public List<Movimentacao> selecionarTodasAsMovimentacoesDoUsuarioNoMesEAnoSelecionado(String mesAno){
         List<Movimentacao> movimentacoes = new ArrayList<>();
 
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarMovimentacoes()){
             String data[] = movimentacao.getData().split("/");
             String dataComparacao = data[1] + "/" + data[2];
 
@@ -194,7 +194,7 @@ public class MovimentacaoController {
     public double calcularValorGastoNoMesPorCategoriaSelecionada(Categoria categoria){
         double resultado = 0f;
 
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarMovimentacoes()){
             if (movimentacao.selecionarCategoria().id == categoria.id){
                 resultado += movimentacao.getValor();
             }
@@ -230,7 +230,7 @@ public class MovimentacaoController {
 
     private List<Movimentacao> selecionarTodasAsMovimentacoesAPartirDoMesEAno(int mes, int ano){
         List<Movimentacao> movimentacoes = new ArrayList<>();
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()){
+        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarMovimentacoes()){
             int mesDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "mes");
             int anoDaMovimentacao = selecionarDadoAPartirDeUmaData(movimentacao.getData(), "ano");
 

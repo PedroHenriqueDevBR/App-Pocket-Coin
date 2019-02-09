@@ -18,7 +18,6 @@ public class Usuario {
     private ToMany<Carteira>        carteiras;
     private ToMany<Categoria>       categorias;
     private ToMany<Tag>             tags;
-    private ToMany<Log>             log;
 
 
     public Usuario(){}
@@ -61,7 +60,7 @@ public class Usuario {
     }
 
 
-    public List<Movimentacao> selecionarListaDeMovimentacoes() {
+    public List<Movimentacao> selecionarMovimentacoes() {
         return movimentacoes;
     }
 
@@ -111,21 +110,13 @@ public class Usuario {
     }
 
 
-    public List<Log> selecionarListaDeLog() {
-        return log;
-    }
-
-
-    public void adicionarLog(Log log) {
-        this.log.add(log);
-    }
-
-
     public ToMany<Movimentacao> getMovimentacoes() {
         return movimentacoes;
     }
 
-
+    /*
+    * Métodos abaixo foram solicitados pelo objectBox
+    * */
     public void setMovimentacoes(ToMany<Movimentacao> movimentacoes) {
         this.movimentacoes = movimentacoes;
     }
@@ -170,13 +161,4 @@ public class Usuario {
         this.tags = tags;
     }
 
-
-    public ToMany<Log> getLog() {
-        return log;
-    }
-
-
-    public void setLog(ToMany<Log> log) {
-        this.log = log;
-    }
 }

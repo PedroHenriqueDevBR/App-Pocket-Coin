@@ -48,6 +48,9 @@ public class Categoria {
     }
 
 
+    /*
+     * Métodos abaixo foram solicitados pelo objectBox
+     * */
     public ToOne<NaturezaDaAcao> getNatureza() {
         return natureza;
     }

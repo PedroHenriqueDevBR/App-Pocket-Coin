@@ -237,13 +237,13 @@ public class Main {
     }
 
     private static void listarMovimentacoes() {
-        List<Movimentacao> movimentacoes = selecionarUsuarioLogado().selecionarListaDeMovimentacoes();
+        List<Movimentacao> movimentacoes = selecionarUsuarioLogado().selecionarMovimentacoes();
 
         if (movimentacoes.size() == 0) {
             System.out.println("nenhuma movimentação realizada até o momento");
         } else {
 
-            for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()) {
+            for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarMovimentacoes()) {
                 System.out.println("******");
                 System.out.println("Descrição: " + movimentacao.getDescricao() +
                         "\nValor da movimentação: " + movimentacao.getValor() +
