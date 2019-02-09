@@ -24,6 +24,15 @@ public class Movimentacao {
     public Movimentacao(){}
 
 
+    public Movimentacao(long id, double valor, String data, String descricao, boolean concuildo) {
+        this.id = id;
+        this.valor = valor;
+        this.concuildo = concuildo;
+        this.data = data;
+        this.descricao = descricao;
+    }
+
+
     public Movimentacao(double valor, String data, String descricao, boolean concuildo) {
         this.valor = valor;
         this.concuildo = concuildo;
