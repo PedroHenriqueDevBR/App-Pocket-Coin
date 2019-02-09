@@ -17,7 +17,14 @@ Endereço: [repositório de onde o gráfico foi utilizado](https://github.com/Ph
 ## Float Action Button Speed Dial
 Para que o cadastro das movimentações fosse realizada de forma fácil, um botão flutuante foi adicionado a tela principal do aplicativo, a principal caracteristica desse botão flutuante é que ele serve para listar outros botões flutuantes que serão utilizados para realizar movimentações.
 Observe a imagem abaixo para entender a utilização do botão.
-
-![fabsd](https://user-images.githubusercontent.com/36716898/52523813-216b0100-2c74-11e9-849d-0aeb5bad2bea.gif)
-
 Endereço: [repositório de onde o FloatActionButton Speed Dialog foi utilizado](https://github.com/yavski/fab-speed-dial)
+
+![FloatActionButton Speed Dial](https://user-images.githubusercontent.com/36716898/52523813-216b0100-2c74-11e9-849d-0aeb5bad2bea.gif)
+
+
+# Diagrama de classe
+
+São sete as classes nas quais o aplicativo funciona, são elas: **Usuario**, **Movimentacao**, **Carteira**, **Categoria**, **Tag**, **Configuracao**, **NaturezaDaAcao**.
+
+A relação entre as classes esta listada no diagrama abaixo.
+![Diagrama de modelo do aplicativo]()
