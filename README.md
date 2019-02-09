@@ -18,7 +18,7 @@ Endereço: [repositório de onde o gráfico foi utilizado](https://github.com/Ph
 Para que o cadastro das movimentações fosse realizada de forma fácil, um botão flutuante foi adicionado a tela principal do aplicativo, a principal caracteristica desse botão flutuante é que ele serve para listar outros botões flutuantes que serão utilizados para realizar movimentações.
 Observe a imagem abaixo para entender a utilização do botão.
 
-![Imagem que descreve a utilização do FloatActionButton Speed Dial](https://camo.githubusercontent.com/67f8b636d4cd6ee1dfcb8e4c68d2f04ad3ce8560/687474703a2f2f796176736b692e6769746875622e696f2f6661622d73706565642d6469616c2f73616d706c652d30312e676966 =300x550)
+![Imagem que descreve a utilização do FAB Speed Dial](https://camo.githubusercontent.com/67f8b636d4cd6ee1dfcb8e4c68d2f04ad3ce8560/687474703a2f2f796176736b692e6769746875622e696f2f6661622d73706565642d6469616c2f73616d706c652d30312e676966)
 A imagem acima pertence a [endereço do dono](https://github.com/yavski/fab-speed-dial)
 
 Endereço: [repositório de onde o FloatActionButton Speed Dialog foi utilizado](https://github.com/yavski/fab-speed-dial)
