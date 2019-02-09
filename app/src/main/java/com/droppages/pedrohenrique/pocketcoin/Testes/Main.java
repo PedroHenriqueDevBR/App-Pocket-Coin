@@ -2,6 +2,7 @@ package com.droppages.pedrohenrique.pocketcoin.Testes;
 
 import com.droppages.pedrohenrique.pocketcoin.model.Carteira;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
+import com.droppages.pedrohenrique.pocketcoin.model.Movimentacao;
 import com.droppages.pedrohenrique.pocketcoin.model.NaturezaDaAcao;
 import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 import com.droppages.pedrohenrique.pocketcoin.model.Usuario;
@@ -141,7 +142,7 @@ public class Main {
                 System.out.println("***");
                 System.out.println("ID: " + categoria.id +
                         "\nNome: " + categoria.getNome() +
-                        "\nNatureza: " + categoria.getNatureza().getTarget().getNome() +
+                        "\nNatureza: " + categoria.selecionarNatureza().getNome() +
                         "\n");
             }
         }
@@ -220,20 +221,115 @@ public class Main {
 
     /*
      * Funções das movimentacoes
-     */
+     * */
     private static void movimentacao() {
-        System.out.println("Movimentação");
+        int opcao = -1;
+        while (opcao != 4) {
+            opcao = menu(4);
+            if (opcao == 1) {
+                listarMovimentacoes();
+            } else if (opcao == 2) {
+                realizarMovimentacao();
+            } else if (opcao == 3) {
+                // realizarTranferencia();
+            }
+        }
+    }
+
+    private static void listarMovimentacoes() {
+        List<Movimentacao> movimentacoes = selecionarUsuarioLogado().selecionarListaDeMovimentacoes();
+
+        if (movimentacoes.size() == 0) {
+            System.out.println("nenhuma movimentação realizada até o momento");
+        } else {
+
+            for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarListaDeMovimentacoes()) {
+                System.out.println("******");
+                System.out.println("Descrição: " + movimentacao.getDescricao() +
+                        "\nValor da movimentação: " + movimentacao.getValor() +
+                        "\nData: " + movimentacao.getData() +
+                        "\nCategoria: " + movimentacao.selecionarCategoria().selecionarNatureza().getNome() +
+                        "\nCarteira: " + movimentacao.selecionarCarteira().getNome() +
+                        "\nNatureza: " + movimentacao.selecionarNatureza().getNome());
+            }
+        }
+    }
+
+    private static void realizarMovimentacao() {
+        input = new Scanner(System.in);
+
+        if (ultimoIdCategoria > 0 && ultimoIdCarteira > 0 && ultimoIdTag > 0) {
+            int carteiraSelecionada = 0, categoriaSelecionada = 0, tagSelecionada = 0, idNatureza = 0;
+            String dataMovimentacao, descricaoMovimentacao;
+            float valorMovimentacao;
+
+            System.out.print("Descrição da movimentação: ");
+            descricaoMovimentacao = input.nextLine();
+
+            System.out.print("Valor da movimentação: ");
+            valorMovimentacao = input.nextFloat();
+
+            System.out.print("Data da movimentação: ");
+            dataMovimentacao = input.nextLine();
+
+            System.out.println("Selecione a carteira");
+            for (Carteira carteira: selecionarUsuarioLogado().selecionarListaDeCarteiras()) {
+                System.out.println("opção: " + carteira.id + " - " + carteira.getNome());
+            }
+            carteiraSelecionada = input.nextInt();
+
+            System.out.println("Selecione a categoria");
+            for (Categoria categoria: selecionarUsuarioLogado().selecionarListaDeCategorias()) {
+                System.out.println("opção: " + categoria.id + " - " + categoria.getNome());
+            }
+            categoriaSelecionada = input.nextInt();
+
+            System.out.println("Selecione a tag");
+            for (Tag tag: selecionarUsuarioLogado().selecionarListaDeTags()) {
+                System.out.println("opção: " + tag.id + " - " + tag.getNome());
+            }
+            tagSelecionada = input.nextInt();
+
+            System.out.println("Selecione o tipo de ação");
+            System.out.println("opção: " + naturezas.get(0).id + " - " + naturezas.get(0).getNome());
+            System.out.println("opção: " + naturezas.get(1).id + " - " + naturezas.get(1).getNome());
+            idNatureza = input.nextInt();
+
+            Movimentacao movimentacao = new Movimentacao(ultimoIdMovimentacao, valorMovimentacao, dataMovimentacao, descricaoMovimentacao, true);
+            Carteira carteira = selecionarUsuarioLogado().selecionarListaDeCarteiras().get(carteiraSelecionada);
+            Categoria categoria = selecionarUsuarioLogado().selecionarListaDeCategorias().get(categoriaSelecionada);
+            Tag tag = selecionarUsuarioLogado().selecionarListaDeTags().get(tagSelecionada);
+            movimentacao.configurarCarteira(carteira);
+            movimentacao.configurarCategoria(categoria);
+            movimentacao.adicionarTag(tag);
+            movimentacao.configurarNatureza(naturezas.get(idNatureza));
+            selecionarUsuarioLogado().adicionarMovimentacao(movimentacao);
+
+        } else {
+            if (ultimoIdCarteira == 0) {
+                System.out.println("Cadastre pelo menos uma carteira antes de realizar movimentações");
+            }
+            if (ultimoIdCategoria == 0) {
+                System.out.println("Cadastre pelo menos uma categoria antes de realizar movimentações");
+            }
+            if (ultimoIdTag == 0) {
+                System.out.println("Cadastre pelo menos uma tag antes de realizar movimentações");
+            }
+        }
     }
 
 
+    /*
+     * Funções para listagem de dados
+     * */
     private static void dadosGerais() {
-        System.out.println("dados gerais");
+
     }
 
 
     /*
      * Funções do usuário
-     */
+     * */
     private static void cadastrarNovoUsuario() {
         input = new Scanner(System.in);
 
@@ -341,6 +437,16 @@ public class Main {
                 menu = "1 - Listar tags cadastradas \n" +
                         "2 - Cadastrar tag \n" +
                         "3 - Voltar ao inicio \n" +
+                        "0 - Encerrar sistema \n" +
+                        ">>> ";
+            } else if (menuId == 4) {
+                // Menu tag
+                minimo = 0;
+                maximo = 4;
+                menu = "1 - Listar movimentações \n" +
+                        "2 - Cadastrar movimentação \n" +
+                        "3 - realizar transferencia \n" +
+                        "4 - Voltar ao inicio \n" +
                         "0 - Encerrar sistema \n" +
                         ">>> ";
             } else {
