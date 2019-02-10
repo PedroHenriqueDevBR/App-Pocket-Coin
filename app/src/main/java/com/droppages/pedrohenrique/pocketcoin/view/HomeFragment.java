@@ -16,11 +16,14 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.droppages.pedrohenrique.pocketcoin.R;
 import com.droppages.pedrohenrique.pocketcoin.adapters.DespesaPorCategoriaAdapter;
+import com.droppages.pedrohenrique.pocketcoin.controllers.CarteiraController;
 import com.droppages.pedrohenrique.pocketcoin.controllers.CategoriaController;
 import com.droppages.pedrohenrique.pocketcoin.controllers.MovimentacaoController;
+import com.droppages.pedrohenrique.pocketcoin.controllers.TagController;
 import com.droppages.pedrohenrique.pocketcoin.dal.App;
 import com.droppages.pedrohenrique.pocketcoin.dal.Sessao;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
@@ -46,6 +49,8 @@ import io.objectbox.BoxStore;
 public class HomeFragment extends Fragment {
     private MovimentacaoController  movimentacaoController;
     private CategoriaController     categoriaController;
+    private CarteiraController      carteiraController;
+    private TagController           tagController;
     private TextView                txtSaldoAtual, txtReceitaGeral, txtDespesaGeral, txtReceitaMensal, txtDespesaMensal, txtEconomia;
     private RecyclerView            recyclerView;
     private FabSpeedDial            fabSpeedDial;
@@ -79,6 +84,8 @@ public class HomeFragment extends Fragment {
         BoxStore boxStore           = ((App) getActivity().getApplication()).getBoxStore();
         movimentacaoController      = new MovimentacaoController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
         categoriaController         = new CategoriaController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
+        carteiraController          = new CarteiraController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
+        tagController               = new TagController(boxStore, getActivity().getSharedPreferences(Sessao.SESSAO_USUARIO, Context.MODE_PRIVATE));
 
         // Retorna a view preenchida com os dados
         return view;
@@ -297,25 +304,58 @@ public class HomeFragment extends Fragment {
     }
 
     private void novaAcaoAbrirActivity(int codigo){
-        Intent intent;
-        if (codigo == 1) { // Nova receita
-            intent = new Intent(getActivity(), MovimentacaoActivity.class);
-            intent.putExtra("idNatureza", 1L);
-        } else if (codigo == 2) { // Nova despesa
-            intent = new Intent(getActivity(), MovimentacaoActivity.class);
-            intent.putExtra("idNatureza", 2L);
-        } else { // Nova transferência
-            intent = new Intent(getActivity(), TransferenciaActivity.class);
+        int carteiraSize    = carteiraController.selecionarTodasAsCarteirasDoUsuarioLogado().size();
+        int categoriaSize   = categoriaController.selecionarTodasAsCategoriasDoUsuarioLogado().size();
+        int tagSize         = tagController.selecionarTodasAsTagsDoUsuarioLogado().size();
+
+
+        if (carteiraSize > 0 && categoriaSize > 0 && tagSize > 0) {
+            Intent intent;
+            if (codigo == 1) { // Nova receita
+                intent = new Intent(getActivity(), MovimentacaoActivity.class);
+                intent.putExtra("idNatureza", 1L);
+            } else if (codigo == 2) { // Nova despesa
+                intent = new Intent(getActivity(), MovimentacaoActivity.class);
+                intent.putExtra("idNatureza", 2L);
+            } else { // Nova transferência
+                intent = new Intent(getActivity(), TransferenciaActivity.class);
+            }
+            startActivity(intent);
+            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        } else {
+            String mensagem = "Você deve cadastrar pelo menos uma";
+            if (carteiraSize == 0){ mensagem += ", carteira"; }
+            if (categoriaSize == 0){ mensagem += ", categoria"; }
+            if (tagSize == 0){ mensagem += ", tag"; }
+            mensagem += ".";
+            mostrarMensagem(mensagem);
         }
-        startActivity(intent);
+    }
+
+    private int quantidadeDeErros(int a, int b, int c){
+        int resultado = 0;
+        if (a > 0) { resultado++; }
+        if (b > 0) { resultado++; }
+        if (c > 0) { resultado++; }
+        return resultado;
     }
 
     private void abrirActivityCarteira(){
-        lytMostraSaldo.setOnClickListener(c -> startActivity(new Intent(getActivity(), CarteiraActivity.class)));
+        lytMostraSaldo.setOnClickListener(c -> {
+            startActivity(new Intent(getActivity(), CarteiraActivity.class));
+            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
     }
 
     private void abrirActivityCategoria(){
-        lytGastoPorCategoria.setOnClickListener(c -> startActivity(new Intent(getActivity(), CategoriaActivity.class)));
+        lytGastoPorCategoria.setOnClickListener(c -> {
+            startActivity(new Intent(getActivity(), CategoriaActivity.class));
+            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        });
+    }
+
+    private void mostrarMensagem(String msg){
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 
 }
