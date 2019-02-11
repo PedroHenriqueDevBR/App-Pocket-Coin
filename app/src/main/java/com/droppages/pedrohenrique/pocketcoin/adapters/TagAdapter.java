@@ -1,8 +1,7 @@
 package com.droppages.pedrohenrique.pocketcoin.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,24 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.droppages.pedrohenrique.pocketcoin.view.EditarTagActivity;
 import com.droppages.pedrohenrique.pocketcoin.R;
-import com.droppages.pedrohenrique.pocketcoin.controllers.TagController;
 import com.droppages.pedrohenrique.pocketcoin.model.Tag;
 
 import java.util.List;
-
-import io.objectbox.BoxStore;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
 
     private Context context;
     private List<Tag> lista;
-    private TagController controller;
 
-    public TagAdapter(Context context, List<Tag> lista, BoxStore boxStore, SharedPreferences preferences) {
+    public TagAdapter(Context context, List<Tag> lista) {
         this.context = context;
         this.lista = lista;
-        controller = new TagController(boxStore, preferences);
     }
 
     @NonNull
@@ -63,25 +58,18 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.ViewHolder> {
             txtId = itemView.findViewById(R.id.txt_id_da_tag);
             txtNome = itemView.findViewById(R.id.txt_nome_da_tag);
 
-            deletarTag();
+            escutarAcao();
         }
 
-        private void deletarTag(){
+        private void escutarAcao(){
             itemView.setOnClickListener((c) -> {
-                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Atenção");
-                builder.setMessage("Deseja deletar a tag selecionada?");
-
                 // ID
                 int posicao = getAdapterPosition();
                 long id = lista.get(posicao).id;
 
-                // Editar dados
-                builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> controller.deletarTag(id));
-                builder.setNeutralButton("Cancelar", null);
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                Intent intent = new Intent(context.getApplicationContext(), EditarTagActivity.class);
+                intent.putExtra("id", id);
+                context.startActivity(intent);
             });
         }
     }

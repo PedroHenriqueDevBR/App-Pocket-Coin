@@ -89,7 +89,7 @@ public class CarteiraActivity extends AppCompatActivity {
 
     private void listarCarteirasCadastradas(){
         List<Carteira> carteiras = controller.selecionarTodasAsCarteirasDoUsuarioLogado();
-        CarteiraAdapter adapter = new CarteiraAdapter(this, carteiras, boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        CarteiraAdapter adapter = new CarteiraAdapter(this, carteiras);
         rvCarteiras.setAdapter(adapter);
         rvCarteiras.setLayoutManager(new LinearLayoutManager(this));
     }

@@ -321,7 +321,7 @@ public class HomeFragment extends Fragment {
                 intent = new Intent(getActivity(), TransferenciaActivity.class);
             }
             startActivity(intent);
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         } else {
             String mensagem = "Você deve cadastrar pelo menos uma";
             if (carteiraSize == 0){ mensagem += ", carteira"; }
@@ -343,14 +343,12 @@ public class HomeFragment extends Fragment {
     private void abrirActivityCarteira(){
         lytMostraSaldo.setOnClickListener(c -> {
             startActivity(new Intent(getActivity(), CarteiraActivity.class));
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
     }
 
     private void abrirActivityCategoria(){
         lytGastoPorCategoria.setOnClickListener(c -> {
             startActivity(new Intent(getActivity(), CategoriaActivity.class));
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
     }
 

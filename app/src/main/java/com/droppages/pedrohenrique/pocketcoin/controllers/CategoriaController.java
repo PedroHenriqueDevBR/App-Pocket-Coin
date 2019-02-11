@@ -89,6 +89,11 @@ public class CategoriaController {
     }
 
 
+    public void atualizarCategoria(Categoria categoria) {
+        categoriaBox.put(categoria);
+    }
+
+
     /*
      * Métodos de apoio aos métodos públicos
      */

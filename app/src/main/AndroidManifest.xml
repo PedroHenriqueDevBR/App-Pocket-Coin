@@ -12,14 +12,15 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:parentActivityName=".view.MainActivity"
             android:name=".view.MovimentacaoActivity"
-            android:label="Movimentação"/>
+            android:label="Movimentação"
+            android:parentActivityName=".view.MainActivity" />
         <activity
             android:name=".view.MainActivity"
             android:label="Dashboard"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".view.LoginActivity"
+        <activity
+            android:name=".view.LoginActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,29 +29,41 @@
             </intent-filter>
         </activity>
         <activity
-            android:parentActivityName=".view.MainActivity"
             android:name=".view.TagActivity"
-            android:label="Tag"/>
+            android:label="Tag"
+            android:parentActivityName=".view.MainActivity" />
         <activity
-            android:parentActivityName=".view.MainActivity"
             android:name=".view.LogActivity"
-            android:label="Log" />
+            android:label="Log"
+            android:parentActivityName=".view.MainActivity" />
         <activity
-            android:parentActivityName=".view.MainActivity"
             android:name=".view.CategoriaActivity"
-            android:label="Categoria"/>
+            android:label="Categoria"
+            android:parentActivityName=".view.MainActivity" />
         <activity
-            android:parentActivityName=".view.MainActivity"
             android:name=".view.CarteiraActivity"
-            android:label="Carteira"/>
+            android:label="Carteira"
+            android:parentActivityName=".view.MainActivity" />
         <activity
-            android:parentActivityName=".view.LoginActivity"
             android:name=".view.CadastrarUsuarioActivity"
-            android:label="Cadastrar usuário"/>
+            android:label="Cadastrar usuário"
+            android:parentActivityName=".view.LoginActivity" />
         <activity
-            android:parentActivityName=".view.MainActivity"
             android:name=".view.TransferenciaActivity"
-            android:label="Transferência"/>
+            android:label="Transferência"
+            android:parentActivityName=".view.MainActivity" />
+        <activity
+            android:name=".view.EditarCarteiraActivity"
+            android:label="Editar carteira"
+            android:parentActivityName=".view.MainActivity" />
+        <activity
+            android:name=".view.EditarTagActivity"
+            android:label="Editar tag"
+            android:parentActivityName=".view.MainActivity"/>
+        <activity
+            android:name=".view.EditarCategoriaActivity"
+            android:label="Editar categoria"
+            android:parentActivityName=".view.MainActivity"/>
     </application>
 
 </manifest>

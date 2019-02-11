@@ -47,13 +47,8 @@ public class CarteiraController {
     }
 
 
-    public void atualizarCarteira(Carteira carteira) throws CadastroInvalidoException {
-        String nome = carteira.getNome();
-        float saldo = carteira.getSaldo();
-
-        if (dadosValidosParaCadastro(nome, saldo)){
-            carteiraBox.put(carteira);
-        }
+    public void atualizarCarteira(Carteira carteira) {
+        carteiraBox.put(carteira);
     }
 
 

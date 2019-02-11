@@ -52,6 +52,11 @@ public class TagController {
     }
 
 
+    public void atualizarTag(Tag tag){
+        tagBox.put(tag);
+    }
+
+
     /*
      * Métodos de apoio aos métodos públicos
      */

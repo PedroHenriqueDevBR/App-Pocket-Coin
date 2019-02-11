@@ -50,7 +50,7 @@ public class TagActivity extends AppCompatActivity {
 
     private void mostrarTagsCadastradas(){
         List<Tag> tags = controller.selecionarTodasAsTagsDoUsuarioLogado();
-        TagAdapter adapter = new TagAdapter(this, tags, boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        TagAdapter adapter = new TagAdapter(this, tags);
         rvTags.setAdapter(adapter);
         rvTags.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
     }

@@ -1,8 +1,7 @@
 package com.droppages.pedrohenrique.pocketcoin.adapters;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,24 +10,20 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.droppages.pedrohenrique.pocketcoin.view.EditarCategoriaActivity;
 import com.droppages.pedrohenrique.pocketcoin.R;
-import com.droppages.pedrohenrique.pocketcoin.controllers.CategoriaController;
 import com.droppages.pedrohenrique.pocketcoin.model.Categoria;
 
 import java.util.List;
-
-import io.objectbox.BoxStore;
 
 public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.ViewHolder> {
 
     private Context context;
     private List<Categoria> lista;
-    private CategoriaController controller;
 
-    public CategoriaAdapter(Context context, List<Categoria> lista, BoxStore boxStore, SharedPreferences preferences) {
+    public CategoriaAdapter(Context context, List<Categoria> lista) {
         this.context = context;
         this.lista = lista;
-        this.controller = new CategoriaController(boxStore, preferences);
     }
 
     @NonNull
@@ -65,28 +60,15 @@ public class CategoriaAdapter extends RecyclerView.Adapter<CategoriaAdapter.View
 
         private void escutarAcao(){
             itemView.setOnLongClickListener(v -> {
-                deletarCategoria();
+                // ID
+                int posicao = getAdapterPosition();
+                long id = lista.get(posicao).id;
+
+                Intent intent = new Intent(context.getApplicationContext(), EditarCategoriaActivity.class);
+                intent.putExtra("id", id);
+                context.startActivity(intent);
                 return false;
             });
-
-            imageAcao.setOnClickListener(c -> deletarCategoria());
-        }
-
-        private void deletarCategoria(){
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setIcon(R.drawable.ic_alerta);
-            builder.setTitle("Atenção");
-            builder.setMessage("Deseja deletar categoria?");
-
-            // ID
-            int posicao = getAdapterPosition();
-            long id = lista.get(posicao).id;
-
-            builder.setPositiveButton("Sim, eu quero deletar", (a, b) -> controller.deletarCategoria(id));
-            builder.setNeutralButton("Cancelar", null);
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
         }
     }
 }

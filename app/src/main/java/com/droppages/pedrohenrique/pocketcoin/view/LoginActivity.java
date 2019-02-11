@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void AbrirActivityCadastrarUsuario(View v){
         startActivityForResult(new Intent(this, CadastrarUsuarioActivity.class), REQUEST_CODE);
-        overridePendingTransition(R.anim.anim_move_to_down, R.anim.anim_null);
     }
 
     public void entrar(View v){
@@ -66,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
             controller.login(login, senha);
             limparCampos();
             startActivity(new Intent(this, MainActivity.class));
-            overridePendingTransition(R.anim.anim_move_right_to_center, R.anim.anim_move_center_to_left);
             finish();
         } catch (CadastroInvalidoException e){
             mostrarMensagem(e.getMensagem());

@@ -55,7 +55,7 @@ public class CategoriaActivity extends AppCompatActivity {
 
     private void mostrarCategoriasCadastradas(){
         List<Categoria> categorias = categoriaController.selecionarTodasAsCategoriasDoUsuarioLogado();
-        CategoriaAdapter adapter = new CategoriaAdapter(this, categorias, boxStore, getSharedPreferences(Sessao.SESSAO_USUARIO, MODE_PRIVATE));
+        CategoriaAdapter adapter = new CategoriaAdapter(this, categorias);
         rvCategoria.setAdapter(adapter);
         rvCategoria.setLayoutManager(new LinearLayoutManager(this));
     }
