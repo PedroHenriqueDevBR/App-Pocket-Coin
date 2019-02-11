@@ -1,23 +1,33 @@
 # POO Projeto Final - Pocket Coin
 
 ## Descrição geral
-Aplicativo desenvolvido como proposta de projeto de conclusão de disciplina, programação orientada a objetos, disponibilizada no Instituto Federal do Piauí, ministrada por professor Rogério Silva.
+Aplicativo desenvolvido como proposta de projeto de conclusão de disciplina, programação orientada a objetos, disponibilizada no Instituto Federal do Piauí, ministrada pelo professor Rogério Silva.
 
 ## Descrição do aplicativo
-Este aplicativo destina-se a auxiliar pessoas no controle financeiro. dentre as principais funcionalidades que o aplicativo disponibiliza, a listagem dos dados do mês atual (incluindo todas as movimentações) é a principal forma de entender e perceber o quanto foi gasto no mês e onde o dinheiro foi gasto, a listagem dos dados acontece por meio de gráficos e mensagens.
+Pocket Coin é um aplicativo android que destina-se a auxiliar pessoas no controle de gastos. Desenvolvido utilizando como ambiente de desenvolvimento a IDEA Android Studio, Java como linguagem de programação. Entre as principais funcionalidades que o aplicativo disponibiliza, o registro dos gastos separados por mês é a principal a ser destacada, a listagem dos dados do mês atual (incluindo todas as movimentações) é a principal forma de entender e perceber o quanto de dinheiro foi gasto no mês e onde o dinheiro foi gasto, a listagem dos dados acontece por meio de gráficos e mensagens.
+Caso seja de interesse do usuário, os dados das movimentações de meses anteriores também ficam registrados no banco de dados, sendo assim basta que o usuário acesse a tela de registros para selecionar o mês para a listagem dos dados.
 
-**Logo do aplicativo**
+Para que o Pocket Coin funcione de forma estável é preciso que a versão minima do android seja a 22 (Android 5.1).
 
+### Logo do aplicativo - Pocket Coin 
 <img src="https://github.com/PedroHenriqueBR2/POO-Projeto-Final/blob/master/app/src/main/res/mipmap-xxhdpi/ic_logo_aux.png" width="100" height="100" title="Teste" />
-
-
 
 # Repositórios utilizados
 
+## ObjectBox
+A persistencia escolhida para este projeto foi o ObjectBox, por ser simples, rápido, e com uma curva de aprendizagem bastante consideravel.
+
+[Site oficial do ObjectBox](https://objectbox.io/)
+
+![imagem](https://objectbox.io/wordpress/wp-content/uploads/2017/08/Group-6-Copy-46.png)
 
 ## Gráficos
 Para que houvesse a listagem dos gráficos no aplicativo, uma lib foi implementada ao app,  a lib implementada pertence ao repositório listado abaixo.
+
 Endereço: [repositório de onde o gráfico foi utilizado](https://github.com/PhilJay/MPAndroidChart)
+
+![imagem](https://camo.githubusercontent.com/469a2460e3ae032f18db106cfae67adeea99e8ba/68747470733a2f2f7261772e6769746875622e636f6d2f5068696c4a61792f4d5043686172742f6d61737465722f64657369676e2f666561747572655f677261706869635f736d616c6c65722e706e67)
+
 
 ## Float Action Button Speed Dial
 Para que o cadastro das movimentações fosse realizada de forma fácil, um botão flutuante foi adicionado a tela principal do aplicativo, a principal caracteristica desse botão flutuante é que ele serve para listar outros botões flutuantes que serão utilizados para realizar movimentações.
@@ -109,3 +119,30 @@ A principal fonte de entrada de dados no aplicativo, funciona para receita ou de
 Transfere dinheiro de uma carteira para outra.
 
 <img src="https://user-images.githubusercontent.com/36716898/52526239-6c950c00-2c94-11e9-9635-91d4f001e9bc.png" width="255" height="453" />
+
+
+# Descrição do desenvolviemnto
+
+### Camada model
+
+Primeiramente, antes de iniciar a codificação do aplicativo, passei um tempo  definindo como seria a camada de modelo. Levando em consideração alguns requisitos solicitados pelo professor, tais como persistência de dados e cadastro de usuário, o inicio da modelagem aconteceu a partir da classe usuário, para que logo em seguida a classe Movimentação fosse criada, o resultado final da modelagem pode ser encontrada na sessão **Diagrama de classe** na parte superior desta página.
+
+### Camada controller
+
+A princípio o aplicativo seria desenvolvido utilizando o modelo MVVM, porém a medida que o aplicativo aumentava a quantidade de funções aumentava, e para solucionar este problema de forma que o código fonte do aplicativo fosse legível uma nova camada fi adicionada, a camada de controle (controller), para facilitar a leitura do código fonte e futuramente a manutenção.
+Mais de uma camada de controle foi adicionada ao projeto pois cada controller possui um alvo, como é o caso do controller Carteira, que possui apenas métodos que serão necessaŕios para manipular o objeto carteira.
+
+### Camada View
+A camada View contém todos os arquivos que são Activity.java e Fragment.java
+
+### Camada Adapter
+A camada Adapter controla os RecycleViews dispostos no projeto, controlando ainda a interação do usuário com algum determinado item listado.
+
+### Camada Dal
+A camada Dal controla a persistência dos dados, mais especificamente o ObjectBox e o SharedPreferences.
+
+### Camada exceptions
+A camada Exceptions, desenvolvida apenas para tornar o código fonte mais legível, através da criação de exceptions personalizados.
+
+### Camada Testes
+A camada Testes contém um arquivo (Main.java), que é responsável por realizar testes na camada de modelo através do terminal.
