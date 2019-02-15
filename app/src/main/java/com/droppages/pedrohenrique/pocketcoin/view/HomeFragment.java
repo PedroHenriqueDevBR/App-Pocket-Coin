@@ -148,7 +148,7 @@ public class HomeFragment extends Fragment {
         chartCategoria.setTransparentCircleAlpha(1);
         chartCategoria.setDrawEntryLabels(true);
         chartCategoria.setEntryLabelTextSize(10);
-        chartCategoria.animateY(2500, Easing.EasingOption.EaseInOutCubic);
+        chartCategoria.animateY(1500, Easing.EasingOption.EaseInOutCubic);
 
         dadosParaOGraficoDeCategoria(lista);
     }
@@ -180,6 +180,7 @@ public class HomeFragment extends Fragment {
         chartCategoria.invalidate();
 
         if (!haDadosCadastrados){ chartCategoria.setVisibility(View.GONE); }
+        else {chartCategoria.setVisibility(View.VISIBLE);}
     }
 
     private void preencherGraficoComparacao(){
@@ -273,12 +274,12 @@ public class HomeFragment extends Fragment {
             listaCategoriaComValor.add(categoriaComValor);
         }
 
-        // Preenche o grafico
-        preencherGraficoCategoria(listaCategoriaComValor);
-
         DespesaPorCategoriaAdapter adapter = new DespesaPorCategoriaAdapter(listaCategoriaComValor, getActivity().getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        // Preenche o grafico
+        preencherGraficoCategoria(listaCategoriaComValor);
     }
 
     private void calcularEconomiaMesal(){
