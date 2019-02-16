@@ -194,7 +194,11 @@ public class MovimentacaoController {
     public double calcularValorGastoNoMesPorCategoriaSelecionada(Categoria categoria){
         double resultado = 0f;
 
-        for (Movimentacao movimentacao: selecionarUsuarioLogado().selecionarMovimentacoes()){
+        String dataAtual = dataAtual();
+        int mesAtual = selecionarDadoAPartirDeUmaData(dataAtual, "mes");
+        int anoAtual = selecionarDadoAPartirDeUmaData(dataAtual, "ano");
+
+        for (Movimentacao movimentacao: selecionarTodasAsMovimentacoesAPartirDoMesEAno(mesAtual, anoAtual)){
             if (movimentacao.selecionarCategoria().id == categoria.id){
                 resultado += movimentacao.getValor();
             }
