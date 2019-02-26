@@ -1,4 +1,4 @@
-# POO Projeto Final - Pocket Coin
+# App - Pocket Coin
 
 ## Descrição geral
 Aplicativo desenvolvido como proposta de projeto de conclusão de disciplina, programação orientada a objetos, disponibilizada no Instituto Federal do Piauí, ministrada pelo professor Rogério Silva.
