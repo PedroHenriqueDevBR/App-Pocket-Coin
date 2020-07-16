@@ -1,6 +1,23 @@
-# App - Pocket Coin
+<h1 align="center">
+App - Pocket Coin :bar_chart:
+</h1>
 
-## Descrição geral
+<p align="center">
+suas finanças na pauma da sua mão.
+</p>
+
+<p align="center">
+<a href="https://github.com/PedroHenriqueDevBR/"><img alt="GitHub forks" src="https://img.shields.io/badge/make%20by-PedroHenriqueDevBR-blue?style=plastic"></a>
+<img alt="GitHub stars" src="https://img.shields.io/github/stars/pedrohenriquedevbr/app-pocket-coin?style=social">
+</p>
+
+<hr>
+
+<img src="https://user-images.githubusercontent.com/36716898/52526198-0dcf9280-2c94-11e9-8b76-fb30377d94cb.png" width="255" height="453" />
+<img src="https://user-images.githubusercontent.com/36716898/52526201-1627cd80-2c94-11e9-9a3d-e7c1fb5acde5.png" width="255" height="453" />
+  
+# :anchor: Descrição geral
+
 Aplicativo desenvolvido como proposta de projeto de conclusão de disciplina, programação orientada a objetos, disponibilizada no Instituto Federal do Piauí, ministrada pelo professor Rogério Silva.
 
 ## Descrição do aplicativo
