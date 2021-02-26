@@ -27,7 +27,7 @@ Caso seja de interesse do usuário, os dados das movimentações de meses anteri
 Para que o Pocket Coin funcione de forma estável é preciso que a versão minima do android seja a 22 (Android 5.1).
 
 ### Logo do aplicativo - Pocket Coin 
-<img src="https://github.com/PedroHenriqueBR2/POO-Projeto-Final/blob/master/app/src/main/res/mipmap-xxhdpi/ic_logo_aux.png" width="100" height="100" title="Teste" />
+<img src="https://raw.githubusercontent.com/PedroHenriqueDevBR/App-Pocket-Coin/master/app/src/main/res/mipmap-xxhdpi/ic_logo_aux.png" width="100" height="100" title="Teste" />
 
 # Repositórios utilizados
 
